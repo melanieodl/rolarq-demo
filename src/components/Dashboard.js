@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-import {Box, Drawer, AppBar, Toolbar, CssBaseline, Typography} from '@material-ui/core';
+import {Box, Drawer, AppBar, Toolbar, CssBaseline, Typography, Avatar} from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
