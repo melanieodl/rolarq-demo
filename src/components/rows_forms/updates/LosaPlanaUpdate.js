@@ -111,7 +111,7 @@ const validationSchema = Yup.object().shape({
                   component={TextField}
                    name="propTension"
                    type="number"
-                   label="Proporción para Tensión"
+                   label="Longitud extra en Tensión"
                    inputProps={{
                      min: 0, max: 100,
 

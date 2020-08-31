@@ -91,7 +91,7 @@ export default function SingleNameForm(props) {
                           component={TextField}
                            name="length"
                            type="number"
-                           label="Longitud"
+                           label="Largo Útil"
                            InputProps={{
                              endAdornment: (
                                <InputAdornment position="end">

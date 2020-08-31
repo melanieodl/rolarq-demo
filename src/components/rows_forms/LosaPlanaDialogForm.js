@@ -288,7 +288,7 @@ export default function ZapataDialogForm(props) {
                     component={TextField}
                      name="propTension"
                      type="number"
-                     label="Proporción para Tensión"
+                     label="Longitud extra en Tensión"
                      value={values.propTension}
                      onChange={e => setFieldValue("propTension", e.target.value)}
                      inputProps={{
