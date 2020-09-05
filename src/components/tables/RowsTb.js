@@ -17,7 +17,6 @@ import CostTb from './CostTb'
 import MenuDial from './partials/MenuDial'
 import MuroDialogForm from '../rows_forms/MuroDialogForm'
 import MezclonConcretoDialogForm from '../rows_forms/MezclonConcretoDialogForm'
-import RepelloDialogForm from '../rows_forms/RepelloDialogForm'
 import MezclonMorteroDialogForm from '../rows_forms/MezclonMorteroDialogForm'
 
 import FormDialog from '../rows_forms/Form'
