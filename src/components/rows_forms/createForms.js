@@ -819,9 +819,9 @@ const RepelloCernidoForm = ({budgetId, openModal, closeModal, setData}) => {
       schema: costSchema,
       form: CostFormGroup}
   ])
-  const {name, area, height} = initials
+  const {area, height} = initials
 
-  const initialValues ={ name, area, height, ...concretoInitials,
+  const initialValues ={ name: 'REPELLO Y CERNIDO ', area, height, ...concretoInitials,
         preMixWastePct: 0}
   return(
     <CreateForm getSteps={getSteps} budgetId={budgetId} apiId="repellos"
