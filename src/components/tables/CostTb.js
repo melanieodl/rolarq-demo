@@ -152,7 +152,7 @@ const refreshRow = () => {
 
             return (
               <TextField
-                placeholder={props.rowData ? props.rowData.name ? `${props.rowData.name}` : `Seleccionar Material` : `Seleccionar Material`}
+                placeholder={props.rowData ? props.rowData.name? `${props.rowData.name}` : `Seleccionar Material` : `Seleccionar Material`}
                 {...params}
                 fullWidth
                 InputProps={{

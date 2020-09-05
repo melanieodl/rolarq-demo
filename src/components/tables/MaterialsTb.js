@@ -86,7 +86,7 @@ export default function MaterialsTb(props) {
 
   const columns =    [
      { title: 'Id', field: 'id', hidden: true },
-     { title: 'Nombre', field: 'name', filtering: false,
+     { title: 'Nombre', field: 'name', filtering: false, render: rowData => rowData.fullName,
        validate: rowData => ( typeof rowData.name != 'undefined'?
                                   rowData.name.trim() === '' ?
                                       { isValid: false, helperText: 'Nombre es requerido' } : true
