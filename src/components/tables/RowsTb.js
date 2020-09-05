@@ -28,6 +28,8 @@ import MezclonMorteroDialogForm from '../rows_forms/MezclonMorteroDialogForm'
 import CernidoDialogForm from '../rows_forms/CernidoDialogForm'
 
 import FormDialog from '../rows_forms/Form'
+import {SoleraForm, ZapataForm, ColumnaForm, CimientoForm, LosaPlanaForm, LosaInclinadaForm
+        } from '../rows_forms/createForms'
 
 
 const tableIcons = {
@@ -55,16 +57,16 @@ const tableIcons = {
 
   const actions = [
     { name: 'Cernido', form: CernidoDialogForm },
-    { name: 'Cimiento Corrido', form: CimientoCorridoDialogForm },
-    { name: 'Columna', form: ColumnaDialogForm },
-    { name: 'Losa Plana', form: LosaPlanaDialogForm },
-    { name: 'Losa Inclinada', form: LosaInclinadaDialogForm },
+    { name: 'Cimiento Corrido', form: CimientoForm },
+    { name: 'Columna', form: ColumnaForm },
+    { name: 'Losa Plana', form: LosaPlanaForm },
+    { name: 'Losa Inclinada', form: LosaInclinadaForm },
     { name: 'Mezclón Concreto', form: MezclonConcretoDialogForm },
     { name: 'Mezclón Mortero', form: MezclonMorteroDialogForm },
     { name: 'Muro', form: MuroDialogForm },
     { name: 'Repello', form: RepelloDialogForm },
-    { name: 'Solera', form: SoleraDialogForm },
-    { name: 'Zapata', form: ZapataDialogForm },
+    { name: 'Solera', form: SoleraForm },
+    { name: 'Zapata', form: ZapataForm },
 
 
   ];
