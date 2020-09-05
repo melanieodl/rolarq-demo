@@ -20,6 +20,7 @@ import LongIron from './costs/LongIron'
 import TransIron from './costs/TransIron'
 import TieWire from './costs/TieWire'
 import ConcretoProp from './fields/ConcretoProp'
+import PreMixCost from './costs/PreMixCost'
 
 import VolumeFields from './fields/Volume'
 
@@ -251,6 +252,37 @@ const SpecsTransQuantityFormGroup = ({values, setFieldValue, errors, touched}) =
       setFieldValue={setFieldValue} errors={errors} touched={touched}/>
     </Grid>
   </Grid>
+  </Fragment>
+)
+
+const areaVolSchema = Yup.object().shape({
+   name: Yup.string()
+     .required('Requerido'),
+   area: Yup.number()
+    .positive('Deber ser positivo')
+    .required('Requerido'),
+   height: Yup.number()
+    .positive('Deber ser positivo')
+    .required('Requerido'),
+   })
+
+const AreaVolFormGroup = ({values, setFieldValue, errors, touched}) => (
+  <Fragment>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+          <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
+      </Grid>
+    </Grid>
+    <Grid container spacing={3}>
+      <Grid item xs={6}>
+          <SquareMeterField name="area" label="Area" value={values.area} setFieldValue={setFieldValue}
+            errors={errors} touched={touched}/>
+      </Grid>
+      <Grid item xs={6}>
+          <LinearMeterField name="height" label="Espesor" value={values.height} setFieldValue={setFieldValue}
+           errors={errors} touched={touched}/>
+      </Grid>
+    </Grid>
   </Fragment>
 )
 
@@ -745,7 +777,60 @@ const LosaInclinadaForm = ({budgetId, openModal, closeModal, setData}) => {
   )
 }
 
+const RepelloCernidoForm = ({budgetId, openModal, closeModal, setData}) => {
+  const costSchema = Yup.object().shape({
+     mixProp: Yup.mixed()
+         .required('Requerido'),
+         cement: Yup.mixed()
+             .required('Requerido'),
+         cementPrice: Yup.mixed()
+             .required('Requerido'),
+         sand: Yup.mixed()
+            .required('Requerido'),
+         sandPrice: Yup.mixed()
+            .required('Requerido'),
+         cementWastePct: Yup.number()
+           .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
+           .required(),
+         sandWastePct: Yup.number()
+           .positive('Debe ser positivo')
+           .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
+         preMix: Yup.mixed()
+            .required('Requerido'),
+         preMixPrice: Yup.mixed()
+            .required('Requerido'),
+         preMixWastePct: Yup.number(0)
+              .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
+   })
+  //concretoSchema + recubrimiento
+
+  const CostFormGroup = ({values, setFieldValue, errors, touched}) => (
+    <Fragment>
+      <ConcretoFormGroup values={values} setFieldValue={setFieldValue}
+      errors={errors} touched={touched}/>
+      <PreMixCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+    </Fragment>
+  )
+  const getSteps = () => ([
+    { label:'Especificaciones de Repellos y Cernido',
+      schema: areaVolSchema,
+      form: AreaVolFormGroup},
+    { label:'Agregar Costos de Materiales',
+      schema: costSchema,
+      form: CostFormGroup}
+  ])
+  const {name, area, height} = initials
+
+  const initialValues ={ name, area, height, ...concretoInitials,
+        preMixWastePct: 0}
+  return(
+    <CreateForm getSteps={getSteps} budgetId={budgetId} apiId="repellos"
+    initialValues={initialValues} setData={setData}
+    openModal={openModal} closeModal={closeModal}/>
+  )
+}
 
 
 
-export {SoleraForm, CimientoForm, ColumnaForm, ZapataForm, LosaPlanaForm, LosaInclinadaForm}
+export {SoleraForm, CimientoForm, ColumnaForm, ZapataForm,
+        LosaPlanaForm, LosaInclinadaForm, RepelloCernidoForm}

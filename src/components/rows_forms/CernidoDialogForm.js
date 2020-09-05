@@ -31,7 +31,7 @@ const Schema = Yup.object().shape({
                   .required('Requerido'),
                preMixWastePct: Yup.number(0)
                     .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                  
+
        })
 
 
