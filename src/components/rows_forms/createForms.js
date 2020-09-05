@@ -355,8 +355,6 @@ const frameIronInitials = {
   tieWireWastePct: 0,
 }
 
-
-
 const EmptyForm = props => <Fragment />
 
 const CreateForm = ({getSteps, budgetId, apiId,
@@ -923,8 +921,46 @@ const MuroForm =({budgetId, openModal, closeModal, setData}) => {
     budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
 }
 
+const MezclonConcretoForm =({budgetId, openModal, closeModal, setData}) => {
+
+
+  const getSteps = () => ([
+    { label:'Especificaciones de Mezclón de Concreto',
+      schema: areaVolSchema,
+      form: AreaVolFormGroup},
+    { label:'Agregar costos de Concreto',
+      schema: concretoSchema,
+      form: ConcretoFormGroup}
+  ])
+
+  const {name, area, height} = initials
+  const initialValues = {name, area, height, ...morteroInitials}
+
+  return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="extmezclones"
+    budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
+}
+
+const MezclonMorteroForm =({budgetId, openModal, closeModal, setData}) => {
+
+
+  const getSteps = () => ([
+    { label:'Especificaciones de Mezclón de Mortero',
+      schema: areaVolSchema,
+      form: AreaVolFormGroup},
+    { label:'Agregar costos de Mortero',
+      schema: morteroSchema,
+      form: MorteroFormGroup}
+  ])
+
+  const {name, area, height} = initials
+  const initialValues = {name, area, height, ...morteroInitials}
+
+  return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="mezclones"
+    budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
+}
 
 
 
 export {SoleraForm, CimientoForm, ColumnaForm, ZapataForm,
-        LosaPlanaForm, LosaInclinadaForm, RepelloCernidoForm, MuroForm}
+        LosaPlanaForm, LosaInclinadaForm,
+        RepelloCernidoForm, MuroForm, MezclonConcretoForm, MezclonMorteroForm}
