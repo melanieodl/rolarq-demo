@@ -20,6 +20,8 @@ import LongIron from './costs/LongIron'
 import TransIron from './costs/TransIron'
 import TieWire from './costs/TieWire'
 import ConcretoProp from './fields/ConcretoProp'
+import MorteroProp from './fields/MorteroProp'
+
 import PreMixCost from './costs/PreMixCost'
 
 import VolumeFields from './fields/Volume'
@@ -112,12 +114,39 @@ const concretoSchema  = Yup.object().shape({
                .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
 
  })
+const morteroSchema  = Yup.object().shape({
+      mixProp: Yup.mixed()
+          .required('Requerido'),
+      cement: Yup.mixed()
+          .required('Requerido'),
+      cementPrice: Yup.mixed()
+          .required('Requerido'),
+      sand: Yup.mixed()
+         .required('Requerido'),
+      sandPrice: Yup.mixed()
+         .required('Requerido'),
+      cementWastePct: Yup.number()
+        .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
+        .required(),
+      sandWastePct: Yup.number()
+        .positive('Debe ser positivo')
+        .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
+
+})
+
 const ConcretoFormGroup = ({values, setFieldValue, errors, touched}) => (
     <Fragment>
       <ConcretoProp errors={errors} touched={touched} values={values}/>
       <CementCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
       <SandCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
       <GravelCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+    </Fragment>)
+
+const MorteroFormGroup = ({values, setFieldValue, errors, touched}) => (
+    <Fragment>
+      <MorteroProp errors={errors} touched={touched} values={values}/>
+      <CementCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+      <SandCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
     </Fragment>)
 
 const frameBiIronSchema = Yup.object().shape({
@@ -806,7 +835,7 @@ const RepelloCernidoForm = ({budgetId, openModal, closeModal, setData}) => {
 
   const CostFormGroup = ({values, setFieldValue, errors, touched}) => (
     <Fragment>
-      <ConcretoFormGroup values={values} setFieldValue={setFieldValue}
+      <MorteroFormGroup values={values} setFieldValue={setFieldValue}
       errors={errors} touched={touched}/>
       <PreMixCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
     </Fragment>
