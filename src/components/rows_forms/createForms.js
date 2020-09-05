@@ -19,6 +19,8 @@ import Iron from './costs/Iron'
 import LongIron from './costs/LongIron'
 import TransIron from './costs/TransIron'
 import TieWire from './costs/TieWire'
+import BlockCost from './costs/BlockCost'
+
 import ConcretoProp from './fields/ConcretoProp'
 import MorteroProp from './fields/MorteroProp'
 
@@ -335,6 +337,11 @@ const concretoInitials = {
       cementWastePct: 0,
       sandWastePct: 0,
       gravelWastePct: 0,
+}
+
+const morteroInitials = {
+      cementWastePct: 0,
+      sandWastePct: 0,
 }
 
 const frameBiIronInitials = {
@@ -861,19 +868,57 @@ const RepelloCernidoForm = ({budgetId, openModal, closeModal, setData}) => {
 
 const MuroForm =({budgetId, openModal, closeModal, setData}) => {
 
+  const muroSchema = Yup.object().shape({
+     name: Yup.string()
+       .required('Requerido'),
+     area: Yup.number()
+      .positive('Deber ser positivo')
+      .required('Requerido'),
+     junta: Yup.number()
+      .positive('Deber ser positivo')
+      .required('Requerido'),
+     block: Yup.mixed()
+         .required('Requerido'),
+     blockPrice: Yup.mixed()
+         .required('Requerido'),
+     blockWastePct: Yup.number()
+         .positive('Debe ser positivo')
+         .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
+
+     })
+
+  const MuroFormGroup = ({values, setFieldValue, errors, touched}) => (
+    <Fragment>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+        </Grid>
+      </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <SquareMeterField name="area" label="Area" value={values.area}
+           setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+        </Grid>
+        <Grid item xs={6}>
+          <LinearMeterField name="junta" label="Junta" value={values.junta}
+            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+        </Grid>
+      </Grid>
+      <BlockCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+    </Fragment>
+  )
   const getSteps = () => ([
-    // { label:'Especificaciones de Losa Inclinada',
-    //   schema: losaSchema,
-    //   form: LosaFormGroup},
-    // { label:'Agregar Costos de Concreto',
-    //   schema: concretoSchema,
-    //   form: ConcretoFormGroup},
-    // { label:'Agregar Costos de Armazón',
-    //   schema: frameIronSchema,
-    //   form: FrameIronFormGroup}
+    { label:'Especificaciones de Muro',
+      schema: muroSchema,
+      form: MuroFormGroup},
+    { label:'Agregar costos de Mortero Pega',
+      schema: morteroSchema,
+      form: MorteroFormGroup}
   ])
 
-  const initialValues = {}
+  const {area} = initials
+
+  const initialValues = {name: 'LEVANTAMIENTO DE MURO ', ...morteroInitials, area, blockWastePct: 0}
   return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="muros"
     budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
 }
