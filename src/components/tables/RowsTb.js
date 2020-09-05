@@ -15,13 +15,12 @@ import CostTb from './CostTb'
 
 
 import MenuDial from './partials/MenuDial'
-import MuroDialogForm from '../rows_forms/MuroDialogForm'
 import MezclonConcretoDialogForm from '../rows_forms/MezclonConcretoDialogForm'
 import MezclonMorteroDialogForm from '../rows_forms/MezclonMorteroDialogForm'
 
 import FormDialog from '../rows_forms/Form'
 import {SoleraForm, ZapataForm, ColumnaForm, CimientoForm, LosaPlanaForm, LosaInclinadaForm,
-        RepelloCernidoForm} from '../rows_forms/createForms'
+        RepelloCernidoForm, MuroForm} from '../rows_forms/createForms'
 
 
 const tableIcons = {
@@ -54,7 +53,7 @@ const tableIcons = {
     { name: 'Losa Inclinada', form: LosaInclinadaForm },
     { name: 'Mezclón Concreto', form: MezclonConcretoDialogForm },
     { name: 'Mezclón Mortero', form: MezclonMorteroDialogForm },
-    { name: 'Muro', form: MuroDialogForm },
+    { name: 'Muro', form: MuroForm },
     { name: 'Repello y Cernido', form: RepelloCernidoForm },
     { name: 'Solera', form: SoleraForm },
     { name: 'Zapata', form: ZapataForm },

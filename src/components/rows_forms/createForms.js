@@ -859,7 +859,27 @@ const RepelloCernidoForm = ({budgetId, openModal, closeModal, setData}) => {
   )
 }
 
+const MuroForm =({budgetId, openModal, closeModal, setData}) => {
+
+  const getSteps = () => ([
+    { label:'Especificaciones de Losa Inclinada',
+      schema: losaSchema,
+      form: LosaFormGroup},
+    { label:'Agregar Costos de Concreto',
+      schema: concretoSchema,
+      form: ConcretoFormGroup},
+    { label:'Agregar Costos de Armazón',
+      schema: frameIronSchema,
+      form: FrameIronFormGroup}
+  ])
+  
+  const initialValues = {}
+  return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="muros"
+    budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
+}
+
+
 
 
 export {SoleraForm, CimientoForm, ColumnaForm, ZapataForm,
-        LosaPlanaForm, LosaInclinadaForm, RepelloCernidoForm}
+        LosaPlanaForm, LosaInclinadaForm, RepelloCernidoForm, MuroForm}
