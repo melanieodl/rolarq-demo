@@ -16,7 +16,6 @@ import CostTb from './CostTb'
 
 import MenuDial from './partials/MenuDial'
 
-import FormDialog from '../rows_forms/Form'
 import {SoleraForm, ZapataForm, ColumnaForm, CimientoForm, LosaPlanaForm, LosaInclinadaForm,
         RepelloCernidoForm, MuroForm, MezclonConcretoForm, MezclonMorteroForm} from '../rows_forms/createForms'
 
