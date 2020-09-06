@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 
 import {Stepper, Step, StepLabel, StepContent,
         Grid, TextField, CircularProgress } from '@material-ui/core'
+
 import {Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText,
         Button, LinearProgress,Typography,  MenuItem, InputLabel, FormControl,
         InputAdornment} from '@material-ui/core'
@@ -32,290 +33,16 @@ import VolumeFields from './fields/Volume'
 import {NameField, LinearMeterField, QuantityField,
         SquareMeterField, PercentageField} from './inputFields'
 
-const specsTransMeterSchema = Yup.object().shape({
-   name: Yup.string()
-     .required('Requerido'),
-   length: Yup.number()
-    .positive('Deber ser positivo')
-    .required('Requerido'),
-   width: Yup.number()
-    .positive('Deber ser positivo')
-    .required('Requerido'),
-   height: Yup.number()
-    .positive('Deber ser positivo')
-    .required('Requerido'),
-    recubrimiento: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-    cantLongsElems: Yup.number()
-       .positive('Deber ser positivo')
-       .integer('Deber ser un número entero ')
-       .required('Requerido'),
-    separacion: Yup.number()
-       .positive('Deber ser positivo')
-       .required('Requerido'),
-    longHook: Yup.number()
-        .positive('Deber ser positivo')
-        .required('Requerido'),
-   })
+import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
+        areaVolGroup, transMeterGroup, transQuantityGroup} from './formGroups'
 
-const SpecsTransMeterFormGroup = ({values, setFieldValue,  errors, touched}) => (
-  <Fragment>
-  <Grid container spacing={3}>
-    <Grid item xs={12}>
-       <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-  </Grid>
-  <VolumeFields heightLabel="Peralte"/>
-  <Grid container spacing={3}>
-    <Grid item xs={6}>
-      <LinearMeterField name="recubrimiento" label="Recubrimiento" value={values.recubrimiento}
-      setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-    <Grid item xs={6}>
-      <QuantityField name="cantLongsElems" label="Cantidad elementos longitudinales"
-      value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-  </Grid>
-  <Grid container spacing={3}>
-    <Grid item xs={6}>
-      <LinearMeterField name="separacion" label="Separacion Estribos"
-      value={values.separacion} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-    <Grid item xs={6}>
-      <LinearMeterField name="longHook" label="Largo Gancho"
-        value={values.longHook} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-  </Grid>
-  </Fragment>
-)
-
-const concretoSchema  = Yup.object().shape({
-   mixProp: Yup.mixed()
-       .required('Requerido'),
-       cement: Yup.mixed()
-           .required('Requerido'),
-       cementPrice: Yup.mixed()
-           .required('Requerido'),
-       sand: Yup.mixed()
-          .required('Requerido'),
-       sandPrice: Yup.mixed()
-          .required('Requerido'),
-       gravel: Yup.mixed()
-          .required('Requerido'),
-       gravelPrice: Yup.mixed()
-          .required('Requerido'),
-          cementWastePct: Yup.number()
-             .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-             .required(),
-          sandWastePct: Yup.number()
-             .positive('Debe ser positivo')
-             .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
-           gravelWastePct: Yup.number()
-               .positive('Debe ser positivo')
-               .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
-
- })
-const morteroSchema  = Yup.object().shape({
-      mixProp: Yup.mixed()
-          .required('Requerido'),
-      cement: Yup.mixed()
-          .required('Requerido'),
-      cementPrice: Yup.mixed()
-          .required('Requerido'),
-      sand: Yup.mixed()
-         .required('Requerido'),
-      sandPrice: Yup.mixed()
-         .required('Requerido'),
-      cementWastePct: Yup.number()
-        .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-        .required(),
-      sandWastePct: Yup.number()
-        .positive('Debe ser positivo')
-        .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
-
-})
-
-const ConcretoFormGroup = ({values, setFieldValue, errors, touched}) => (
-    <Fragment>
-      <ConcretoProp errors={errors} touched={touched} values={values}/>
-      <CementCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      <SandCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      <GravelCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Fragment>)
-
-const MorteroFormGroup = ({values, setFieldValue, errors, touched}) => (
-    <Fragment>
-      <MorteroProp errors={errors} touched={touched} values={values}/>
-      <CementCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      <SandCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Fragment>)
-
-const frameBiIronSchema = Yup.object().shape({
-    longIron: Yup.mixed()
-       .required('Requerido'),
-    longIronPrice: Yup.mixed()
-       .required('Requerido'),
-    transIron: Yup.mixed()
-       .required('Requerido'),
-    transIronPrice: Yup.mixed()
-       .required('Requerido'),
-    tieWire: Yup.mixed()
-       .required('Requerido'),
-    tieWirePrice: Yup.mixed()
-       .required('Requerido'),
-    longIronWastePct: Yup.number()
-        .positive('Debe ser positivo')
-        .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-        .default(0),
-    transIronWastePct: Yup.number()
-        .positive('Debe ser positivo')
-        .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-        .default(0),
-    tieWireWastePct: Yup.number()
-        .positive('Debe ser positivo')
-        .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-        .default(0),
- })
-
-const FrameBiIronFormGroup = ({values, setFieldValue, errors, touched}) => (
-  <Fragment>
-    <LongIron values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    <TransIron values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    <TieWire values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-  </Fragment>
-)
-
-const frameIronSchema = Yup.object().shape({
-  ironPrice: Yup.mixed()
-     .required('Requerido'),
-  iron: Yup.mixed()
-     .required('Requerido'),
-  tieWire: Yup.mixed()
-     .required('Requerido'),
-  tieWirePrice: Yup.mixed()
-     .required('Requerido'),
-  ironWastePct: Yup.number()
-     .positive('Debe ser positivo')
-     .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-     .default(0),
-  tieWireWastePct: Yup.number()
-     .positive('Debe ser positivo')
-     .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-     .default(0),
- })
-
-const FrameIronFormGroup = ({values, setFieldValue, errors, touched}) => (
-  <Fragment>
-    <Iron values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    <TieWire values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-  </Fragment>
-)
-
-const specsTransQuantitySchema = Yup.object().shape({
-   name: Yup.string()
-     .required('Requerido'),
-   amount: Yup.number()
-     .positive('Deber ser positivo')
-     .integer('Cantidad deber ser un número entero ')
-     .required('Requerido'),
-   length: Yup.number()
-    .positive('Deber ser positivo')
-    .required('Requerido'),
-   width: Yup.number()
-    .positive('Deber ser positivo')
-    .required('Requerido'),
-   height: Yup.number()
-    .positive('Deber ser positivo')
-    .required('Requerido'),
-    recubrimiento: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-    cantLongsElems: Yup.number()
-       .positive('Deber ser positivo')
-       .integer('Deber ser un número entero ')
-       .required('Requerido'),
-    separacion: Yup.number()
-       .positive('Deber ser positivo')
-       .required('Requerido'),
-    longHook: Yup.number()
-        .positive('Deber ser positivo')
-        .required('Requerido'),
-    longPata: Yup.number()
-        .positive('Deber ser positivo')
-        .required('Requerido'),
-   })
-const SpecsTransQuantityFormGroup = ({values, setFieldValue, errors, touched}) => (
-  <Fragment>
-  <Grid container spacing={3}>
-    <Grid item xs={8}>
-       <NameField value={values.name} setFieldValue={setFieldValue}
-       errors={errors} touched={touched}/>
-    </Grid>
-    <Grid item xs={4}>
-       <QuantityField name="amount" label="Cantidad" value={values.amount}
-       setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-  </Grid>
-  <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
-  <Grid container spacing={3}>
-    <Grid item xs={4}>
-      <QuantityField name="cantLongsElems" label="Cantidad elementos longitudinales"
-      value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-    <Grid item xs={4}>
-      <LinearMeterField name="longPata" label="Largo Patas"
-      value={values.longPata} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-    <Grid item xs={4}>
-      <LinearMeterField name="longHook" label="Largo Gancho"
-        value={values.longHook} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-
-  </Grid>
-  <Grid container spacing={3}>
-    <Grid item xs={6}>
-      <LinearMeterField name="separacion" label="Separacion Estribos"
-      value={values.separacion} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-    <Grid item xs={6}>
-      <LinearMeterField name="recubrimiento" label="Recubrimiento" value={values.recubrimiento}
-      setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-    </Grid>
-  </Grid>
-  </Fragment>
-)
-
-const areaVolSchema = Yup.object().shape({
-   name: Yup.string()
-     .required('Requerido'),
-   area: Yup.number()
-    .positive('Deber ser positivo')
-    .required('Requerido'),
-   height: Yup.number()
-    .positive('Deber ser positivo')
-    .required('Requerido'),
-   })
-
-const AreaVolFormGroup = ({values, setFieldValue, errors, touched}) => (
-  <Fragment>
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-          <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
-      </Grid>
-    </Grid>
-    <Grid container spacing={3}>
-      <Grid item xs={6}>
-          <SquareMeterField name="area" label="Area" value={values.area} setFieldValue={setFieldValue}
-            errors={errors} touched={touched}/>
-      </Grid>
-      <Grid item xs={6}>
-          <LinearMeterField name="height" label="Espesor" value={values.height} setFieldValue={setFieldValue}
-           errors={errors} touched={touched}/>
-      </Grid>
-    </Grid>
-  </Fragment>
-)
+const [concretoSchema, ConcretoForm] = concretoGroup
+const [morteroSchema, MorteroForm] = morteroGroup
+const [frameIronSchema, FrameIronForm] = frameIronGroup
+const [frameBiIronSchema, FrameBiIronForm] = frameBiIronGroup
+const [transMeterSchema, TransMeterForm] = transMeterGroup
+const [transQuantitySchema, TransQuantityForm] = transQuantityGroup
+const [areaVolSchema, AreaVolForm] = areaVolGroup
 
 const initials =  {
     name: ``,
@@ -495,14 +222,14 @@ const SoleraForm = ({budgetId, openModal, closeModal, setData}) => {
 
   const getSteps = () => ([
     { label:'Especificaciones de Solera',
-      schema: specsTransMeterSchema,
-      form: SpecsTransMeterFormGroup},
+      schema: transMeterSchema,
+      form: TransMeterForm},
     { label:'Agregar Costos de Concreto',
       schema: concretoSchema,
-      form: ConcretoFormGroup},
+      form: ConcretoForm},
     { label:'Agregar Costos de Armazón',
       schema: frameBiIronSchema,
-      form: FrameBiIronFormGroup}
+      form:  FrameBiIronForm}
   ])
 
   const {length, width, height, recubrimiento, cantLongsElems, separacion,
@@ -525,14 +252,14 @@ const CimientoForm = ({budgetId, openModal, closeModal, setData}) => {
 
   const getSteps = () => ([
     { label:'Especificaciones de Cimiento',
-      schema: specsTransMeterSchema,
-      form: SpecsTransMeterFormGroup},
+      schema: transMeterSchema,
+      form: TransMeterForm},
     { label:'Agregar Costos de Concreto',
       schema: concretoSchema,
-      form: ConcretoFormGroup},
+      form: ConcretoForm},
     { label:'Agregar Costos de Armazón',
       schema: frameBiIronSchema,
-      form: FrameBiIronFormGroup}
+      form:  FrameBiIronForm}
   ])
 
   const {length, width, height, recubrimiento, cantLongsElems, separacion,
@@ -555,14 +282,14 @@ const ColumnaForm = ({budgetId, openModal, closeModal, setData}) => {
 
   const getSteps = () => ([
     { label:'Especificaciones de Columna',
-      schema: specsTransQuantitySchema,
-      form: SpecsTransQuantityFormGroup},
+      schema: transQuantitySchema,
+      form: TransQuantityForm},
     { label:'Agregar Costos de Concreto',
       schema: concretoSchema,
-      form: ConcretoFormGroup},
+      form: ConcretoForm},
     { label:'Agregar Costos de Armazón',
       schema: frameBiIronSchema,
-      form: FrameBiIronFormGroup}
+      form:  FrameBiIronForm}
   ])
 
   const {amount, length, width, height, recubrimiento,
@@ -651,10 +378,10 @@ const ZapataForm = ({budgetId, openModal, closeModal, setData}) => {
       form: SpecsZapataFormGroup},
     { label:'Agregar Costos de Concreto',
       schema: concretoSchema,
-      form: ConcretoFormGroup},
+      form: ConcretoForm},
     { label:'Agregar Costos de Armazón',
       schema: frameIronSchema,
-      form: FrameIronFormGroup}
+      form: FrameIronForm}
   ])
 
   const {amount, length, width, height, recubrimiento,
@@ -729,10 +456,10 @@ const LosaPlanaForm = ({budgetId, openModal, closeModal, setData}) => {
       form: losaPlanaFormGroup},
     { label:'Agregar Costos de Concreto',
       schema: concretoSchema,
-      form: ConcretoFormGroup},
+      form: ConcretoForm},
     { label:'Agregar Costos de Armazón',
       schema: frameIronSchema,
-      form: FrameIronFormGroup}
+      form: FrameIronForm}
   ])
   const {name, area, height, separacion, propTension} = initials
 
@@ -786,16 +513,17 @@ const LosaInclinadaForm = ({budgetId, openModal, closeModal, setData}) => {
     </Grid>
     </Fragment>
   )
+
   const getSteps = () => ([
     { label:'Especificaciones de Losa Inclinada',
       schema: losaSchema,
       form: LosaFormGroup},
     { label:'Agregar Costos de Concreto',
       schema: concretoSchema,
-      form: ConcretoFormGroup},
+      form: ConcretoForm},
     { label:'Agregar Costos de Armazón',
       schema: frameIronSchema,
-      form: FrameIronFormGroup}
+      form: FrameIronForm}
   ])
   const {name, area, height, separacion} = initials
 
@@ -840,7 +568,7 @@ const RepelloCernidoForm = ({budgetId, openModal, closeModal, setData}) => {
 
   const CostFormGroup = ({values, setFieldValue, errors, touched}) => (
     <Fragment>
-      <MorteroFormGroup values={values} setFieldValue={setFieldValue}
+      <MorteroForm values={values} setFieldValue={setFieldValue}
       errors={errors} touched={touched}/>
       <PreMixCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
     </Fragment>
@@ -848,7 +576,7 @@ const RepelloCernidoForm = ({budgetId, openModal, closeModal, setData}) => {
   const getSteps = () => ([
     { label:'Especificaciones de Repellos y Cernido',
       schema: areaVolSchema,
-      form: AreaVolFormGroup},
+      form: AreaVolForm},
     { label:'Agregar Costos de Materiales',
       schema: costSchema,
       form: CostFormGroup}
@@ -911,7 +639,7 @@ const MuroForm =({budgetId, openModal, closeModal, setData}) => {
       form: MuroFormGroup},
     { label:'Agregar costos de Mortero Pega',
       schema: morteroSchema,
-      form: MorteroFormGroup}
+      form: MorteroForm}
   ])
 
   const {area} = initials
@@ -927,10 +655,10 @@ const MezclonConcretoForm =({budgetId, openModal, closeModal, setData}) => {
   const getSteps = () => ([
     { label:'Especificaciones de Mezclón de Concreto',
       schema: areaVolSchema,
-      form: AreaVolFormGroup},
+      form: AreaVolForm},
     { label:'Agregar costos de Concreto',
       schema: concretoSchema,
-      form: ConcretoFormGroup}
+      form: ConcretoForm}
   ])
 
   const {name, area, height} = initials
@@ -942,14 +670,13 @@ const MezclonConcretoForm =({budgetId, openModal, closeModal, setData}) => {
 
 const MezclonMorteroForm =({budgetId, openModal, closeModal, setData}) => {
 
-
   const getSteps = () => ([
     { label:'Especificaciones de Mezclón de Mortero',
       schema: areaVolSchema,
-      form: AreaVolFormGroup},
+      form: AreaVolForm},
     { label:'Agregar costos de Mortero',
       schema: morteroSchema,
-      form: MorteroFormGroup}
+      form: MorteroForm}
   ])
 
   const {name, area, height} = initials
