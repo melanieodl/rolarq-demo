@@ -15,11 +15,9 @@ import { Select } from 'formik-material-ui';
 
 import {PreMixCost, BlockCost} from './costFields'
 
-import VolumeFields from './fields/Volume'
-
-
 import {NameField, LinearMeterField, QuantityField,
-        SquareMeterField, PercentageField, BooleanField} from './inputFields'
+        SquareMeterField, PercentageField, BooleanField,
+        VolumeFields} from './inputFields'
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
         areaVolGroup, transMeterGroup, transQuantityGroup} from './formGroups'

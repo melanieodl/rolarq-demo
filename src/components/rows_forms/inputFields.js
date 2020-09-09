@@ -1,8 +1,9 @@
 import React, {Fragment} from 'react'
 import { TextField, InputLabel, FormControl, Select, InputAdornment,
-         Typography, FormControlLabel} from "@material-ui/core";
+         Typography, FormControlLabel, Grid} from "@material-ui/core";
 import { CheckboxWithLabel, Switch } from 'formik-material-ui';
 
+import Volume from './fields/Volume'
 import { Field } from "formik";
 
 const NameField = ({name, label, value, setFieldValue, errors, touched}) => {
@@ -49,27 +50,6 @@ const LinearMeterField = ({name, label, value, setFieldValue, errors, touched}) 
          <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
        ) : null}
     </Fragment>
-  )
-}
-
-const LinearMeterStateLessField = ({name, label}) => {
-  return(
-        <Field
-        component={TextField}
-         name={name}
-         type="number"
-         label={label}
-         inputProps={{
-           step: "0.001"
-         }}
-         InputProps={{
-           endAdornment: (
-             <InputAdornment position="end">
-               m
-             </InputAdornment>
-           ),
-         }}
-       />
   )
 }
 
@@ -181,7 +161,10 @@ const BooleanField = ({name, label, value, setFieldValue, errors, touched}) => (
 
 )
 
+const VolumeFields = ({lengthLabel, widthLabel, heightLabel}) => (
+  <Volume lengthLabel={lengthLabel} widthLabel={widthLabel} heightLabel={heightLabel}/>
+  )
 
 
-export {NameField, LinearMeterField, LinearMeterStateLessField,
-        QuantityField, SquareMeterField, PercentageField, BooleanField}
+export {NameField, LinearMeterField,
+        QuantityField, SquareMeterField, PercentageField, BooleanField, VolumeFields}
