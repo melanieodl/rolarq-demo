@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import { TextField, InputLabel, FormControl, Select, InputAdornment,
-         Typography, FormControlLabel} from "@material-ui/core";
+         Typography, FormControlLabel, Grid} from "@material-ui/core";
 import { CheckboxWithLabel, Switch } from 'formik-material-ui';
 
 import { Field } from "formik";
@@ -49,27 +49,6 @@ const LinearMeterField = ({name, label, value, setFieldValue, errors, touched}) 
          <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
        ) : null}
     </Fragment>
-  )
-}
-
-const LinearMeterStateLessField = ({name, label}) => {
-  return(
-        <Field
-        component={TextField}
-         name={name}
-         type="number"
-         label={label}
-         inputProps={{
-           step: "0.001"
-         }}
-         InputProps={{
-           endAdornment: (
-             <InputAdornment position="end">
-               m
-             </InputAdornment>
-           ),
-         }}
-       />
   )
 }
 
@@ -181,7 +160,45 @@ const BooleanField = ({name, label, value, setFieldValue, errors, touched}) => (
 
 )
 
+const VolumeFields = (props) => {
+
+  const MeasureField = ({name, label}) => {
+    return(
+          <Field
+          component={TextField}
+           name={name}
+           type="number"
+           label={label}
+           inputProps={{
+             step: "0.001"
+           }}
+           InputProps={{
+             endAdornment: (
+               <InputAdornment position="end">
+                 m
+               </InputAdornment>
+             ),
+           }}
+         />
+
+    )
+  }
+
+  return(
+    <Grid container spacing={3}>
+      <Grid item xs={4}>
+        <MeasureField name="length" label={props.lengthLabel ? props.lengthLabel : "Largo"}/>
+        </Grid>
+      <Grid item xs={4}>
+        <MeasureField name="width" label={props.widthLabel ? props.widthLabel : "Ancho"}/>
+        </Grid>
+      <Grid item xs={4}>
+        <MeasureField name="height" label={props.heightLabel ? props.heightLabel : "Alto"}/>
+      </Grid>
+    </Grid>
+  )
+}
 
 
-export {NameField, LinearMeterField, LinearMeterStateLessField,
-        QuantityField, SquareMeterField, PercentageField, BooleanField}
+export {NameField, LinearMeterField,
+        QuantityField, SquareMeterField, PercentageField, BooleanField, VolumeFields}

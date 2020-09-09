@@ -11,12 +11,9 @@ import {CementCost, SandCost, GravelCost,
 import {ConcretoProp, MorteroProp} from './propFields'
 
 
-//length, width, height
-import VolumeFields from './fields/Volume'
-
-
 import {NameField, LinearMeterField, QuantityField,
-        SquareMeterField, PercentageField} from './inputFields'
+        SquareMeterField, PercentageField,
+        VolumeFields} from './inputFields'
 
 
         //Schemas y form groups
