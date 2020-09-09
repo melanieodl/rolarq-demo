@@ -16,7 +16,8 @@ import CostTb from './CostTb'
 
 import MenuDial from './partials/MenuDial'
 
-import {SoleraForm, ZapataForm, ColumnaForm, CimientoForm, LosaPlanaForm, LosaInclinadaForm,
+import {SoleraForm, ZapataForm, ColumnaForm, ColumnaEspecialForm,
+        CimientoForm, LosaPlanaForm, LosaInclinadaForm,
         RepelloCernidoForm, MuroForm, MezclonConcretoForm, MezclonMorteroForm} from '../rows_forms/createForms'
 
 
@@ -46,6 +47,7 @@ const tableIcons = {
   const actions = [
     { name: 'Cimiento Corrido', form: CimientoForm },
     { name: 'Columna', form: ColumnaForm },
+    { name: 'Columna Especial', form: ColumnaEspecialForm },
     { name: 'Losa Plana', form: LosaPlanaForm },
     { name: 'Losa Inclinada', form: LosaInclinadaForm },
     { name: 'Mezclón Concreto', form: MezclonConcretoForm },

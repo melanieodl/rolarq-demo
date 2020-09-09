@@ -1,5 +1,8 @@
 import React, {Fragment} from 'react'
-import { TextField, InputLabel, FormControl, Select, InputAdornment, Typography} from "@material-ui/core";
+import { TextField, InputLabel, FormControl, Select, InputAdornment,
+         Typography, FormControlLabel} from "@material-ui/core";
+import { CheckboxWithLabel, Switch } from 'formik-material-ui';
+
 import { Field } from "formik";
 
 const NameField = ({name, label, value, setFieldValue, errors, touched}) => {
@@ -148,4 +151,37 @@ const PercentageField = ({name, label, value, setFieldValue, errors, touched}) =
   )
 }
 
-export {NameField, LinearMeterField, LinearMeterStateLessField, QuantityField, SquareMeterField, PercentageField}
+const BooleanCheckField = ({name, label, value, setFieldValue, errors, touched}) => (
+  <Field
+    component={CheckboxWithLabel}
+    type="checkbox"
+    value={value}
+    indeterminate= {false}
+    onChange={e => setFieldValue(name, e.target.value)}
+    InputProps={{
+      // indeterminate: true
+    }}
+    name={name}
+    Label={{ label: `${label}` }}
+  />
+)
+
+const BooleanField = ({name, label, value, setFieldValue, errors, touched}) => (
+
+  <FormControlLabel styles={{label: {color: '#0000008a'}}}
+       control = {<Field
+                     component={Switch}
+                     type="checkbox"
+                     name={name}
+                     value={value}
+                     onChange={e => setFieldValue(name, e.target.value)}
+                   />}
+       label = {label}
+     />
+
+)
+
+
+
+export {NameField, LinearMeterField, LinearMeterStateLessField,
+        QuantityField, SquareMeterField, PercentageField, BooleanField}

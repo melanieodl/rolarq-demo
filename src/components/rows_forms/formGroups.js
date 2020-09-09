@@ -3,18 +3,14 @@ import * as Yup from 'yup';
 
 import { Grid } from '@material-ui/core'
 
+import {CementCost, SandCost, GravelCost,
+        IronCost, LongIronCost, TransIronCost,
+        TieWireCost, BlockCost, PreMixCost} from './costFields'
 //Costos completos
-import CementCost from './costs/CementCost'
-import SandCost from './costs/SandCost'
-import GravelCost from './costs/GravelCost'
-import Iron from './costs/Iron'
-import LongIron from './costs/LongIron'
-import TransIron from './costs/TransIron'
-import TieWire from './costs/TieWire'
-import BlockCost from './costs/BlockCost'
+
+
 import ConcretoProp from './fields/ConcretoProp'
 import MorteroProp from './fields/MorteroProp'
-import PreMixCost from './costs/PreMixCost'
 
 //length, width, height
 import VolumeFields from './fields/Volume'
@@ -42,15 +38,15 @@ import {NameField, LinearMeterField, QuantityField,
                     .required('Requerido'),
                  gravelPrice: Yup.mixed()
                     .required('Requerido'),
-                    cementWastePct: Yup.number()
-                       .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                       .required(),
-                    sandWastePct: Yup.number()
+                  cementWastePct: Yup.number()
+                     .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
+                     .required(),
+                  sandWastePct: Yup.number()
+                     .positive('Debe ser positivo')
+                     .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
+                   gravelWastePct: Yup.number()
                        .positive('Debe ser positivo')
                        .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
-                     gravelWastePct: Yup.number()
-                         .positive('Debe ser positivo')
-                         .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
 
            }),
             ({values, setFieldValue, errors, touched}) => (
@@ -111,8 +107,8 @@ import {NameField, LinearMeterField, QuantityField,
            }),
             ({values, setFieldValue, errors, touched}) => (
                <Fragment>
-                 <Iron values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                 <TieWire values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 <IronCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 <TieWireCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                </Fragment>
              )
          ]
@@ -146,9 +142,9 @@ import {NameField, LinearMeterField, QuantityField,
            }),
            ({values, setFieldValue, errors, touched}) => (
              <Fragment>
-               <LongIron values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-               <TransIron values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-               <TieWire values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+               <LongIronCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+               <TransIronCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+               <TieWireCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
              </Fragment>
            )
         ]
