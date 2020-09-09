@@ -6,7 +6,8 @@ import { Button, Grid, InputAdornment, CircularProgress} from '@material-ui/core
 import { Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 
-import VolumeFields from '../fields/Volume'
+import {VolumeFields} from '../inputFields'
+
 import ConcretoProp from '../fields/ConcretoPropUpdate'
 
 
