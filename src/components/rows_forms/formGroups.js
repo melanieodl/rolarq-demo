@@ -8,9 +8,8 @@ import {CementCost, SandCost, GravelCost,
         TieWireCost, BlockCost, PreMixCost} from './costFields'
 //Costos completos
 
+import {ConcretoProp, MorteroProp} from './propFields'
 
-import ConcretoProp from './fields/ConcretoProp'
-import MorteroProp from './fields/MorteroProp'
 
 //length, width, height
 import VolumeFields from './fields/Volume'
@@ -80,7 +79,7 @@ import {NameField, LinearMeterField, QuantityField,
           }),
             ({values, setFieldValue, errors, touched}) => (
                 <Fragment>
-                  <MorteroProp errors={errors} touched={touched} values={values}/>
+                  <MorteroProp errors={errors} touched={touched} value={values.mixProp}/>
                   <CementCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                   <SandCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                 </Fragment>)

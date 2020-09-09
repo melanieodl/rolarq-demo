@@ -17,7 +17,6 @@ export default function MorteroProp(props){
       setMixProps(response.data)
       console.log(props.value);
 
-
     })
     .catch(err => {
 
@@ -32,9 +31,9 @@ export default function MorteroProp(props){
             component={Select}
             disabled={mixProps.length === 0}
             name="mixProp"
-            defaultValue= {props.value ? props.value : {propCement: "", propSand: ""} }
+            defaultValue= {props.value ? props.value : null }
             displayEmpty
-            renderValue={value => <MenuItem value={value}>{`${value.propCement} cemento  -  ${value.propSand} arena`}</MenuItem>}
+            renderValue={value => value ?  <MenuItem value={value}>{`${value.propCement} cemento  -  ${value.propSand} arena`}</MenuItem> : ''}
             inputProps={{
               id: 'mix-prop',
 

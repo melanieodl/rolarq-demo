@@ -13,20 +13,7 @@ import { Autocomplete } from "@material-ui/lab";
 import { Formik, Form, Field } from "formik";
 import { Select } from 'formik-material-ui';
 
-
-// import CementCost from './costs/CementCost'
-import SandCost from './costs/SandCost'
-import GravelCost from './costs/GravelCost'
-import Iron from './costs/Iron'
-import LongIron from './costs/LongIron'
-import TransIron from './costs/TransIron'
-import TieWire from './costs/TieWire'
-import BlockCost from './costs/BlockCost'
-
-import ConcretoProp from './fields/ConcretoProp'
-import MorteroProp from './fields/MorteroProp'
-
-import PreMixCost from './costs/PreMixCost'
+import {PreMixCost, BlockCost} from './costFields'
 
 import VolumeFields from './fields/Volume'
 
