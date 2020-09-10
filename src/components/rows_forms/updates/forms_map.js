@@ -1,11 +1,8 @@
 import React from 'react'
 
-import RepelloUpdate from './RepelloUpdate'
-import CernidoUpdate from './CernidoUpdate'
-
 import {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,
         SoleraForm, ColumnaForm, MuroForm,
-        MezclonConcretoForm, MezclonMorteroForm} from '../updateForms'
+        MezclonConcretoForm, MezclonMorteroForm, RepelloForm} from '../updateForms'
 
 const map = {
     1: ZapataForm,
@@ -17,9 +14,7 @@ const map = {
     7: MuroForm,
     8: MezclonConcretoForm,
     9: MezclonMorteroForm,
-    10: RepelloUpdate,
-    11: CernidoUpdate,
-
+    10: RepelloForm,
 }
 
 

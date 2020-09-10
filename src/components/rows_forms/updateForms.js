@@ -433,5 +433,36 @@ const MezclonConcretoForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
+const RepelloForm = ({budgetId, rowId, open, closeModal}) => {
+  const [repello, setRepello] = useState({})
+  const apiId = 'repellos'
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => setRepello(res.data))
+    .catch(err => console.log(err))
+  }, [open])
+
+
+  const Form = ({values, setFieldValue, errors, touched}) => {
+    return (
+         <Fragment>
+            <AreaVolForm values={values} setFieldValue={setFieldValue}
+              errors={errors} touched={touched}/>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                  <MorteroProp errors={errors} touched={touched} value={repello.mixProp}/>
+              </Grid>
+            </Grid>
+          </Fragment>
+    )
+  }
+  return(
+    <UpdateForm apiId={apiId} title="Repello y Cernido"
+      form={{inner: Form}} formData={repello} validationSchema={areaVolSchema}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
+
 export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,
-        SoleraForm, ColumnaForm, MuroForm, MezclonMorteroForm, MezclonConcretoForm}
+        SoleraForm, ColumnaForm, MuroForm, MezclonMorteroForm,
+        MezclonConcretoForm, RepelloForm}

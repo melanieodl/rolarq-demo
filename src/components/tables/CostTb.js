@@ -18,8 +18,6 @@ import CheckIcon from '@material-ui/icons/Check';
 import EditAttributesIcon from '@material-ui/icons/EditAttributesRounded';
 import SpecialPriceIcon from '@material-ui/icons/StarRateRounded';
 
-import CernidoUpdate from '../rows_forms/updates/CernidoUpdate'
-
 import updateForms from '../rows_forms/updates/forms_map'
 import api from '../../api'
 
@@ -43,7 +41,7 @@ const CostTb = (props) => {
   const indirectRef = useRef(null)
 
   const [open, setOpen] = useState(false);
-  const [updateDialog, setUpdateDialog] = React.useState({active: CernidoUpdate})
+  const [updateDialog, setUpdateDialog] = React.useState({active: Fragment})
 
 
 
