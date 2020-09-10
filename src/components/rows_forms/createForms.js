@@ -20,7 +20,8 @@ import {NameField, LinearMeterField, QuantityField,
         VolumeFields} from './inputFields'
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
-        areaVolGroup, transMeterGroup, transQuantityGroup, zapataGroup} from './formGroups'
+        areaVolGroup, transMeterGroup, transQuantityGroup,
+        zapataGroup, losaPlanaGroup, losaInclinadaGroup} from './formGroups'
 
 const [concretoSchema, ConcretoForm] = concretoGroup
 const [morteroSchema, MorteroForm] = morteroGroup
@@ -30,6 +31,8 @@ const [transMeterSchema, TransMeterForm] = transMeterGroup
 const [transQuantitySchema, TransQuantityForm] = transQuantityGroup
 const [areaVolSchema, AreaVolForm] = areaVolGroup
 const [zapataSchema, ZapataFormGroup] = zapataGroup
+const [losaPlanaSchema, LosaPlanaSpecsForm] = losaPlanaGroup
+const [losaInclinadaSchema, LosaInclinadaSpecsForm] = losaInclinadaGroup
 
 const initials =  {
     name: ``,
@@ -329,57 +332,11 @@ const ZapataForm = ({budgetId, openModal, closeModal, setData}) => {
 }
 
 const LosaPlanaForm = ({budgetId, openModal, closeModal, setData}) => {
-  const losaPlanaSchema = Yup.object().shape({
-     name: Yup.string()
-       .required('Requerido'),
-     area: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     height: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-      separacion: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-      propTension: Yup.number()
-         .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-         .required('Requerido'),
-     })
-  const losaPlanaFormGroup = ({values, setFieldValue, errors, touched}) => (
-    <Fragment>
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-         <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-    </Grid>
 
-    <Grid container spacing={3}>
-      <Grid item xs={6}>
-        <SquareMeterField name="area" label="Area" value={values.area} setFieldValue={setFieldValue}
-        errors={errors} touched={touched}/>
-      </Grid>
-      <Grid item xs={6}>
-        <LinearMeterField name="height" label="Peralte"
-        value={values.height} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-    </Grid>
-
-    <Grid container spacing={3}>
-      <Grid item xs={6}>
-        <LinearMeterField name="separacion" label="Separacion" value={values.separacion} setFieldValue={setFieldValue}
-        errors={errors} touched={touched}/>
-      </Grid>
-      <Grid item xs={6}>
-        <PercentageField name="propTension" label="Longitud extra en Tensión"
-        value={values.propTension} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-    </Grid>
-    </Fragment>
-  )
   const getSteps = () => ([
     { label:'Especificaciones de Losa Plana',
       schema: losaPlanaSchema,
-      form: losaPlanaFormGroup},
+      form: LosaPlanaSpecsForm},
     { label:'Agregar Costos de Concreto',
       schema: concretoSchema,
       form: ConcretoForm},
@@ -402,48 +359,11 @@ const LosaPlanaForm = ({budgetId, openModal, closeModal, setData}) => {
 }
 
 const LosaInclinadaForm = ({budgetId, openModal, closeModal, setData}) => {
-  const losaSchema = Yup.object().shape({
-     name: Yup.string()
-       .required('Requerido'),
-     area: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     height: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-      separacion: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     })
-  const LosaFormGroup = ({values, setFieldValue, errors, touched}) => (
-    <Fragment>
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-         <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-    </Grid>
-
-    <Grid container spacing={3}>
-      <Grid item xs={4}>
-        <SquareMeterField name="area" label="Area" value={values.area}
-        setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-      <Grid item xs={4}>
-        <LinearMeterField name="height" label="Peralte"
-        value={values.height} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-      <Grid item xs={4}>
-        <LinearMeterField name="separacion" label="Separacion" value={values.separacion}
-        setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-    </Grid>
-    </Fragment>
-  )
 
   const getSteps = () => ([
     { label:'Especificaciones de Losa Inclinada',
-      schema: losaSchema,
-      form: LosaFormGroup},
+      schema: losaInclinadaSchema,
+      form: LosaInclinadaSpecsForm},
     { label:'Agregar Costos de Concreto',
       schema: concretoSchema,
       form: ConcretoForm},
