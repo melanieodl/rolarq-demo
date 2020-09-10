@@ -260,6 +260,36 @@ const CimientoCorridoForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
+const SoleraForm = ({budgetId, rowId, open, closeModal}) => {
+  const [solera, setSolera] = useState({})
+  const apiId = 'soleras'
+
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => setSolera(res.data))
+    .catch(err => console.log(err))
+  }, [open])
+
+  const Form = ({values, setFieldValue, errors, touched}) => (
+        <Fragment>
+          <TransMeterForm values={values} setFieldValue={setFieldValue}
+            errors={errors} touched={touched}/>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <ConcretoProp errors={errors} touched={touched} value={solera.mixProp}/>
+            </Grid>
+          </Grid>
+        </Fragment>
+    )
+
+
+  return(
+    <UpdateForm apiId={apiId} title="Solera"
+      form={{inner: Form}} formData={solera} validationSchema={transMeterSchema}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
+
 const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
   const [columna, setColumna] = useState({})
 
@@ -289,4 +319,5 @@ const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm, ColumnaForm}
+export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,
+        SoleraForm, ColumnaForm}
