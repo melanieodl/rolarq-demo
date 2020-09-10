@@ -1,6 +1,5 @@
 import React from 'react'
 
-import ZapataUpdate from './ZapataUpdate'
 import LosaPlanaUpdate from './LosaPlanaUpdate'
 import LosaInclinadaUpdate from './LosaInclinadaUpdate'
 import CimientoCorridoUpdate from './CimientoCorridoUpdate'

@@ -20,7 +20,7 @@ import {NameField, LinearMeterField, QuantityField,
         VolumeFields} from './inputFields'
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
-        areaVolGroup, transMeterGroup, transQuantityGroup} from './formGroups'
+        areaVolGroup, transMeterGroup, transQuantityGroup, zapataGroup} from './formGroups'
 
 const [concretoSchema, ConcretoForm] = concretoGroup
 const [morteroSchema, MorteroForm] = morteroGroup
@@ -29,6 +29,7 @@ const [frameBiIronSchema, FrameBiIronForm] = frameBiIronGroup
 const [transMeterSchema, TransMeterForm] = transMeterGroup
 const [transQuantitySchema, TransQuantityForm] = transQuantityGroup
 const [areaVolSchema, AreaVolForm] = areaVolGroup
+const [zapataSchema, ZapataFormGroup] = zapataGroup
 
 const initials =  {
     name: ``,
@@ -296,71 +297,11 @@ const ColumnaForm = ({budgetId, openModal, closeModal, setData}) => {
 }
 
 const ZapataForm = ({budgetId, openModal, closeModal, setData}) => {
-  const specsZapataSchema = Yup.object().shape({
-     name: Yup.string()
-       .required('Requerido'),
-     amount: Yup.number()
-       .positive('Deber ser positivo')
-       .integer('Cantidad deber ser un número entero ')
-       .required('Requerido'),
-     length: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     width: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     height: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-      recubrimiento: Yup.number()
-        .positive('Deber ser positivo')
-        .required('Requerido'),
-      cantLongsElems: Yup.number()
-         .positive('Deber ser positivo')
-         .integer('Deber ser un número entero ')
-         .required('Requerido'),
-      cantTransElems: Yup.number()
-        .positive('Deber ser positivo')
-        .integer('Deber ser un número entero ')
-        .required('Requerido'),
-
-     })
-  const SpecsZapataFormGroup = ({values, setFieldValue, errors, touched}) => (
-    <Fragment>
-
-    <Grid container spacing={3}>
-      <Grid item xs={8}>
-         <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-      <Grid item xs={4}>
-         <QuantityField name="amount" label="Cantidad" value={values.amount} setFieldValue={setFieldValue}
-         errors={errors} touched={touched}/>
-      </Grid>
-    </Grid>
-
-    <VolumeFields errors={errors} touched={touched} heightLabel='Peralte'/>
-
-    <Grid container spacing={3}>
-      <Grid item xs={4}>
-        <LinearMeterField name="recubrimiento" label="Recubrimiento" value={values.recubrimiento} setFieldValue={setFieldValue}
-        errors={errors} touched={touched}/>
-      </Grid>
-      <Grid item xs={4}>
-        <QuantityField name="cantLongsElems" label="Cantidad elementos longitudinales"
-        value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-      <Grid item xs={4}>
-        <QuantityField name="cantTransElems" label="Cantidad elementos transversales"
-        value={values.cantTransElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-    </Grid>
-    </Fragment>
-  )
 
   const getSteps = () => ([
     { label:'Especificaciones de Zapata',
-      schema: specsZapataSchema,
-      form: SpecsZapataFormGroup},
+      schema: zapataSchema,
+      form: ZapataFormGroup},
     { label:'Agregar Costos de Concreto',
       schema: concretoSchema,
       form: ConcretoForm},

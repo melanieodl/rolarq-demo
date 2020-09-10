@@ -15,18 +15,18 @@ import {NameField, LinearMeterField, QuantityField,
         SquareMeterField, PercentageField, BooleanField} from './inputFields'
 
 
-
 import {ConcretoProp, MorteroProp} from './propFields'
 
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
-        areaVolGroup, transMeterGroup, transQuantityGroup} from './formGroups'
+        areaVolGroup, transMeterGroup, transQuantityGroup, zapataGroup} from './formGroups'
 
 
 
 import api from '../../api'
 
 const [transQuantitySchema, TransQuantityForm] = transQuantityGroup
+const [zapataSchema, ZapataFormGroup] = zapataGroup
 
 const TitleIcon = () => <DonutLargeIcon fontSize='large' color='primary' />
 
@@ -135,6 +135,36 @@ const UpdateForm = ({apiId, budgetId,
   );
 }
 
+const ZapataForm = ({budgetId, rowId, open, closeModal}) => {
+  const [zapata, setZapata] = useState({})
+  const apiId = 'zapatas'
+
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => setZapata(res.data))
+    .catch(err => console.log(err))
+  }, [open])
+
+  const Form = ({values, setFieldValue, errors, touched}) => (
+        <Fragment>
+          <ZapataFormGroup values={values} setFieldValue={setFieldValue}
+            errors={errors} touched={touched}/>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <ConcretoProp errors={errors} touched={touched} value={zapata.mixProp}/>
+            </Grid>
+          </Grid>
+        </Fragment>
+    )
+
+
+  return(
+    <UpdateForm apiId={apiId} title="Zapata"
+      form={{inner: Form}} formData={zapata} validationSchema={zapataSchema}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
+
 const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
   const [columna, setColumna] = useState({})
 
@@ -164,4 +194,4 @@ const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-export {ColumnaForm}
+export {ZapataForm, ColumnaForm}
