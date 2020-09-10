@@ -3,6 +3,7 @@ import { TextField, InputLabel, FormControl, Select, InputAdornment,
          Typography, FormControlLabel, Grid} from "@material-ui/core";
 import { CheckboxWithLabel, Switch } from 'formik-material-ui';
 
+import Volume from './info/Volume'
 import { Field } from "formik";
 
 const NameField = ({name, label, value, setFieldValue, errors, touched}) => {
@@ -160,6 +161,7 @@ const BooleanField = ({name, label, value, setFieldValue, errors, touched}) => (
 
 )
 
+<<<<<<< HEAD
 const VolumeFields = (props) => {
 
   const MeasureField = ({name, label}) => {
@@ -198,6 +200,11 @@ const VolumeFields = (props) => {
     </Grid>
   )
 }
+=======
+const VolumeFields = ({lengthLabel, widthLabel, heightLabel}) => (
+  <Volume lengthLabel={lengthLabel} widthLabel={widthLabel} heightLabel={heightLabel}/>
+  )
+>>>>>>> update_rows
 
 
 export {NameField, LinearMeterField,

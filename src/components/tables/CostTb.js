@@ -18,9 +18,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import EditAttributesIcon from '@material-ui/icons/EditAttributesRounded';
 import SpecialPriceIcon from '@material-ui/icons/StarRateRounded';
 
-import CernidoUpdate from '../rows_forms/updates/CernidoUpdate'
-
-import updateForms from '../rows_forms/updates/forms_map'
+import updateForms from '../rows_forms/info/forms_map'
 import api from '../../api'
 
 const materialData = {"97":"Arena","146":"Block","123":"Cemento ","147":"crestuco","142":"Hierro ","149":"material normal","99":"Piedrin","106":"TieWire"}
@@ -43,7 +41,7 @@ const CostTb = (props) => {
   const indirectRef = useRef(null)
 
   const [open, setOpen] = useState(false);
-  const [updateDialog, setUpdateDialog] = React.useState({active: CernidoUpdate})
+  const [updateDialog, setUpdateDialog] = React.useState({active: Fragment})
 
 
 
