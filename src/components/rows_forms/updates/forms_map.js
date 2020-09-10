@@ -1,6 +1,5 @@
 import React from 'react'
 
-import MuroUpdate from './MuroUpdate'
 import MezclonConcretoUpdate from './MezclonConcretoUpdate'
 import MezclonMorteroUpdate from './MezclonMorteroUpdate'
 import RepelloUpdate from './RepelloUpdate'
@@ -16,7 +15,7 @@ const map = {
     4: CimientoCorridoForm,
     5: SoleraForm,
     6: ColumnaForm,
-    7: MuroUpdate,
+    7: MuroForm,
     8: MezclonConcretoUpdate,
     9:  MezclonMorteroUpdate,
     10: RepelloUpdate,

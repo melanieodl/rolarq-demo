@@ -33,6 +33,7 @@ const [losaInclinadaSchema, LosaInclinadaSpecsForm] = losaInclinadaGroup
 const [transMeterSchema, TransMeterForm] = transMeterGroup
 
 
+
 const TitleIcon = () => <DonutLargeIcon fontSize='large' color='primary' />
 
 
@@ -319,5 +320,57 @@ const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
+const MuroForm = ({budgetId, rowId, open, closeModal}) => {
+  const [muro, setMuro] = useState({})
+  const apiId = 'muros'
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => setMuro(res.data))
+    .catch(err => console.log(err))
+  }, [open])
+
+  const formSchema = Yup.object().shape({
+     name: Yup.string()
+       .required('Requerido'),
+     area: Yup.number()
+      .positive('Deber ser positivo')
+      .required('Requerido'),
+     junta: Yup.number()
+      .positive('Deber ser positivo')
+      .required('Requerido'),
+     })
+  const Form = ({values, setFieldValue, errors, touched}) => {
+    return (
+         <Fragment>
+           <Grid container spacing={3}>
+             <Grid item xs={12}>
+               <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+           </Grid>
+           <Grid container spacing={3}>
+             <Grid item xs={6}>
+               <SquareMeterField name="area" label="Area" value={values.area}
+                setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+             <Grid item xs={6}>
+               <LinearMeterField name="junta" label="Junta" value={values.junta}
+                 setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+           </Grid>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                  <MorteroProp errors={errors} touched={touched} value={muro.mixProp}/>
+              </Grid>
+            </Grid>
+          </Fragment>
+    )
+  }
+  return(
+    <UpdateForm apiId={apiId} title="Muro"
+      form={{inner: Form}} formData={muro} validationSchema={formSchema}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
+
 export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,
-        SoleraForm, ColumnaForm}
+        SoleraForm, ColumnaForm, MuroForm}

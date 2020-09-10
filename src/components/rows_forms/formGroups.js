@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core'
 
 import {CementCost, SandCost, GravelCost,
         IronCost, LongIronCost, TransIronCost,
-        TieWireCost, PreMixCost} from './costFields'
+        TieWireCost, PreMixCost, BlockCost} from './costFields'
 //Costos completos
 
 import {ConcretoProp, MorteroProp} from './propFields'
@@ -465,7 +465,48 @@ import {NameField, LinearMeterField, QuantityField,
             )
         ]
 
+        const muroGroup = [
+          Yup.object().shape({
+             name: Yup.string()
+               .required('Requerido'),
+             area: Yup.number()
+              .positive('Deber ser positivo')
+              .required('Requerido'),
+             junta: Yup.number()
+              .positive('Deber ser positivo')
+              .required('Requerido'),
+             block: Yup.mixed()
+                 .required('Requerido'),
+             blockPrice: Yup.mixed()
+                 .required('Requerido'),
+             blockWastePct: Yup.number()
+                 .positive('Debe ser positivo')
+                 .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
+
+             }),
+          ({values, setFieldValue, errors, touched}) => (
+             <Fragment>
+               <Grid container spacing={3}>
+                 <Grid item xs={12}>
+                   <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 </Grid>
+               </Grid>
+               <Grid container spacing={3}>
+                 <Grid item xs={6}>
+                   <SquareMeterField name="area" label="Area" value={values.area}
+                    setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 </Grid>
+                 <Grid item xs={6}>
+                   <LinearMeterField name="junta" label="Junta" value={values.junta}
+                     setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 </Grid>
+               </Grid>
+               <BlockCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Fragment>
+           )
+        ]
+
 
 export {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
         areaVolGroup, transMeterGroup, transQuantityGroup,
-        zapataGroup, losaPlanaGroup, losaInclinadaGroup}
+        zapataGroup, losaPlanaGroup, losaInclinadaGroup, muroGroup}
