@@ -31,6 +31,7 @@ const [zapataSchema, ZapataFormGroup] = zapataGroup
 const [losaPlanaSchema, LosaPlanaSpecsForm] = losaPlanaGroup
 const [losaInclinadaSchema, LosaInclinadaSpecsForm] = losaInclinadaGroup
 const [transMeterSchema, TransMeterForm] = transMeterGroup
+const [areaVolSchema, AreaVolForm] = areaVolGroup
 
 
 
@@ -372,5 +373,65 @@ const MuroForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
+const MezclonMorteroForm = ({budgetId, rowId, open, closeModal}) => {
+  const [mezclon, setMezclon] = useState({})
+  const apiId = 'mezclones'
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => setMezclon(res.data))
+    .catch(err => console.log(err))
+  }, [open])
+
+
+  const Form = ({values, setFieldValue, errors, touched}) => {
+    return (
+         <Fragment>
+            <AreaVolForm values={values} setFieldValue={setFieldValue}
+              errors={errors} touched={touched}/>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                  <MorteroProp errors={errors} touched={touched} value={mezclon.mixProp}/>
+              </Grid>
+            </Grid>
+          </Fragment>
+    )
+  }
+  return(
+    <UpdateForm apiId={apiId} title="Mezclón de Mortero"
+      form={{inner: Form}} formData={mezclon} validationSchema={areaVolSchema}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
+
+const MezclonConcretoForm = ({budgetId, rowId, open, closeModal}) => {
+  const [mezclon, setMezclon] = useState({})
+  const apiId = 'extmezclones'
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => setMezclon(res.data))
+    .catch(err => console.log(err))
+  }, [open])
+
+
+  const Form = ({values, setFieldValue, errors, touched}) => {
+    return (
+         <Fragment>
+            <AreaVolForm values={values} setFieldValue={setFieldValue}
+              errors={errors} touched={touched}/>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                  <ConcretoProp errors={errors} touched={touched} value={mezclon.mixProp}/>
+              </Grid>
+            </Grid>
+          </Fragment>
+    )
+  }
+  return(
+    <UpdateForm apiId={apiId} title="Mezclón de Concreto"
+      form={{inner: Form}} formData={mezclon} validationSchema={areaVolSchema}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
+
 export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,
-        SoleraForm, ColumnaForm, MuroForm}
+        SoleraForm, ColumnaForm, MuroForm, MezclonMorteroForm, MezclonConcretoForm}
