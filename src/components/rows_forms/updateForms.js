@@ -30,6 +30,8 @@ const [transQuantitySchema, TransQuantityForm] = transQuantityGroup
 const [zapataSchema, ZapataFormGroup] = zapataGroup
 const [losaPlanaSchema, LosaPlanaSpecsForm] = losaPlanaGroup
 const [losaInclinadaSchema, LosaInclinadaSpecsForm] = losaInclinadaGroup
+const [transMeterSchema, TransMeterForm] = transMeterGroup
+
 
 const TitleIcon = () => <DonutLargeIcon fontSize='large' color='primary' />
 
@@ -228,6 +230,36 @@ const LosaInclinadaForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
+const CimientoCorridoForm = ({budgetId, rowId, open, closeModal}) => {
+  const [cimiento, setCimiento] = useState({})
+  const apiId = 'cimcorridos'
+
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => setCimiento(res.data))
+    .catch(err => console.log(err))
+  }, [open])
+
+  const Form = ({values, setFieldValue, errors, touched}) => (
+        <Fragment>
+          <TransMeterForm values={values} setFieldValue={setFieldValue}
+            errors={errors} touched={touched}/>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <ConcretoProp errors={errors} touched={touched} value={cimiento.mixProp}/>
+            </Grid>
+          </Grid>
+        </Fragment>
+    )
+
+
+  return(
+    <UpdateForm apiId={apiId} title="Cimiento Corrido"
+      form={{inner: Form}} formData={cimiento} validationSchema={transMeterSchema}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
+
 const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
   const [columna, setColumna] = useState({})
 
@@ -257,4 +289,4 @@ const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, ColumnaForm}
+export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm, ColumnaForm}
