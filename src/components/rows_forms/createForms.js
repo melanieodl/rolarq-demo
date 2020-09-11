@@ -514,7 +514,7 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
      width: Yup.number()
       .positive('Deber ser positivo')
       .required('Requerido'),
-     double: Yup.boolean().default(false),
+     estribosDouble: Yup.boolean().default(false),
      height: Yup.number()
       .positive('Deber ser positivo')
       .required('Requerido'),
@@ -584,7 +584,7 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
      </Grid>
      <Grid container spacing={3}>
        <Grid item xs={3}>
-         <BooleanField name="double" label="Estribos dobles"/>
+         <BooleanField name="estribosDouble" label="Estribos dobles"/>
        </Grid>
      </Grid>
      </Fragment>
@@ -614,7 +614,7 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
 
     const initialValues = {
       name: `COLUMNA `, amount, length, width, height,
-      recubrimiento, cantLongsElems, cantLongsAuxElems: '',  double: false,
+      recubrimiento, cantLongsElems, cantLongsAuxElems: '',  estribosDouble: false,
       separacion, longHook, longPata,
       ...concretoInitials, ...frameTriIronInitials
     }

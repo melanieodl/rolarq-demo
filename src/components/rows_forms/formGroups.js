@@ -566,7 +566,7 @@ import {NameField, LinearMeterField, QuantityField,
              width: Yup.number()
               .positive('Deber ser positivo')
               .required('Requerido'),
-             double: Yup.boolean().default(false),
+             estribosDouble: Yup.boolean().default(false),
              height: Yup.number()
               .positive('Deber ser positivo')
               .required('Requerido'),
@@ -636,7 +636,7 @@ import {NameField, LinearMeterField, QuantityField,
                 </Grid>
                 <Grid container spacing={3}>
                   <Grid item xs={3}>
-                    <BooleanField name="double" label="Estribos dobles"/>
+                    <BooleanField name="estribosDouble" label="Estribos dobles"/>
                   </Grid>
                 </Grid>
                 </Fragment>
