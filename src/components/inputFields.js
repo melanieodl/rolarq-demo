@@ -6,11 +6,12 @@ import { CheckboxWithLabel, Switch } from 'formik-material-ui';
 import Volume from './rows_forms/info/Volume'
 import { Field } from "formik";
 
-const NameField = ({name, label, value, setFieldValue, errors, touched}) => {
+const NameField = ({name, label, value, setFieldValue, errors, touched, helperText}) => {
   return (
     <Fragment>
     <Field
       component={TextField}
+      id={name}
       name={name ? name : "name"}
       type="text"
       label={label ? label : "Nombre"}
@@ -18,6 +19,8 @@ const NameField = ({name, label, value, setFieldValue, errors, touched}) => {
       value={value}
       onChange={e => setFieldValue(name ? name : 'name', e.target.value)}
     />
+    {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+
     {errors["name"] && touched["name"] ? (
       <div><Typography color='error' variant='caption'>{errors["name"]}</Typography></div>
     ) : null}
@@ -25,11 +28,12 @@ const NameField = ({name, label, value, setFieldValue, errors, touched}) => {
   )
 }
 
-const LinearMeterField = ({name, label, value, setFieldValue, errors, touched}) => {
+const LinearMeterField = ({name, label, value, setFieldValue, errors, touched, helperText}) => {
   return(
     <Fragment>
         <Field
         component={TextField}
+         id={name}
          name={name}
          type="number"
          label={label}
@@ -46,6 +50,8 @@ const LinearMeterField = ({name, label, value, setFieldValue, errors, touched}) 
            ),
          }}
        />
+       {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+
        {errors[name] && touched[name] ? (
          <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
        ) : null}
@@ -53,11 +59,12 @@ const LinearMeterField = ({name, label, value, setFieldValue, errors, touched}) 
   )
 }
 
-const QuantityField = ({name, label, value, setFieldValue, errors, touched}) => {
+const QuantityField = ({name, label, value, setFieldValue, errors, touched, helperText}) => {
   return(
     <Fragment>
         <Field
         component={TextField}
+         id={name}
          name={name}
          type="number"
          label={label}
@@ -67,6 +74,7 @@ const QuantityField = ({name, label, value, setFieldValue, errors, touched}) => 
          }}
          onChange={e => setFieldValue(name, e.target.value)}
        />
+       {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
        {errors[name] && touched[name] ? (
          <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
        ) : null}
@@ -74,11 +82,12 @@ const QuantityField = ({name, label, value, setFieldValue, errors, touched}) => 
   )
 }
 
-const SquareMeterField = ({name, label, value, setFieldValue, errors, touched}) => {
+const SquareMeterField = ({name, label, value, setFieldValue, errors, touched, helperText}) => {
   return(
     <Fragment>
         <Field
         component={TextField}
+         id={name}
          name={name}
          type="number"
          label={label}
@@ -95,6 +104,7 @@ const SquareMeterField = ({name, label, value, setFieldValue, errors, touched}) 
            ),
          }}
        />
+       {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
        {errors[name] && touched[name] ? (
          <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
        ) : null}
@@ -102,11 +112,12 @@ const SquareMeterField = ({name, label, value, setFieldValue, errors, touched}) 
   )
 }
 
-const PercentageField = ({name, label, value, setFieldValue, errors, touched}) => {
+const PercentageField = ({name, label, value, setFieldValue, errors, touched, helperText}) => {
   return(
     <Fragment>
         <Field
         component={TextField}
+         id={name}
          name={name}
          type="number"
          label={label}
@@ -124,6 +135,7 @@ const PercentageField = ({name, label, value, setFieldValue, errors, touched}) =
             ),
          }}
       />
+      {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
       {errors[name] && touched[name] ? (
         <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
       ) : null}
@@ -131,8 +143,9 @@ const PercentageField = ({name, label, value, setFieldValue, errors, touched}) =
   )
 }
 
-const BooleanCheckField = ({name, label, value, setFieldValue, errors, touched}) => (
+const BooleanCheckField = ({name, label, value, setFieldValue, errors, touched, helperText}) => (
   <Field
+    id={name}
     component={CheckboxWithLabel}
     type="checkbox"
     value={value}
@@ -144,20 +157,26 @@ const BooleanCheckField = ({name, label, value, setFieldValue, errors, touched})
     name={name}
     Label={{ label: `${label}` }}
   />
+  {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+
 )
 
-const BooleanField = ({name, label, value, setFieldValue, errors, touched}) => (
-
+const BooleanField = ({name, label, value, setFieldValue, errors, touched, helperText}) => (
+  <Fragment>
   <FormControlLabel styles={{label: {color: '#0000008a'}}}
        control = {<Field
                      component={Switch}
                      type="checkbox"
+                     id={name}
                      name={name}
                      value={value}
                      onChange={e => setFieldValue(name, e.target.value)}
                    />}
        label = {label}
+
      />
+     {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+    </Fragment>
 
 )
 
