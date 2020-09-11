@@ -12,7 +12,7 @@ import {Stepper, Step, StepLabel, StepContent} from '@material-ui/core';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 
 import {NameField, LinearMeterField, QuantityField,
-        SquareMeterField, PercentageField, BooleanField} from './inputFields'
+        SquareMeterField, PercentageField, BooleanField} from '../inputFields'
 
 
 import {ConcretoProp, MorteroProp} from './propFields'

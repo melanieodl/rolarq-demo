@@ -3,7 +3,7 @@ import { TextField, InputLabel, FormControl, Select, InputAdornment,
          Typography, FormControlLabel, Grid} from "@material-ui/core";
 import { CheckboxWithLabel, Switch } from 'formik-material-ui';
 
-import Volume from './info/Volume'
+import Volume from './rows_forms/info/Volume'
 import { Field } from "formik";
 
 const NameField = ({name, label, value, setFieldValue, errors, touched}) => {

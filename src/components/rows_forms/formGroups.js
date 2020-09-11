@@ -13,7 +13,7 @@ import {ConcretoProp, MorteroProp} from './propFields'
 
 import {NameField, LinearMeterField, QuantityField,
         SquareMeterField, PercentageField, BooleanField,
-        VolumeFields} from './inputFields'
+        VolumeFields} from '../inputFields'
 
 
         //Schemas y form groups

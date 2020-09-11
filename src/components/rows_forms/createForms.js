@@ -17,7 +17,7 @@ import {PreMixCost, BlockCost} from './costFields'
 
 import {NameField, LinearMeterField, QuantityField,
         SquareMeterField, PercentageField, BooleanField,
-        VolumeFields} from './inputFields'
+        VolumeFields} from '../inputFields'
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup, frameTriIronGroup,
         areaVolGroup, transMeterGroup, transQuantityGroup,
