@@ -1,13 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import api from '../../../api'
 import {Fab} from '@material-ui/core'
 import {ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList} from '@material-ui/core';
 import { Button, LinearProgress } from '@material-ui/core';
 
 import Icon from '@material-ui/icons/MoreVert';
-import CementDialogForm from '../../materials_forms/Cement'
-
-
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -35,7 +32,7 @@ export default function MenuListComposition(props) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [openModal, setOpenModal] = React.useState(false);
-  const [formDialog, setFormDialog] = React.useState({active: CementDialogForm})
+  const [formDialog, setFormDialog] = React.useState({active: Fragment})
 
 
   const handleToggle = () => {

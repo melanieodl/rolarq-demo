@@ -17,14 +17,8 @@ import ExpandLess from '@material-ui/icons/ExpandLessRounded';
 import DetailsTb from './partials/MaterialPricesTb'
 
 import MenuDial from './partials/MenuDial'
-import CementDialogForm from '../materials_forms/Cement'
-import SandDialogForm from '../materials_forms/Sand'
-import GravelDialogForm from '../materials_forms/Gravel'
-import IronDialogForm from '../materials_forms/Iron'
-import TieWireDialogForm from '../materials_forms/TieWire'
-import BlockDialogForm from '../materials_forms/Block'
-import CoverPreMixDialogForm from '../materials_forms/CoverPreMix'
-
+import {CementForm, SandForm, GravelForm,
+        IronForm, TieWireForm, BlockForm, CoverPreMixForm} from '../materials_forms/createForms'
 
 import formsMap from '../materials_forms/specs/forms_map'
 
@@ -120,13 +114,13 @@ export default function MaterialsTb(props) {
    ]
 
    const actions = [
-     { name: 'Cemento', form: CementDialogForm },
-     { name: 'Arena', form: SandDialogForm  },
-     { name: 'Piedrin', form: GravelDialogForm  },
-     { name: 'Hierro', form: IronDialogForm  },
-     { name: 'Alambre de Amarre', form: TieWireDialogForm },
-     { name: 'Block', form: BlockDialogForm  },
-     { name: 'Recubrimiento Premezclado', form: CoverPreMixDialogForm  },
+     { name: 'Cemento', form: CementForm},
+     { name: 'Arena', form: SandForm  },
+     { name: 'Piedrin', form: GravelForm  },
+     { name: 'Hierro', form: IronForm  },
+     { name: 'Alambre de Amarre', form: TieWireForm },
+     { name: 'Block', form: BlockForm  },
+     { name: 'Recubrimiento Premezclado', form: CoverPreMixForm  },
 
    ];
 

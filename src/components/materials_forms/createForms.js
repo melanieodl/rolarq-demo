@@ -1,160 +1,87 @@
-import React, {useState} from 'react'
+import React, {useState, Fragment} from 'react'
 import api from '../../api'
 import {Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText,
-        Button, LinearProgress, Grid} from '@material-ui/core'
+        Button, LinearProgress, Grid, CircularProgress} from '@material-ui/core'
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
+import {NameField, LinearMeterField, QuantityField, VolumeFields } from '../inputFields'
+
 import * as Yup from 'yup';
 
-
-const Schema = Yup.object().shape({
-               name: Yup.string()
-                 .required('Requerido'),
-                 length: Yup.number()
-                  .positive('Deber ser positivo')
-                  .required('Requerido'),
-                  width: Yup.number()
-                   .positive('Deber ser positivo')
-                   .required('Requerido'),
-                   height: Yup.number()
-                    .positive('Deber ser positivo')
-                    .required('Requerido'),
-       })
-
-export default function SingleNameForm(props) {
-  const url           = 'blocks'
-  const title         = 'Block'
-  const label         = 'block'
-  const initialValue  = 'Block'
+const CreateForm = ({schema, apiId, title, label, initialValues,
+                     openModal, closeModal, setData, Specs}) => {
 
   const [serverState, setServerState] = useState();
-        const handleServerResponse = (ok, msg) => {
-          setServerState({ok, msg});
-        };
-        const handleOnSubmit = (values, {setSubmitting, resetForm}) => {
-          const {name, length, width, height} = values
-          api.post(`${url}`, {name, length, width, height})
-            .then(response => {
-              api.get(`${url}/${response.data.id}`)
-              .then(res => {
-                console.log(res.data)
-                const newData = res.data
-                props.setData(prevData => [newData, ...prevData])
-
-              })
-              setSubmitting(false);
-
-              resetForm();
-              handleServerResponse(true, "");
-              props.closeModal()
-              //agregar a la data general de la tabla materiales
-            })
-            .catch(error => {
-              setSubmitting(false);
-              handleServerResponse(false, error.response.data.error);
-            });
-        };
+  const handleServerResponse = (ok, msg) => {
+    setServerState({ok, msg});
+  };
+  const handleOnSubmit = (values, {setSubmitting, resetForm}) => {
+    api.post(`${apiId}`, {...values})
+      .then(response => {
+        api.get(`${apiId}/${response.data.id}`)
+        .then(res => {
+          console.log(res.data)
+          const newData = res.data
+          setData(prevData => [newData, ...prevData])
+        })
+        setSubmitting(false);
+        resetForm();
+        handleServerResponse(true, "");
+        closeModal()
+        //agregar a la data general de la tabla materiales
+      })
+      .catch(error => {
+        setSubmitting(false);
+        handleServerResponse(false, error.response.data.error);
+      });
+  };
 
         return (
-          <Dialog maxWidth='sm' fullWidth open={props.openModal} onClose={() => props.closeModal} aria-labelledby="form-dialog-title">
+          <Dialog maxWidth='sm' fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Nuevo {title}</DialogTitle>
           <DialogContent>
            <DialogContentText>
              Agregar {label} a materiales
            </DialogContentText>
               <Formik
-               initialValues={{
-                 name: `${initialValue} `,
-               }}
-               validationSchema={Schema}
-
+               initialValues={{name: ''}}
+               validationSchema={
+                 Yup.object().shape({
+                    name: Yup.string()
+                    .required('Requerido'),
+                  })}
                onSubmit={handleOnSubmit}
              >
-               {({ submitForm, isSubmitting }) => (
+               {({submitForm, isSubmitting, setFieldValue, values, errors, touched }) => (
                  <Form>
-                 <Grid container spacing={3}>
-                  <Grid container item xs={12} spacing={3}>
-                    <Grid item xs={12}>
-                       <Field
-                         component={TextField}
-                         name="name"
-                         type="text"
-                         label="Nombre"
-                       />
-                    </Grid>
-                  </Grid>
-
-
-                      <Grid container item xs={12} spacing={3}>
-                        <Grid item xs={4}>
-                          <Field
-                          component={TextField}
-                           name="length"
-                           type="number"
-                           label="Largo"
-                           InputProps={{
-                             endAdornment: (
-                               <InputAdornment position="end">
-                                 mts
-                               </InputAdornment>
-                             ),
-                           }}
-                         />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <Field
-                          component={TextField}
-                           name="width"
-                           type="number"
-                           label="Ancho"
-                           InputProps={{
-                             endAdornment: (
-                               <InputAdornment position="end">
-                                mts
-                               </InputAdornment>
-                             ),
-                           }}
-                         />
-                        </Grid>
-                        <Grid item xs={4}>
-                          <Field
-                          component={TextField}
-                           name="height"
-                           type="number"
-                           label="Alto"
-                           InputProps={{
-                             endAdornment: (
-                               <InputAdornment position="end">
-                                mts
-                               </InputAdornment>
-                             ),
-                           }}
-                         />
-                        </Grid>
-                      </Grid>
-                    </Grid>
-
-
+                     <Grid container spacing={4}>
+                         <Grid item xs={12}>
+                         <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
+                         </Grid>
+                     </Grid>
+                     {Specs && <Specs values={values} setFieldValue={setFieldValue}
+                             errors={errors} touched={touched} />}
                    {isSubmitting && <LinearProgress />}
                    <br />
                    <DialogActions>
 
                    <Button
-                     variant="outlined"
                      color="inherit"
-                     onClick={props.closeModal}
+                     onClick={closeModal}
                    >
                      Cancelar
                    </Button>
+
                    <Button
+                     startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
+                     disabled={isSubmitting}
                      variant="contained"
                      color="primary"
-                     disabled={isSubmitting}
                      onClick={submitForm}
                    >
-                     Enviar
+                     {isSubmitting ? 'Enviando' : 'Enviar'}
                    </Button>
                    </DialogActions>
                    {serverState && (
@@ -171,3 +98,82 @@ export default function SingleNameForm(props) {
           </Dialog>
         )
 }
+
+
+const CementForm = ({openModal, closeModal, setData}) => (
+  <CreateForm apiId="cements" title="Cemento" label="cemento"
+      openModal={openModal} closeModal={closeModal} setData={setData}/>
+)
+
+const SandForm = ({openModal, closeModal, setData}) => (
+  <CreateForm apiId="sands" title="Arena" label="arena"
+      openModal={openModal} closeModal={closeModal} setData={setData}/>
+)
+
+const GravelForm = ({openModal, closeModal, setData}) => (
+  <CreateForm apiId="gravels" title="Piedrin" label="piedrin"
+      openModal={openModal} closeModal={closeModal} setData={setData}/>
+)
+
+const IronForm = ({openModal, closeModal, setData}) => {
+  const SpecsForm = ({values, setFieldValue, errors, touched}) => (
+    <Fragment>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <LinearMeterField name='length' label='Largo Útil' value={values.length}
+            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+        </Grid>
+      </Grid>
+    </Fragment>
+  )
+
+  return (
+    <CreateForm apiId='irons' title='Hierro' label='hierro' Specs={SpecsForm}
+      openModal={openModal} closeModal={closeModal} setData={setData}/>)
+
+}
+
+const TieWireForm = ({openModal, closeModal, setData}) => {
+  const SpecsForm = ({values, setFieldValue, errors, touched}) => (
+    <Fragment>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <QuantityField name='knotsPerPound' label='Nudos / Lb' value={values.knotsPerPound}
+            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+        </Grid>
+      </Grid>
+    </Fragment>
+  )
+
+  return (
+    <CreateForm apiId='tiewires' title='Alambre de Amarre' label='alambre' Specs={SpecsForm}
+      openModal={openModal} closeModal={closeModal} setData={setData}/>)
+
+}
+
+const BlockForm = ({openModal, closeModal, setData}) =>  (
+    <CreateForm apiId='blocks' title='BlockForm' label='block' Specs={VolumeFields}
+      openModal={openModal} closeModal={closeModal} setData={setData}/>
+)
+
+const CoverPreMixForm = ({openModal, closeModal, setData}) => {
+  const SpecsForm = ({values, setFieldValue, errors, touched}) => (
+    <Fragment>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <QuantityField name='sqrMtsPerBag' label='&#13217; / bolsa' value={values.sqrMtsPerBag}
+            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+        </Grid>
+      </Grid>
+    </Fragment>
+  )
+
+  return (
+    <CreateForm apiId='premixes' title='Recubrimiento Premezclado' label='recubrimiento premezclado'
+      Specs={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData}/>)
+
+}
+
+
+
+export {CementForm, SandForm, GravelForm, IronForm, TieWireForm, BlockForm, CoverPreMixForm}
