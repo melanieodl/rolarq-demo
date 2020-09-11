@@ -19,7 +19,7 @@ import {NameField, LinearMeterField, QuantityField,
         SquareMeterField, PercentageField, BooleanField,
         VolumeFields} from './inputFields'
 
-import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
+import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup, frameTriIronGroup,
         areaVolGroup, transMeterGroup, transQuantityGroup,
         zapataGroup, losaPlanaGroup, losaInclinadaGroup, muroGroup} from './formGroups'
 
@@ -27,6 +27,7 @@ const [concretoSchema, ConcretoForm] = concretoGroup
 const [morteroSchema, MorteroForm] = morteroGroup
 const [frameIronSchema, FrameIronForm] = frameIronGroup
 const [frameBiIronSchema, FrameBiIronForm] = frameBiIronGroup
+const [frameTriIronSchema, FrameTriIronForm] = frameTriIronGroup
 const [transMeterSchema, TransMeterForm] = transMeterGroup
 const [transQuantitySchema, TransQuantityForm] = transQuantityGroup
 const [areaVolSchema, AreaVolForm] = areaVolGroup
@@ -66,6 +67,11 @@ const frameBiIronInitials = {
   longIronWastePct: 0,
   transIronWastePct: 0,
   tieWireWastePct: 0,
+}
+
+const frameTriIronInitials = {
+  ...frameBiIronInitials,
+  longIronAuxWastePct: 0,
 }
 
 const frameIronInitials = {
@@ -547,16 +553,13 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
      </Grid>
      <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
      <Grid container spacing={3}>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <QuantityField name="cantLongsElems" label="Cantidad Elementos Esquinas"
         value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={6}>
         <QuantityField name="cantLongsAuxElems" label="Cantidad Elementos Auxiliares"
         value={values.cantLongsAuxElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-      <Grid item xs={4}>
-        <BooleanField name="double" label="Estribos dobles"/>
       </Grid>
      </Grid>
      <Grid container spacing={3}>
@@ -579,6 +582,11 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
          setFieldValue={setFieldValue} errors={errors} touched={touched}/>
        </Grid>
      </Grid>
+     <Grid container spacing={3}>
+       <Grid item xs={3}>
+         <BooleanField name="double" label="Estribos dobles"/>
+       </Grid>
+     </Grid>
      </Fragment>
    )
 
@@ -593,8 +601,8 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
       schema: concretoSchema,
       form: ConcretoForm},
     { label:'Agregar Costos de Armazón',
-      schema: frameBiIronSchema,
-      form:  FrameBiIronForm}
+      schema: frameTriIronSchema,
+      form:  FrameTriIronForm}
   ])
 
   // const initialValues = {name: 'COLUMNA'}
@@ -608,7 +616,7 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
       name: `COLUMNA `, amount, length, width, height,
       recubrimiento, cantLongsElems, cantLongsAuxElems: '',  double: false,
       separacion, longHook, longPata,
-      ...concretoInitials, ...frameInitials
+      ...concretoInitials, ...frameTriIronInitials
     }
 
   return(

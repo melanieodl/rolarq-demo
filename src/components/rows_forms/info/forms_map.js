@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,
-        SoleraForm, ColumnaForm, MuroForm,
+        SoleraForm, ColumnaForm, ColumnaEspecialForm, MuroForm,
         MezclonConcretoForm, MezclonMorteroForm, RepelloForm} from '../updateForms'
 
 const map = {
@@ -15,6 +15,9 @@ const map = {
     8: MezclonConcretoForm,
     9: MezclonMorteroForm,
     10: RepelloForm,
+    11: RepelloForm,//Mezclon con concreto con electromaya
+    12: ColumnaEspecialForm,
+
 }
 
 

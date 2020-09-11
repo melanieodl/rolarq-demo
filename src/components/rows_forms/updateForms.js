@@ -19,7 +19,7 @@ import {ConcretoProp, MorteroProp} from './propFields'
 
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
-        areaVolGroup, transMeterGroup, transQuantityGroup,
+        areaVolGroup, transMeterGroup, transQuantityGroup, columnaEspecialGroup,
         zapataGroup, losaPlanaGroup, losaInclinadaGroup} from './formGroups'
 
 
@@ -32,6 +32,7 @@ const [losaPlanaSchema, LosaPlanaSpecsForm] = losaPlanaGroup
 const [losaInclinadaSchema, LosaInclinadaSpecsForm] = losaInclinadaGroup
 const [transMeterSchema, TransMeterForm] = transMeterGroup
 const [areaVolSchema, AreaVolForm] = areaVolGroup
+const [columnaEspecialSchema, ColumnaEspecialSpecsForm] = columnaEspecialGroup
 
 
 
@@ -321,6 +322,36 @@ const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
+const ColumnaEspecialForm = ({budgetId, rowId, open, closeModal}) => {
+
+  const [columna, setColumna] = useState({})
+  const apiId = 'specialcolumns'
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => setColumna(res.data))
+    .catch(err => console.log(err))
+  }, [open])
+
+  const Form = ({values, setFieldValue, errors, touched}) => {
+    return (
+        <Fragment>
+          <ColumnaEspecialSpecsForm values={values} setFieldValue={setFieldValue}
+            errors={errors} touched={touched}/>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <ConcretoProp errors={errors} touched={touched} value={columna.mixProp}/>
+            </Grid>
+          </Grid>
+        </Fragment>
+    )
+  }
+  return(
+    <UpdateForm apiId={apiId} title="Columna Especial"
+      form={{inner: Form}} formData={columna} validationSchema={columnaEspecialSchema}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
+
 const MuroForm = ({budgetId, rowId, open, closeModal}) => {
   const [muro, setMuro] = useState({})
   const apiId = 'muros'
@@ -464,5 +495,5 @@ const RepelloForm = ({budgetId, rowId, open, closeModal}) => {
 }
 
 export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,
-        SoleraForm, ColumnaForm, MuroForm, MezclonMorteroForm,
+        SoleraForm, ColumnaForm, ColumnaEspecialForm, MuroForm, MezclonMorteroForm,
         MezclonConcretoForm, RepelloForm}

@@ -174,11 +174,19 @@ const IronCost = ({values, setFieldValue, errors, touched}) => (
                values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
 )
 
-const LongIronCost = ({values, setFieldValue, errors, touched}) => (
+const LongIronCost = ({label, values, setFieldValue, errors, touched}) => (
   <CostGroup url='irons'
-               materialName='longIron' materialLabel='Hierro Longitudinal'
+               materialName='longIron' materialLabel={label ? label : 'Hierro Longitudinal'}
                priceName='longIronPrice' priceLabel='Precio de Hierro'
                pctName='longIronWastePct' pctLabel='Pct. de Desperdicio'
+               values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+)
+
+const LongIronAuxCost = ({values, setFieldValue, errors, touched}) => (
+  <CostGroup url='irons'
+               materialName='longIronAux' materialLabel='Hierro Longitudinal Auxiliar'
+               priceName='longIronAuxPrice' priceLabel='Precio de Hierro'
+               pctName='longIronAuxWastePct' pctLabel='Pct. de Desperdicio'
                values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
 )
 
@@ -215,5 +223,6 @@ const PreMixCost = ({values, setFieldValue, errors, touched}) => (
 )
 
 
-export {CementCost, SandCost, GravelCost, IronCost, LongIronCost, TransIronCost,
+export {CementCost, SandCost, GravelCost,
+        IronCost, LongIronCost, LongIronAuxCost, TransIronCost,
         TieWireCost, BlockCost, PreMixCost}
