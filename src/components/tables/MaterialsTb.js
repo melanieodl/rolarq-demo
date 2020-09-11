@@ -20,7 +20,7 @@ import MenuDial from './partials/MenuDial'
 import {CementForm, SandForm, GravelForm,
         IronForm, TieWireForm, BlockForm, CoverPreMixForm} from '../materials_forms/createForms'
 
-import formsMap from '../materials_forms/specs/forms_map'
+import formsMap from '../materials_forms/forms_map'
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <Fab  color="secondary" size="medium"><Add {...props} ref={ref} /> </Fab> ),
@@ -269,8 +269,6 @@ export default function MaterialsTb(props) {
       detailPanel={[
         rowData => ({
         tooltip: 'Detalles',
-        // { || }
-
         render: rowData => {
           const Form = rowData.type ? formsMap[rowData.type.id] ? formsMap[rowData.type.id] : null : null
         return (
@@ -285,7 +283,7 @@ export default function MaterialsTb(props) {
                 <br/>
                 <Form id={rowData.id} specs={rowData.specifications} materialData={rowData}
                 tableData={rowData.tableData} materialsData={data} setMaterialsData={setData}
-                url={props.url} />
+                apiId={props.url} />
                 <br/>
                 <Divider/>
                 <br/>
