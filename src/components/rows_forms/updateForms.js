@@ -325,7 +325,7 @@ const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
 const ColumnaEspecialForm = ({budgetId, rowId, open, closeModal}) => {
 
   const [columna, setColumna] = useState({})
-  const apiId = 'specialcolumns'
+  const apiId = 'columnasespeciales'
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setColumna(res.data))

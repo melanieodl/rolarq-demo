@@ -620,7 +620,7 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
     }
 
   return(
-          <CreateForm getSteps={getSteps} initialValues={initialValues} apiId="specialcolumns"
+          <CreateForm getSteps={getSteps} initialValues={initialValues} apiId="columnasespeciales"
           budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>
         )
 }
