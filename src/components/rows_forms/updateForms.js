@@ -17,6 +17,7 @@ import {NameField, LinearMeterField, QuantityField,
 
 import {ConcretoProp, MorteroProp} from './propFields'
 
+import {name, area, junta} from '../schemas'
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
         areaVolGroup, transMeterGroup, transQuantityGroup, columnaEspecialGroup,
@@ -93,7 +94,7 @@ const UpdateForm = ({apiId, budgetId,
           enableReinitialize
           initialValues={{
             ...formData}}
-          validationSchema={validationSchema}
+          validationSchema={Yup.object().shape({...validationSchema})}
 
           onSubmit={handleOnSubmit}
 
@@ -361,16 +362,7 @@ const MuroForm = ({budgetId, rowId, open, closeModal}) => {
     .catch(err => console.log(err))
   }, [open])
 
-  const formSchema = Yup.object().shape({
-     name: Yup.string()
-       .required('Requerido'),
-     area: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     junta: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     })
+  const formSchema = {name, area, junta}
   const Form = ({values, setFieldValue, errors, touched}) => {
     return (
          <Fragment>

@@ -19,6 +19,17 @@ import {NameField, LinearMeterField, QuantityField,
         SquareMeterField, PercentageField, BooleanField,
         VolumeFields} from '../inputFields'
 
+import {name, amount, length, width, height,
+        cantLongsElems, cantLongsAuxElems,
+        recubrimiento, separacion,
+        longHook, longPata,
+        estribosDouble,
+        mixProp,
+        cement, cementPrice, cementWastePct,
+        sand, sandPrice, sandWastePct,
+        preMix, preMixPrice, preMixWastePct} from '../schemas'
+
+
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup, frameTriIronGroup,
         areaVolGroup, transMeterGroup, transQuantityGroup,
         zapataGroup, losaPlanaGroup, losaInclinadaGroup, muroGroup} from './formGroups'
@@ -158,7 +169,7 @@ const CreateForm = ({getSteps, budgetId, apiId,
           </Stepper>
           <Formik
             initialValues={{...initialValues}}
-            validationSchema={step.schema}
+            validationSchema={Yup.object().shape({...step.schema})}
             onSubmit={handleOnSubmit}
 
           >
@@ -244,6 +255,7 @@ const SoleraForm = ({budgetId, openModal, closeModal, setData}) => {
                 openModal={openModal} closeModal={closeModal}/>
   )
 }
+
 
 const CimientoForm = ({budgetId, openModal, closeModal, setData}) => {
 
@@ -351,10 +363,10 @@ const LosaPlanaForm = ({budgetId, openModal, closeModal, setData}) => {
       schema: frameIronSchema,
       form: FrameIronForm}
   ])
-  const {name, area, height, separacion, propTension} = initials
+  const {name: nameInitial, area, height, separacion, propTension} = initials
 
   const initialValues = {
-      name, area, height, separacion, propTension,
+      nameInitial, area, height, separacion, propTension,
     ...concretoInitials, ...frameIronInitials
   }
   return (
@@ -378,10 +390,10 @@ const LosaInclinadaForm = ({budgetId, openModal, closeModal, setData}) => {
       schema: frameIronSchema,
       form: FrameIronForm}
   ])
-  const {name, area, height, separacion} = initials
+  const {name: nameInitial, area, height, separacion} = initials
 
   const initialValues = {
-      name, area, height, separacion,
+      nameInitial, area, height, separacion,
     ...concretoInitials, ...frameIronInitials
   }
 
@@ -393,30 +405,12 @@ const LosaInclinadaForm = ({budgetId, openModal, closeModal, setData}) => {
 }
 
 const RepelloCernidoForm = ({budgetId, openModal, closeModal, setData}) => {
-  const costSchema = Yup.object().shape({
-     mixProp: Yup.mixed()
-         .required('Requerido'),
-         cement: Yup.mixed()
-             .required('Requerido'),
-         cementPrice: Yup.mixed()
-             .required('Requerido'),
-         sand: Yup.mixed()
-            .required('Requerido'),
-         sandPrice: Yup.mixed()
-            .required('Requerido'),
-         cementWastePct: Yup.number()
-           .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-           .required(),
-         sandWastePct: Yup.number()
-           .positive('Debe ser positivo')
-           .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
-         preMix: Yup.mixed()
-            .required('Requerido'),
-         preMixPrice: Yup.mixed()
-            .required('Requerido'),
-         preMixWastePct: Yup.number(0)
-              .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-   })
+  const costSchema = {
+        mixProp,
+        cement, cementPrice, cementWastePct,
+        sand, sandPrice, sandWastePct,
+        preMix, preMixPrice, preMixWastePct,
+   }
   //concretoSchema + recubrimiento
 
   const CostFormGroup = ({values, setFieldValue, errors, touched}) => (
@@ -475,8 +469,8 @@ const MezclonConcretoForm =({budgetId, openModal, closeModal, setData}) => {
       form: ConcretoForm}
   ])
 
-  const {name, area, height} = initials
-  const initialValues = {name, area, height, ...morteroInitials}
+  const {name: nameInitial, area, height} = initials
+  const initialValues = {nameInitial, area, height, ...morteroInitials}
 
   return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="extmezclones"
     budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
@@ -493,52 +487,20 @@ const MezclonMorteroForm =({budgetId, openModal, closeModal, setData}) => {
       form: MorteroForm}
   ])
 
-  const {name, area, height} = initials
-  const initialValues = {name, area, height, ...morteroInitials}
+  const {name: nameInitial, area, height} = initials
+  const initialValues = {nameInitial, area, height, ...morteroInitials}
 
   return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="mezclones"
     budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
 }
 
 const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
-  const specsSchema = Yup.object().shape({
-     name: Yup.string()
-       .required('Requerido'),
-     amount: Yup.number()
-       .positive('Deber ser positivo')
-       .integer('Cantidad deber ser un número entero ')
-       .required('Requerido'),
-     length: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     width: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     estribosDouble: Yup.boolean().default(false),
-     height: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-      recubrimiento: Yup.number()
-        .positive('Deber ser positivo')
-        .required('Requerido'),
-      cantLongsElems: Yup.number()
-         .positive('Deber ser positivo')
-         .integer('Deber ser un número entero ')
-         .required('Requerido'),
-      cantLongsAuxElems: Yup.number()
-          .positive('Deber ser positivo')
-          .integer('Deber ser un número entero ')
-          .required('Requerido'),
-      separacion: Yup.number()
-         .positive('Deber ser positivo')
-         .required('Requerido'),
-      longHook: Yup.number()
-          .positive('Deber ser positivo')
-          .required('Requerido'),
-      longPata: Yup.number()
-          .positive('Deber ser positivo')
-          .required('Requerido'),
-     })
+  const specsSchema = {
+    name, amount, length, width, height,
+    estribosDouble, recubrimiento, cantLongsElems, cantLongsAuxElems,
+    separacion, longHook, longPata
+  }
+
   const SpecsForm = ({values, setFieldValue, errors, touched}) => (
      <Fragment>
      <Grid container spacing={3}>

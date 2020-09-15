@@ -15,36 +15,36 @@ import {NameField, LinearMeterField, QuantityField,
         SquareMeterField, PercentageField, BooleanField,
         VolumeFields} from '../inputFields'
 
+import {name, amount, length, width, height, area,
+        cantLongsElems, cantLongsAuxElems, cantTransElems,
+        recubrimiento, separacion, junta,
+        longHook, longPata,
+        propTension, estribosDouble,
+        mixProp,
+        cement, cementPrice, cementWastePct,
+        sand, sandPrice, sandWastePct,
+        gravel, gravelPrice, gravelWastePct,
+        iron, ironPrice, ironWastePct,
+        longIron, longIronPrice, longIronWastePct,
+        longIronAux, longIronAuxPrice, longIronAuxWastePct,
+        transIron, transIronPrice, transIronWastePct,
+        tieWire, tieWirePrice, tieWireWastePct,
+        block, blockPrice, blockWastePct} from '../schemas'
 
         //Schemas y form groups
 
         const concretoGroup = [
-            Yup.object().shape({
-             mixProp: Yup.mixed()
-                 .required('Requerido'),
-                 cement: Yup.mixed()
-                     .required('Requerido'),
-                 cementPrice: Yup.mixed()
-                     .required('Requerido'),
-                 sand: Yup.mixed()
-                    .required('Requerido'),
-                 sandPrice: Yup.mixed()
-                    .required('Requerido'),
-                 gravel: Yup.mixed()
-                    .required('Requerido'),
-                 gravelPrice: Yup.mixed()
-                    .required('Requerido'),
-                  cementWastePct: Yup.number()
-                     .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                     .required(),
-                  sandWastePct: Yup.number()
-                     .positive('Debe ser positivo')
-                     .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
-                   gravelWastePct: Yup.number()
-                       .positive('Debe ser positivo')
-                       .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
-
-           }),
+            { mixProp,
+              cement,
+              cementPrice,
+              cementWastePct,
+              sand,
+              sandPrice,
+              sandWastePct,
+              gravel,
+              gravelPrice,
+              gravelWastePct
+            },
             ({values, setFieldValue, errors, touched}) => (
                <Fragment>
                  <ConcretoProp errors={errors} touched={touched} values={values}/>
@@ -55,25 +55,13 @@ import {NameField, LinearMeterField, QuantityField,
         ]
 
         const morteroGroup = [
-            Yup.object().shape({
-                mixProp: Yup.mixed()
-                    .required('Requerido'),
-                cement: Yup.mixed()
-                    .required('Requerido'),
-                cementPrice: Yup.mixed()
-                    .required('Requerido'),
-                sand: Yup.mixed()
-                   .required('Requerido'),
-                sandPrice: Yup.mixed()
-                   .required('Requerido'),
-                cementWastePct: Yup.number()
-                  .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                  .required(),
-                sandWastePct: Yup.number()
-                  .positive('Debe ser positivo')
-                  .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
-
-          }),
+            { mixProp,
+              cement,
+              cementPrice,
+              cementWastePct,
+              sand,
+              sandPrice,
+            },
             ({values, setFieldValue, errors, touched}) => (
                 <Fragment>
                   <MorteroProp errors={errors} touched={touched} value={values.mixProp}/>
@@ -83,24 +71,13 @@ import {NameField, LinearMeterField, QuantityField,
         ]
 
         const frameIronGroup = [
-            Yup.object().shape({
-            ironPrice: Yup.mixed()
-               .required('Requerido'),
-            iron: Yup.mixed()
-               .required('Requerido'),
-            tieWire: Yup.mixed()
-               .required('Requerido'),
-            tieWirePrice: Yup.mixed()
-               .required('Requerido'),
-            ironWastePct: Yup.number()
-               .positive('Debe ser positivo')
-               .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-               .default(0),
-            tieWireWastePct: Yup.number()
-               .positive('Debe ser positivo')
-               .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-               .default(0),
-           }),
+            { iron,
+              ironPrice,
+              ironWastePct,
+              tieWire,
+              tieWirePrice,
+              tieWireWastePct,
+            },
             ({values, setFieldValue, errors, touched}) => (
                <Fragment>
                  <IronCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
@@ -110,32 +87,16 @@ import {NameField, LinearMeterField, QuantityField,
          ]
 
         const frameBiIronGroup = [
-           Yup.object().shape({
-              longIron: Yup.mixed()
-                 .required('Requerido'),
-              longIronPrice: Yup.mixed()
-                 .required('Requerido'),
-              transIron: Yup.mixed()
-                 .required('Requerido'),
-              transIronPrice: Yup.mixed()
-                 .required('Requerido'),
-              tieWire: Yup.mixed()
-                 .required('Requerido'),
-              tieWirePrice: Yup.mixed()
-                 .required('Requerido'),
-              longIronWastePct: Yup.number()
-                  .positive('Debe ser positivo')
-                  .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                  .default(0),
-              transIronWastePct: Yup.number()
-                  .positive('Debe ser positivo')
-                  .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                  .default(0),
-              tieWireWastePct: Yup.number()
-                  .positive('Debe ser positivo')
-                  .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                  .default(0),
-           }),
+            { longIron,
+              longIronPrice,
+              longIronWastePct,
+              transIron,
+              transIronPrice,
+              transIronWastePct,
+              tieWire,
+              tieWirePrice,
+              tieWireWastePct,
+            },
            ({values, setFieldValue, errors, touched}) => (
              <Fragment>
                <LongIronCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
@@ -146,41 +107,20 @@ import {NameField, LinearMeterField, QuantityField,
         ]
 
         const frameTriIronGroup = [
-          Yup.object().shape({
-             longIron: Yup.mixed()
-                .required('Requerido'),
-             longIronPrice: Yup.mixed()
-                .required('Requerido'),
-              longIronAux: Yup.mixed()
-                 .required('Requerido'),
-              longIronAuxPrice: Yup.mixed()
-                 .required('Requerido'),
-             transIron: Yup.mixed()
-                .required('Requerido'),
-             transIronPrice: Yup.mixed()
-                .required('Requerido'),
-             tieWire: Yup.mixed()
-                .required('Requerido'),
-             tieWirePrice: Yup.mixed()
-                .required('Requerido'),
-             longIronWastePct: Yup.number()
-                 .positive('Debe ser positivo')
-                 .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                 .default(0),
-             longIronAuxWastePct: Yup.number()
-                 .positive('Debe ser positivo')
-                 .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                 .default(0),
-             transIronWastePct: Yup.number()
-                 .positive('Debe ser positivo')
-                 .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                 .default(0),
-             tieWireWastePct: Yup.number()
-                 .positive('Debe ser positivo')
-                 .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                 .default(0),
-          }),
-          ({values, setFieldValue, errors, touched}) => (
+            { longIron,
+              longIronPrice,
+              longIronWastePct,
+              longIronAux,
+              longIronAuxPrice,
+              longIronWastePct,
+              transIron,
+              transIronPrice,
+              transIronWastePct,
+              tieWire,
+              tieWirePrice,
+              tieWireWastePct,
+            },
+            ({values, setFieldValue, errors, touched}) => (
             <Fragment>
               <LongIronCost label='Hierro Longitudinal Esquinas' values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
               <LongIronAuxCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched} />
@@ -188,20 +128,10 @@ import {NameField, LinearMeterField, QuantityField,
               <TieWireCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
             </Fragment>
           )
-
         ]
 
         const areaVolGroup = [
-            Yup.object().shape({
-               name: Yup.string()
-                 .required('Requerido'),
-               area: Yup.number()
-                .positive('Deber ser positivo')
-                .required('Requerido'),
-               height: Yup.number()
-                .positive('Deber ser positivo')
-                .required('Requerido'),
-            }),
+            {name, height, area},
             ({values, setFieldValue, errors, touched}) => (
               <Fragment>
                 <Grid container spacing={3}>
@@ -224,32 +154,14 @@ import {NameField, LinearMeterField, QuantityField,
         ]
 
         const transMeterGroup = [
-            Yup.object().shape({
-           name: Yup.string()
-             .required('Requerido'),
-           length: Yup.number()
-            .positive('Deber ser positivo')
-            .required('Requerido'),
-           width: Yup.number()
-            .positive('Deber ser positivo')
-            .required('Requerido'),
-           height: Yup.number()
-            .positive('Deber ser positivo')
-            .required('Requerido'),
-            recubrimiento: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-            cantLongsElems: Yup.number()
-               .positive('Deber ser positivo')
-               .integer('Deber ser un número entero ')
-               .required('Requerido'),
-            separacion: Yup.number()
-               .positive('Deber ser positivo')
-               .required('Requerido'),
-            longHook: Yup.number()
-                .positive('Deber ser positivo')
-                .required('Requerido'),
-           }),
+            { name,
+              length,
+              width,
+              height,
+              recubrimiento,
+              cantLongsElems,
+              separacion,
+              longHook},
             ({values, setFieldValue,  errors, touched}) => (
              <Fragment>
              <Grid container spacing={3}>
@@ -283,39 +195,16 @@ import {NameField, LinearMeterField, QuantityField,
         ]
 
         const transQuantityGroup = [
-            Yup.object().shape({
-               name: Yup.string()
-                 .required('Requerido'),
-               amount: Yup.number()
-                 .positive('Deber ser positivo')
-                 .integer('Cantidad deber ser un número entero ')
-                 .required('Requerido'),
-               length: Yup.number()
-                .positive('Deber ser positivo')
-                .required('Requerido'),
-               width: Yup.number()
-                .positive('Deber ser positivo')
-                .required('Requerido'),
-               height: Yup.number()
-                .positive('Deber ser positivo')
-                .required('Requerido'),
-                recubrimiento: Yup.number()
-                  .positive('Deber ser positivo')
-                  .required('Requerido'),
-                cantLongsElems: Yup.number()
-                   .positive('Deber ser positivo')
-                   .integer('Deber ser un número entero ')
-                   .required('Requerido'),
-                separacion: Yup.number()
-                   .positive('Deber ser positivo')
-                   .required('Requerido'),
-                longHook: Yup.number()
-                    .positive('Deber ser positivo')
-                    .required('Requerido'),
-                longPata: Yup.number()
-                    .positive('Deber ser positivo')
-                    .required('Requerido'),
-               }),
+            { name,
+              amount,
+              length,
+              width,
+              height,
+              recubrimiento,
+              cantLongsElems,
+              separacion,
+              longHook,
+              longPata},
             ({values, setFieldValue, errors, touched}) => (
                <Fragment>
                <Grid container spacing={3}>
@@ -359,36 +248,15 @@ import {NameField, LinearMeterField, QuantityField,
         ]
 
         const zapataGroup = [
-          Yup.object().shape({
-             name: Yup.string()
-               .required('Requerido'),
-             amount: Yup.number()
-               .positive('Deber ser positivo')
-               .integer('Cantidad deber ser un número entero ')
-               .required('Requerido'),
-             length: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-             width: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-             height: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-              recubrimiento: Yup.number()
-                .positive('Deber ser positivo')
-                .required('Requerido'),
-              cantLongsElems: Yup.number()
-                 .positive('Deber ser positivo')
-                 .integer('Deber ser un número entero ')
-                 .required('Requerido'),
-              cantTransElems: Yup.number()
-                .positive('Deber ser positivo')
-                .integer('Deber ser un número entero ')
-                .required('Requerido'),
-
-             }),
-          ({values, setFieldValue, errors, touched}) => (
+            { name,
+              amount,
+              length,
+              width,
+              height,
+              recubrimiento,
+              cantLongsElems,
+              cantTransElems},
+            ({values, setFieldValue, errors, touched}) => (
             <Fragment>
 
             <Grid container spacing={3}>
@@ -422,176 +290,121 @@ import {NameField, LinearMeterField, QuantityField,
         ]
 
         const losaPlanaGroup = [
-          Yup.object().shape({
-             name: Yup.string()
-               .required('Requerido'),
-             area: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-             height: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-              separacion: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-              propTension: Yup.number()
-                 .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
-                 .required('Requerido'),
-             }),
-          ({values, setFieldValue, errors, touched}) => (
+            { name,
+              area,
+              height,
+              separacion,
+              propTension,},
+            ({values, setFieldValue, errors, touched}) => (
+                 <Fragment>
+                 <Grid container spacing={3}>
+                   <Grid item xs={12}>
+                      <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                   </Grid>
+                 </Grid>
+
+                 <Grid container spacing={3}>
+                   <Grid item xs={6}>
+                     <SquareMeterField name="area" label="Area" value={values.area} setFieldValue={setFieldValue}
+                     errors={errors} touched={touched}/>
+                   </Grid>
+                   <Grid item xs={6}>
+                     <LinearMeterField name="height" label="Peralte"
+                     value={values.height} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                   </Grid>
+                 </Grid>
+
+                 <Grid container spacing={3}>
+                   <Grid item xs={6}>
+                     <LinearMeterField name="separacion" label="Separacion" value={values.separacion} setFieldValue={setFieldValue}
+                     errors={errors} touched={touched}/>
+                   </Grid>
+                   <Grid item xs={6}>
+                     <PercentageField name="propTension" label="Longitud extra en Tensión"
+                     value={values.propTension} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                   </Grid>
+                 </Grid>
+                 </Fragment>
+               )
+        ]
+
+        const losaInclinadaGroup = [
+            { name,
+              area,
+              height,
+              separacion},
+            ({values, setFieldValue, errors, touched}) => (
+                <Fragment>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                     <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                  </Grid>
+                </Grid>
+
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                    <SquareMeterField name="area" label="Area" value={values.area}
+                    setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <LinearMeterField name="height" label="Peralte"
+                    value={values.height} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <LinearMeterField name="separacion" label="Separacion" value={values.separacion}
+                    setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                  </Grid>
+                </Grid>
+                </Fragment>
+              )
+        ]
+
+        const muroGroup = [
+            { name,
+              area,
+              junta,
+              block,
+              blockPrice,
+              blockWastePct
+            },
+            ({values, setFieldValue, errors, touched}) => (
                <Fragment>
-               <Grid container spacing={3}>
-                 <Grid item xs={12}>
-                    <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 <Grid container spacing={3}>
+                   <Grid item xs={12}>
+                     <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                   </Grid>
                  </Grid>
-               </Grid>
-
-               <Grid container spacing={3}>
-                 <Grid item xs={6}>
-                   <SquareMeterField name="area" label="Area" value={values.area} setFieldValue={setFieldValue}
-                   errors={errors} touched={touched}/>
+                 <Grid container spacing={3}>
+                   <Grid item xs={6}>
+                     <SquareMeterField name="area" label="Area" value={values.area}
+                      setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                   </Grid>
+                   <Grid item xs={6}>
+                     <LinearMeterField name="junta" label="Junta" value={values.junta}
+                       setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                   </Grid>
                  </Grid>
-                 <Grid item xs={6}>
-                   <LinearMeterField name="height" label="Peralte"
-                   value={values.height} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                 </Grid>
-               </Grid>
-
-               <Grid container spacing={3}>
-                 <Grid item xs={6}>
-                   <LinearMeterField name="separacion" label="Separacion" value={values.separacion} setFieldValue={setFieldValue}
-                   errors={errors} touched={touched}/>
-                 </Grid>
-                 <Grid item xs={6}>
-                   <PercentageField name="propTension" label="Longitud extra en Tensión"
-                   value={values.propTension} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                 </Grid>
-               </Grid>
+                 <BlockCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                </Fragment>
              )
         ]
 
-        const losaInclinadaGroup = [
-          Yup.object().shape({
-             name: Yup.string()
-               .required('Requerido'),
-             area: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-             height: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-              separacion: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-            }),
-          ({values, setFieldValue, errors, touched}) => (
-              <Fragment>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                   <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={3}>
-                <Grid item xs={4}>
-                  <SquareMeterField name="area" label="Area" value={values.area}
-                  setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                </Grid>
-                <Grid item xs={4}>
-                  <LinearMeterField name="height" label="Peralte"
-                  value={values.height} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                </Grid>
-                <Grid item xs={4}>
-                  <LinearMeterField name="separacion" label="Separacion" value={values.separacion}
-                  setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                </Grid>
-              </Grid>
-              </Fragment>
-            )
-        ]
-
-        const muroGroup = [
-          Yup.object().shape({
-             name: Yup.string()
-               .required('Requerido'),
-             area: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-             junta: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-             block: Yup.mixed()
-                 .required('Requerido'),
-             blockPrice: Yup.mixed()
-                 .required('Requerido'),
-             blockWastePct: Yup.number()
-                 .positive('Debe ser positivo')
-                 .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100'),
-
-             }),
-          ({values, setFieldValue, errors, touched}) => (
-             <Fragment>
-               <Grid container spacing={3}>
-                 <Grid item xs={12}>
-                   <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                 </Grid>
-               </Grid>
-               <Grid container spacing={3}>
-                 <Grid item xs={6}>
-                   <SquareMeterField name="area" label="Area" value={values.area}
-                    setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                 </Grid>
-                 <Grid item xs={6}>
-                   <LinearMeterField name="junta" label="Junta" value={values.junta}
-                     setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                 </Grid>
-               </Grid>
-               <BlockCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-             </Fragment>
-           )
-        ]
-
         const columnaEspecialGroup = [
-          Yup.object().shape({
-             name: Yup.string()
-               .required('Requerido'),
-             amount: Yup.number()
-               .positive('Deber ser positivo')
-               .integer('Cantidad deber ser un número entero ')
-               .required('Requerido'),
-             length: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-             width: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-             estribosDouble: Yup.boolean().default(false),
-             height: Yup.number()
-              .positive('Deber ser positivo')
-              .required('Requerido'),
-              recubrimiento: Yup.number()
-                .positive('Deber ser positivo')
-                .required('Requerido'),
-              cantLongsElems: Yup.number()
-                 .positive('Deber ser positivo')
-                 .integer('Deber ser un número entero ')
-                 .required('Requerido'),
-              cantLongsAuxElems: Yup.number()
-                  .positive('Deber ser positivo')
-                  .integer('Deber ser un número entero ')
-                  .required('Requerido'),
-              separacion: Yup.number()
-                 .positive('Deber ser positivo')
-                 .required('Requerido'),
-              longHook: Yup.number()
-                  .positive('Deber ser positivo')
-                  .required('Requerido'),
-              longPata: Yup.number()
-                  .positive('Deber ser positivo')
-                  .required('Requerido'),
-             }),
-             ({values, setFieldValue, errors, touched}) => (
+            {
+              name,
+              amount,
+              length,
+              width,
+              height,
+              estribosDouble,
+              recubrimiento,
+              cantLongsElems,
+              cantLongsAuxElems,
+              separacion,
+              longHook,
+              longPata
+            },
+            ({values, setFieldValue, errors, touched}) => (
                 <Fragment>
                 <Grid container spacing={3}>
                   <Grid item xs={8}>

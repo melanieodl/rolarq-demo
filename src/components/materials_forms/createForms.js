@@ -8,6 +8,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 import {NameField, LinearMeterField, QuantityField, VolumeFields } from '../inputFields'
 
+import {name} from '../schemas'
+
 import * as Yup from 'yup';
 
 const CreateForm = ({schema, apiId, title, label, initialValues,
@@ -49,8 +51,8 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
                initialValues={{name: ''}}
                validationSchema={
                  Yup.object().shape({
-                    name: Yup.string()
-                    .required('Requerido'),
+                    name,
+                    ...schema
                   })}
                onSubmit={handleOnSubmit}
              >

@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import { TextField, InputLabel, FormControl, Select, InputAdornment,
-         Typography, FormControlLabel, Grid} from "@material-ui/core";
+         Typography, FormControlLabel, Grid, FormHelperText} from "@material-ui/core";
 import { CheckboxWithLabel, Switch } from 'formik-material-ui';
 
 import Volume from './rows_forms/info/Volume'
@@ -144,21 +144,22 @@ const PercentageField = ({name, label, value, setFieldValue, errors, touched, he
 }
 
 const BooleanCheckField = ({name, label, value, setFieldValue, errors, touched, helperText}) => (
-  <Field
-    id={name}
-    component={CheckboxWithLabel}
-    type="checkbox"
-    value={value}
-    indeterminate= {false}
-    onChange={e => setFieldValue(name, e.target.value)}
-    InputProps={{
-      // indeterminate: true
-    }}
-    name={name}
-    Label={{ label: `${label}` }}
-  />
-  {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
-
+    <Fragment>
+      <Field
+        id={name}
+        component={CheckboxWithLabel}
+        type="checkbox"
+        value={value}
+        indeterminate= {false}
+        onChange={e => setFieldValue(name, e.target.value)}
+        InputProps={{
+          // indeterminate: true
+        }}
+        name={name}
+        Label={{ label: `${label}` }}
+      />
+      {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+    </Fragment>
 )
 
 const BooleanField = ({name, label, value, setFieldValue, errors, touched, helperText}) => (
