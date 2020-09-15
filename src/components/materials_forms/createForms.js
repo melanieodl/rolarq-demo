@@ -8,7 +8,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 import {NameField, LinearMeterField, QuantityField, VolumeFields } from '../inputFields'
 
-import {name} from '../schemas'
+import {name, length, width, height, knotsPerPound, sqrMtsPerBag} from '../schemas'
 
 import * as Yup from 'yup';
 
@@ -131,7 +131,7 @@ const IronForm = ({openModal, closeModal, setData}) => {
 
   return (
     <CreateForm apiId='irons' title='Hierro' label='hierro' Specs={SpecsForm}
-      openModal={openModal} closeModal={closeModal} setData={setData}/>)
+      openModal={openModal} closeModal={closeModal} setData={setData} schema={{length}}/>)
 
 }
 
@@ -149,13 +149,13 @@ const TieWireForm = ({openModal, closeModal, setData}) => {
 
   return (
     <CreateForm apiId='tiewires' title='Alambre de Amarre' label='alambre' Specs={SpecsForm}
-      openModal={openModal} closeModal={closeModal} setData={setData}/>)
+      openModal={openModal} closeModal={closeModal} setData={setData} schema={{knotsPerPound}}/>)
 
 }
 
 const BlockForm = ({openModal, closeModal, setData}) =>  (
     <CreateForm apiId='blocks' title='BlockForm' label='block' Specs={VolumeFields}
-      openModal={openModal} closeModal={closeModal} setData={setData}/>
+      openModal={openModal} closeModal={closeModal} setData={setData} schema={{length, width, height}}/>
 )
 
 const CoverPreMixForm = ({openModal, closeModal, setData}) => {
@@ -172,7 +172,7 @@ const CoverPreMixForm = ({openModal, closeModal, setData}) => {
 
   return (
     <CreateForm apiId='premixes' title='Recubrimiento Premezclado' label='recubrimiento premezclado'
-      Specs={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData}/>)
+      Specs={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData} schema={{sqrMtsPerBag}}/>)
 
 }
 

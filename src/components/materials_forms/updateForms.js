@@ -10,6 +10,8 @@ import { TextField } from 'formik-material-ui';
 
 import {VolumeFields, LinearMeterField } from '../inputFields'
 
+import {name, length, width, height, knotsPerPound, sqrMtsPerBag} from '../schemas'
+
 const UpdateForm = ({materialUrl, id, materialData, materialsData, setMaterialsData,
                      apiId, specs, validationSchema, FormSpecs}) => {
 
@@ -53,7 +55,10 @@ const UpdateForm = ({materialUrl, id, materialData, materialsData, setMaterialsD
            initialValues={{
              ...specs
            }}
-           validationSchema={validationSchema}
+           validationSchema={Yup.object().shape({
+                 name,
+                 ...validationSchema
+               })}
            onSubmit={handleOnSubmit}
        >
          {({ values, setFieldValue, errors, touched, submitForm, isSubmitting }) => (
@@ -133,7 +138,7 @@ const IronForm = ({id, specs, apiId, materialData, tableData,
     <UpdateForm apiId='irons' id={id} specs={specs} FormSpecs={FormFields}
     materialUrl={apiId}  materialData={materialData} tableData={tableData}
     materialsData={materialsData} setMaterialsData={setMaterialsData}
-    validationSchema={{}}
+    validationSchema={{length}}
     />
   )
 }
@@ -159,24 +164,13 @@ const TieWireForm = ({id, specs, apiId, materialData, tableData,
     <UpdateForm apiId='tiewires' id={id} specs={specs} FormSpecs={FormFields}
     materialUrl={apiId}  materialData={materialData} tableData={tableData}
     materialsData={materialsData} setMaterialsData={setMaterialsData}
-    validationSchema={{}}
+    validationSchema={{knotsPerPound}}
     />
   )
 }
 
 const BlockForm = ({id, specs, apiId, materialData, tableData,
                     materialsData, setMaterialsData}) => {
-  const validationSchema = Yup.object().shape({
-     length: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     width: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-     height: Yup.number()
-      .positive('Deber ser positivo')
-      .required('Requerido'),
-   });
   const FormFields = () => (
          <Fragment>
                <VolumeFields />
@@ -188,7 +182,7 @@ const BlockForm = ({id, specs, apiId, materialData, tableData,
     <UpdateForm apiId='blocks' id={id} specs={specs} FormSpecs={FormFields}
     materialUrl={apiId}  materialData={materialData} tableData={tableData}
     materialsData={materialsData} setMaterialsData={setMaterialsData}
-    validationSchema={validationSchema}
+    validationSchema={{length, width, height}}
     />
   )
 }
@@ -214,7 +208,7 @@ const CoverPreMixForm = ({id, specs, apiId, materialData, tableData,
     <UpdateForm apiId='premixes' id={id} specs={specs} FormSpecs={FormFields}
     materialUrl={apiId}  materialData={materialData} tableData={tableData}
     materialsData={materialsData} setMaterialsData={setMaterialsData}
-    validationSchema={{}}
+    validationSchema={{sqrMtsPerBag}}
     />
   )
 }
