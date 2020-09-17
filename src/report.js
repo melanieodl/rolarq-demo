@@ -129,8 +129,8 @@ const summaryData = data => data.map((row, idx) => ({
                                 "DESCRIPCION": row.fullName,
                                 "CANTIDAD": row.unitAmount,
                                 "UNIDAD": row.unit.symbol,
-                                "COSTO UNIT.": row.unitCost,
-                                "COSTO TOTAL": row.totalCost}))
+                                "COSTO UNIT.": row.unitCost || 0,
+                                "COSTO TOTAL": row.totalCost || 0}))
 
 
 
