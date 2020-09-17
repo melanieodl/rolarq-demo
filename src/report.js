@@ -351,6 +351,7 @@ const materialsWS = async data => {
     let costsByRow = await getCostsByRow(idRows);
     let groupedCosts = await Object.values(underscore.groupBy(underscore.flatten(costsByRow), cost => cost.materialPrice.id));
     return await groupedCosts.map(group => group.reduce((resume, cost) => {
+                                                    console.log('Costo en materiales export', cost);
                                                     resume.name = cost.name
                                                     resume.amount = resume.amount + cost.totalAmount
                                                     resume.unit = cost.unit.symbol
@@ -392,13 +393,21 @@ const materialsWS = async data => {
             workSheet[`B${i}`].s = {...styles.tableCell, font: {name: 'Arial', sz: 12, bold: true}}
           }
       }
-      //encabezado tabla
-      workSheet[tableDataAdd].s = styles.tableHeader
-      workSheet[`B${tableDataRowAdd}`].s = {...styles.tableHeader, alignment: {horizontal: 'left', vertical: 'center'}}
-      workSheet[`C${tableDataRowAdd}`].s = styles.tableHeader
-      workSheet[`D${tableDataRowAdd}`].s = styles.tableHeader
-      workSheet[`E${tableDataRowAdd}`].s = styles.tableHeader
-      workSheet[`F${tableDataRowAdd}`].s = styles.tableHeader
+      if(await costs.length > 0){
+        //encabezado tabla
+        workSheet[tableDataAdd].s = styles.tableHeader
+        workSheet[`B${tableDataRowAdd}`].s = {...styles.tableHeader, alignment: {horizontal: 'left', vertical: 'center'}}
+        workSheet[`C${tableDataRowAdd}`].s = styles.tableHeader
+        workSheet[`D${tableDataRowAdd}`].s = styles.tableHeader
+        workSheet[`E${tableDataRowAdd}`].s = styles.tableHeader
+        workSheet[`F${tableDataRowAdd}`].s = styles.tableHeader
+
+        //FORMULA DEL FINAL
+        workSheet[totalAdd].F =`${totalAdd}:${totalAdd}`
+
+
+      }
+
       //celdas Tabla
       for(var i = range.s.r + 9; i <= nRows + 9; ++i){
         for(var j = range.s.c; j <= 5; ++j){
@@ -418,6 +427,10 @@ const materialsWS = async data => {
           }
         }
       }
+        //Formulas
+        workSheet[totalAdd].f = `SUM(${XLSX.utils.encode_cell({r: 9, c: 5})}:${XLSX.utils.encode_cell({r: nRows + 8, c: 5})})`
+
+
       //total tabla
       workSheet[totalTitleAdd].s = styles.subTitle
       workSheet[totalAdd].s = {...styles.subTitle, alignment: {horizontal:'right', vertical: 'center'}}
@@ -429,9 +442,7 @@ const materialsWS = async data => {
       var fmt = '"Q"#,##0.00'; // formato Q0.00
 
 
-      //Formulas
-      workSheet[totalAdd].f = `SUM(${XLSX.utils.encode_cell({r: 9, c: 5})}:${XLSX.utils.encode_cell({r: nRows + 8, c: 5})})`
-      workSheet[totalAdd].F =`${totalAdd}:${totalAdd}`
+
 
 
   console.log('costos', await costs);
