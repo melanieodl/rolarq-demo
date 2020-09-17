@@ -378,7 +378,6 @@ const materialsWS = async data => {
 
     //Informacion Tabla de datos
     XLSX.utils.sheet_add_json(workSheet, materialsData(await costs), {origin: tableDataAdd});
-    XLSX.utils.sheet_add_aoa(workSheet, [['COSTO TOTAL']], {origin: totalTitleAdd});
     XLSX.utils.sheet_add_aoa(workSheet, [[0]], {origin: totalAdd});
 
 
@@ -432,7 +431,11 @@ const materialsWS = async data => {
 
 
       //total tabla
-      workSheet[totalTitleAdd].s = styles.subTitle
+      if(await costs.length > 0){
+        XLSX.utils.sheet_add_aoa(workSheet, [['COSTO TOTAL']], {origin: totalTitleAdd});
+        workSheet[totalTitleAdd].s = styles.subTitle
+
+      }
       workSheet[totalAdd].s = {...styles.subTitle, alignment: {horizontal:'right', vertical: 'center'}}
 
 
