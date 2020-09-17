@@ -6,7 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import MaterialTable, {MTableToolbar} from 'material-table';
 import grey from '@material-ui/core/colors/grey';
-import {Select, MenuItem, FormControl, Paper, Fab, Divider, Typography} from '@material-ui/core';
+import {Select, MenuItem, FormControl, Paper, Fab, Divider, Typography,
+        ListItemText, Grid, ListItem, ListItemAvatar, Avatar} from '@material-ui/core';
 import {Add, ArrowDownward, Check, ChevronLeft, ChevronRight, Clear, DeleteOutline,
         Edit, FirstPage, LastPage, Remove, SaveAlt, Search, ViewColumn} from '@material-ui/icons'
 import FilterList from '@material-ui/icons/FilterListRounded';
@@ -17,10 +18,13 @@ import ExpandLess from '@material-ui/icons/ExpandLessRounded';
 import DetailsTb from './partials/MaterialPricesTb'
 
 import MenuDial from './partials/MenuDial'
+import ConfirmationDialog from '../partials/ConfirmationDialog'
+
 import {CementForm, SandForm, GravelForm,
         IronForm, TieWireForm, BlockForm, CoverPreMixForm} from '../materials_forms/createForms'
 
 import formsMap from '../materials_forms/forms_map'
+import {toCurrency} from '../../functions'
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <Fab  color="secondary" size="medium"><Add {...props} ref={ref} /> </Fab> ),
@@ -63,6 +67,32 @@ const tableIcons = {
 
   }));
 
+  const materialForDelete = (row, idx) => {
+
+    return (
+    <ListItem>
+    <ListItemAvatar>
+      <Avatar>
+        {idx + 1}
+      </Avatar>
+    </ListItemAvatar>
+      <ListItemText primary={row.name} secondary={
+        <Grid container direction="row"
+              justify="flex-start"
+              spacing={1}
+              alignItems="center">
+              <Grid item>
+                {`${row.type ? `${row.type.name}, `: ''} ${row.unit.name}`}
+              </Grid>
+        </Grid>
+      }
+      />
+      <Divider />
+    </ListItem>
+  )
+  }
+
+
 export default function MaterialsTb(props) {
   const classes = useStyles();
 
@@ -77,6 +107,32 @@ export default function MaterialsTb(props) {
   //error handling
   const [isError, setIsError] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
+
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [confirmData, setConfirmData] = useState([])
+  const onConfirm = async (materials) => {
+    await Promise.all(
+      materials.map( async row => {
+            try {
+                console.log('borrada' , row.id);
+                return await api.delete(`${props.url}/${row.id}`)
+
+            } catch (err) {
+              console.log(err);
+            }
+      })
+    )
+
+      let _data = [...data];
+      materials.forEach(rd => {
+        _data = _data.filter(t => t.tableData.id !== rd.tableData.id);
+      });
+      setData(_data);
+
+      }
+  const handleClose = () => {
+      setConfirmOpen(false)
+  }
 
   const columns =    [
      { title: 'Id', field: 'id', hidden: true },
@@ -176,9 +232,10 @@ export default function MaterialsTb(props) {
       api.post(props.url, newData)
       // console.log(url + newData)
       .then(res => {
-        let dataToAdd = [...data]
-        dataToAdd.unshift(res.data)
-        setData(dataToAdd)
+        // let dataToAdd = [res.data, ...data]
+        console.log('Material de respuesta', res.data);
+        setData(data => [ res.data, ...data])
+        console.log(data);
         resolve()
         setErrorMessages([])
         setIsError(false)
@@ -241,6 +298,7 @@ export default function MaterialsTb(props) {
   }
 
   return (
+    <Fragment>
     <MaterialTable
       tableRef={tableRef}
       icons={tableIcons}
@@ -306,7 +364,7 @@ export default function MaterialsTb(props) {
        filtering: true,
        searchFieldAlignment: 'right',
        addRowPosition: 'first',
-       // selection: true,
+       selection: true,
        sorting: true,
        pageSize: 10,
        pageSizeOptions: [10],
@@ -348,6 +406,13 @@ export default function MaterialsTb(props) {
             },
        },
        {
+        tooltip: 'Eliminar materiales',
+        icon: tableIcons.Delete,
+        onClick: (evt, data) => {setConfirmData(data); setConfirmOpen(true);}
+
+
+      },
+       {
          icon: () => <tableIcons.AddLibrary setData={setData} actions={actions}/>,
          isFreeAction: true,
          // iconProps: {style: {padding: 0}},
@@ -379,5 +444,19 @@ export default function MaterialsTb(props) {
      }}
      localization={localization(props.label)}
     />
+    <ConfirmationDialog
+          classes={{
+            paper: classes.paper,
+          }}
+          id="rows-to-delete"
+          keepMounted
+          showTitle = {data => `¿Esta seguro de eliminar ${data.length > 1 ? `estos ${data.length} materiales?` : `este material ?`}`}
+          showRow ={materialForDelete}
+          open={confirmOpen}
+          onClose={handleClose}
+          data={confirmData}
+          onConfirm={onConfirm}
+      />
+      </Fragment>
   );
 }
