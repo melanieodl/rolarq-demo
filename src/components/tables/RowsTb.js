@@ -1,4 +1,4 @@
-import React, {forwardRef, createRef, useState, useEffect, useMemo} from 'react';
+import React, {forwardRef, createRef, useState, useEffect, useMemo, Fragment} from 'react';
 import api from '../../api'
 import XLSX from 'sheetjs-style'
 import {summaryWS, materialsWS, budgetWS} from '../../report'
@@ -7,7 +7,8 @@ import MaterialTable, {MTableToolbar} from 'material-table';
 import { makeStyles } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 
-import {Paper, Fab} from '@material-ui/core'
+import {Paper, Fab, List, ListItem, ListItemText, Typography, Divider, Grid,
+        Avatar, ListItemAvatar} from '@material-ui/core';
 import {Add, ArrowDownward, Check, ChevronLeft, ChevronRight, Clear,
         DeleteOutline, Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt,
         Search, ViewColumn, Refresh} from '@material-ui/icons'
@@ -16,9 +17,13 @@ import CostTb from './CostTb'
 
 import MenuDial from './partials/MenuDial'
 
+import ConfirmationDialog from '../partials/ConfirmationDialog'
+
 import {SoleraForm, ZapataForm, ColumnaForm, ColumnaEspecialForm,
         CimientoForm, LosaPlanaForm, LosaInclinadaForm,
         RepelloCernidoForm, MuroForm, MezclonConcretoForm, MezclonMorteroForm} from '../rows_forms/createForms'
+
+import {toCurrency} from '../../functions'
 
 
 const tableIcons = {
@@ -78,6 +83,56 @@ const tableIcons = {
 
   }));
 
+const rowForDelete = (row, idx) => {
+  const DetailTypo = ({showMsg}) => {
+    const classes = useStyles()
+    return (
+      <Typography
+        component="span"
+        variant="body2"
+        className={classes.inline}
+        color="textPrimary"
+      >
+        {showMsg()}
+      </Typography>
+    )
+
+  }
+  return (
+  <ListItem>
+  <ListItemAvatar>
+    <Avatar>
+      {idx + 1}
+    </Avatar>
+  </ListItemAvatar>
+    <ListItemText primary={row.name} secondary={
+      <Grid container direction="row"
+            justify="flex-start"
+            spacing={1}
+            alignItems="center">
+            <Grid item>
+              {' Cantidad: '}
+              <DetailTypo showMsg={() => row.unitAmount ? row.unitAmount : 0} />
+            </Grid>
+            <Divider orientation="vertical" light flexItem variant='middle'/>
+            <Grid item>
+              {' Precio Unitario: '}
+              <DetailTypo showMsg={() => toCurrency(row.unitCost ? row.unitCost : 0)} />
+            </Grid>
+            <Divider orientation="vertical" light flexItem variant='middle'/>
+            <Grid item>
+              {' Precio Total: '}
+               <DetailTypo showMsg={() => toCurrency(row.totalCost ? row.totalCost : 0)} />
+            </Grid>
+
+      </Grid>
+    }
+    />
+    <Divider />
+  </ListItem>
+)
+}
+
 export default function EditableTb(props) {
   const classes = useStyles()
   const tableRef = createRef()
@@ -87,6 +142,33 @@ export default function EditableTb(props) {
   const [isError, setIsError] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
   const [refreshFlag, setRefreshFlag] = useState(false)
+
+  //confirmation dialog infomation
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [confirmData, setConfirmData] = useState([])
+  const onConfirm = async (data) => {
+    await Promise.all(
+      data.map( async row => {
+            try {
+                console.log('borrada' , row.id);
+                return await api.delete(`${props.url}/${row.id}`)
+
+            } catch (err) {
+              console.log(err);
+            }
+      })
+    )
+
+      let _data = [...props.data];
+      data.forEach(rd => {
+        _data = _data.filter(t => t.tableData.id !== rd.tableData.id);
+      });
+      props.setData(_data);
+
+      }
+  const handleClose = () => {
+      setConfirmOpen(false)
+  }
 
   useEffect(() => {
 
@@ -205,6 +287,7 @@ export default function EditableTb(props) {
   }
 
   return (
+    <Fragment>
     <MaterialTable
       tableRef={tableRef}
       icons={tableIcons}
@@ -317,26 +400,7 @@ export default function EditableTb(props) {
          {
           tooltip: 'Eliminar renglones seleccionados',
           icon: tableIcons.Delete,
-          onClick: async (evt, data) => {
-            await Promise.all(
-              data.map( async row => {
-                    try {
-                        console.log('borrada' , row.id);
-                        return await api.delete(`${props.url}/${row.id}`)
-
-                    } catch (err) {
-                      console.log(err);
-                    }
-              })
-            )
-
-              let _data = [...props.data];
-              data.forEach(rd => {
-                _data = _data.filter(t => t.tableData.id !== rd.tableData.id);
-              });
-              props.setData(_data);
-
-              }
+          onClick: (evt, data) => {setConfirmData(data); setConfirmOpen(true);}
 
         },
 
@@ -373,5 +437,19 @@ export default function EditableTb(props) {
      }}
      localization={localization(props.label)}
     />
+    <ConfirmationDialog
+          classes={{
+            paper: classes.paper,
+          }}
+          id="rows-to-delete"
+          keepMounted
+          showTitle = {data => `¿Esta seguro de eliminar ${data.length > 1 ? `estos ${data.length} renglones?` : `este renglón ?`}`}
+          showRow ={rowForDelete}
+          open={confirmOpen}
+          onClose={handleClose}
+          data={confirmData}
+          onConfirm={onConfirm}
+      />
+    </Fragment>
   );
 }
