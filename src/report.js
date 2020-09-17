@@ -112,9 +112,9 @@ const styles = {
 
 
 //GENERATE DATA
-const checkNull = value => value ? value : ''
+const checkNull = value => value || ''
 
-const rowData = (row, idx ) => ([[idx + 1, row.fullName, row.unitAmount, row.unit.symbol, row.unitCost ? row.unitCost : 0, row.totalCost ? row.totalCost : 0]])
+const rowData = (row, idx ) => ([[idx + 1, row.fullName, row.unitAmount, row.unit.symbol, row.unitCost || 0, row.totalCost || 0]])
 
 const rowCostData = data => data.map((cost) => ({
                                 "No.": "",
@@ -642,7 +642,7 @@ const budgetWS = async rows => {
 
             workSheet['!merges'] = [ ...workSheet['!merges'],
                                    { s: {r:activeRow - 1, c: 1}, e:{r:activeRow - 1, c:4}}]
-                                                                                    XLSX.utils.sheet_add_aoa(workSheet, [["", "COSTO TOTAL RENGLON", "", "", "", `${row.totalCost ? row.totalCost : 0}`]], {origin: `A${activeRow++}`});
+                                                                                    XLSX.utils.sheet_add_aoa(workSheet, [["", "COSTO TOTAL RENGLON", "", "", "", `${row.totalCost || 0}`]], {origin: `A${activeRow++}`});
             workSheet[`A${activeRow - 1}`].s = styles.tableHeader
             workSheet[`B${activeRow - 1}`].s = styles.tableHeader
             workSheet[`F${activeRow - 1}`].s = {...styles.tableHeader, alignment: {horizontal: 'right', vertical: 'center'}}
