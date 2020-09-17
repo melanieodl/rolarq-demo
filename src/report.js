@@ -643,12 +643,15 @@ const budgetWS = async rows => {
         }
 
 
-            workSheet['!merges'] = [ ...workSheet['!merges'],
-                                   { s: {r:activeRow - 1, c: 1}, e:{r:activeRow - 1, c:4}}]
-                                                                                    XLSX.utils.sheet_add_aoa(workSheet, [["", "COSTO TOTAL RENGLON", "", "", "", `${row.totalCost || 0}`]], {origin: `A${activeRow++}`});
-            workSheet[`A${activeRow - 1}`].s = styles.tableHeader
-            workSheet[`B${activeRow - 1}`].s = styles.tableHeader
-            workSheet[`F${activeRow - 1}`].s = {...styles.tableHeader, alignment: {horizontal: 'right', vertical: 'center'}}
+           if(row.materialCosts.length !== 0 || row.workForceCosts.length !== 0 || row.indirectCosts.length !== 0){
+             workSheet['!merges'] = [ ...workSheet['!merges'],
+                                    { s: {r:activeRow - 1, c: 1}, e:{r:activeRow - 1, c:4}}]
+             XLSX.utils.sheet_add_aoa(workSheet, [["", "COSTO TOTAL RENGLON", "", "", "", `${row.totalCost || 0}`]], {origin: `A${activeRow++}`});
+             workSheet[`A${activeRow - 1}`].s = styles.tableHeader
+             workSheet[`B${activeRow - 1}`].s = styles.tableHeader
+             workSheet[`F${activeRow - 1}`].s = {...styles.tableHeader, alignment: {horizontal: 'right', vertical: 'center'}}
+           }
+
 
 
 
