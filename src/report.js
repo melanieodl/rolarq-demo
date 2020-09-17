@@ -114,7 +114,7 @@ const styles = {
 //GENERATE DATA
 const checkNull = value => value || ''
 
-const rowData = (row, idx ) => ([[idx + 1, row.fullName, row.unitAmount, row.unit.symbol, row.unitCost || 0, row.totalCost || 0]])
+const rowData = (row, idx ) => ([[idx + 1, row.fullName || '', row.unitAmount || '', row.unit.symbol || '', row.unitCost || 0, row.totalCost || 0]])
 
 const rowCostData = data => data.map((cost) => ({
                                 "No.": "",
@@ -378,7 +378,7 @@ const materialsWS = async data => {
 
     //Informacion Tabla de datos
     XLSX.utils.sheet_add_json(workSheet, materialsData(await costs), {origin: tableDataAdd});
-    XLSX.utils.sheet_add_aoa(workSheet, [[0]], {origin: totalAdd});
+    XLSX.utils.sheet_add_aoa(workSheet, [['']], {origin: totalAdd});
 
 
       // get worksheet range
@@ -401,8 +401,7 @@ const materialsWS = async data => {
         workSheet[`E${tableDataRowAdd}`].s = styles.tableHeader
         workSheet[`F${tableDataRowAdd}`].s = styles.tableHeader
 
-        //FORMULA DEL FINAL
-        workSheet[totalAdd].F =`${totalAdd}:${totalAdd}`
+
 
 
       }
@@ -426,17 +425,21 @@ const materialsWS = async data => {
           }
         }
       }
-        //Formulas
-        workSheet[totalAdd].f = `SUM(${XLSX.utils.encode_cell({r: 9, c: 5})}:${XLSX.utils.encode_cell({r: nRows + 8, c: 5})})`
+
 
 
       //total tabla
       if(await costs.length > 0){
         XLSX.utils.sheet_add_aoa(workSheet, [['COSTO TOTAL']], {origin: totalTitleAdd});
+        //Formulas
         workSheet[totalTitleAdd].s = styles.subTitle
+        //FORMULA DEL FINAL
+        workSheet[totalAdd].F =`${totalAdd}:${totalAdd}`
+        workSheet[totalAdd].f = `SUM(${XLSX.utils.encode_cell({r: 9, c: 5})}:${XLSX.utils.encode_cell({r: nRows + 8, c: 5})})`
+        workSheet[totalAdd].s = {...styles.subTitle, alignment: {horizontal:'right', vertical: 'center'}}
+
 
       }
-      workSheet[totalAdd].s = {...styles.subTitle, alignment: {horizontal:'right', vertical: 'center'}}
 
 
       //formato Q. currency
@@ -512,7 +515,7 @@ const budgetWS = async rows => {
         workSheet[`E${activeRow - 1}`].s = styles.tableHeader
         workSheet[`F${activeRow - 1}`].s = styles.tableHeader
 
-        if(row.materialCosts.length !== 0){
+        if(row.materialCosts.length > 0){
             XLSX.utils.sheet_add_aoa(workSheet, [["", "MATERIALES", "", "", "", ""]], {origin: `A${activeRow++}`});
             workSheet[`A${activeRow - 1}`].s = styles.tableSubTitle
             workSheet[`B${activeRow - 1}`].s = styles.tableSubTitle
@@ -551,7 +554,7 @@ const budgetWS = async rows => {
         }
 
 
-        if(row.workForceCosts.length !== 0){
+        if(row.workForceCosts.length > 0){
             XLSX.utils.sheet_add_aoa(workSheet, [["", "MANO DE OBRA", "", "", "", ""]], {origin: `A${activeRow++}`});
             workSheet[`A${activeRow - 1}`].s = styles.tableSubTitle
             workSheet[`B${activeRow - 1}`].s = styles.tableSubTitle
@@ -598,7 +601,7 @@ const budgetWS = async rows => {
             workSheet[`F${activeRow - 1}`].s = {...styles.rowSubTotal,  alignment: {horizontal: 'right', vertical: 'center'}}
           }
 
-        if(row.indirectCosts.length !== 0){
+        if(row.indirectCosts.length > 0){
             XLSX.utils.sheet_add_aoa(workSheet, [["", "COSTOS INDIRECTOS", "", "", "", ""]], {origin: `A${activeRow++}`});
             workSheet[`A${activeRow - 1}`].s = styles.tableSubTitle
             workSheet[`B${activeRow - 1}`].s = styles.tableSubTitle
