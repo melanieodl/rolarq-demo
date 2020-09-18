@@ -3,7 +3,8 @@ import React, {useState, useEffect, Fragment} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 
 import {Dialog, DialogTitle, DialogContent, DialogActions, Grid, Button,
-        LinearProgress, InputAdornment} from '@material-ui/core';
+        LinearProgress, CircularProgress, InputAdornment} from '@material-ui/core';
+import {SaveAlt} from '@material-ui/icons'
 import { Formik, Form, Field } from 'formik';
 import {NameField} from '../inputFields'
 
@@ -18,8 +19,8 @@ moment.locale('es', idLocale);
 export default function ExportDialog({open, onClose, onConfirm, data, showTitle, ...other}) {
   const info = data[0] || {budget: {name: '', project: {name: ''}}}
   console.log('DATA EN EXPORT', data);
-  const budgetName =  info.budget.name
-  const projectName = info.budget.project.name
+  const budgetName =  info.budget.name.toUpperCase()
+  const projectName = info.budget.project.name.toUpperCase()
 
   useEffect(() => {}, [data] )
 
@@ -35,9 +36,15 @@ export default function ExportDialog({open, onClose, onConfirm, data, showTitle,
   const handleOnSubmit = (values, {setSubmitting, resetForm}) => {
     const {name} = values
     console.log(name);
+    setTimeout(() => {
+      onConfirm(data, name);
+      setSubmitting(false)
 
-    onConfirm(data, name);
-    onClose();
+      onClose();
+
+    }, 500)
+
+
   };
 
   const [serverState, setServerState] = useState();
@@ -46,15 +53,17 @@ export default function ExportDialog({open, onClose, onConfirm, data, showTitle,
     <Dialog
         disableBackdropClick
         disableEscapeKeyDown
-        maxWidth="md"
         fullWidth
+        maxWidth="md"
         aria-labelledby="confirmation-dialog-title"
         open={open}
         {...other}
       >
         <DialogTitle id="confirmation-dialog-title">{showTitle()}</DialogTitle>
             <Formik
-             initialValues={{name: `PRESUPUESTO ${moment().format('LL')}`}}
+            enableReinitialize // missing piece!!
+
+             initialValues={{name: `PRESUPUESTO ${budgetName} ${projectName} ${moment().format('LL')}`}}
              validationSchema={
                Yup.object().shape({
                   name: Yup.string()
@@ -69,7 +78,11 @@ export default function ExportDialog({open, onClose, onConfirm, data, showTitle,
                    <Grid container spacing={4}>
                        <Grid item xs={12}>
                        <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}
-                          helperText='Nombre del archivo de excel' fieldProps={{endAdornment: (
+                          helperText='Nombre del archivo de excel' fieldProps={{
+                            autoFocus: true,
+                            fullWidth: true,
+                            multiline: true,
+                            endAdornment: (
                             <InputAdornment position="end">
                               .xlsx
                             </InputAdornment>
@@ -90,7 +103,9 @@ export default function ExportDialog({open, onClose, onConfirm, data, showTitle,
                   <Button autoFocus onClick={handleCancel} color="primary">
                     Cancelar
                   </Button>
-                  <Button onClick={submitForm} color="primary">
+                  <Button onClick={submitForm} color="primary"
+                    startIcon={isSubmitting ? <CircularProgress size="1rem" /> : <SaveAlt />}>
+
                     EXPORTAR
                   </Button>
                 </DialogActions>
