@@ -6,7 +6,7 @@ import { CheckboxWithLabel, Switch } from 'formik-material-ui';
 import Volume from './rows_forms/info/Volume'
 import { Field } from "formik";
 
-const NameField = ({name, label, value, setFieldValue, errors, touched, helperText}) => {
+const NameField = ({name, label, value, setFieldValue, errors, touched, helperText, fieldProps}) => {
   return (
     <Fragment>
     <Field
@@ -18,8 +18,11 @@ const NameField = ({name, label, value, setFieldValue, errors, touched, helperTe
       autoFocus
       value={value}
       onChange={e => setFieldValue(name ? name : 'name', e.target.value)}
+      InputProps={{
+        ...fieldProps
+      }}
     />
-    {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+    {helperText && <FormHelperText id={`${name}-helper-text`}>{helperText}</FormHelperText>}
 
     {errors["name"] && touched["name"] ? (
       <div><Typography color='error' variant='caption'>{errors["name"]}</Typography></div>
@@ -50,7 +53,7 @@ const LinearMeterField = ({name, label, value, setFieldValue, errors, touched, h
            ),
          }}
        />
-       {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+       {helperText && <FormHelperText id={`${name}-helper-text`}>{helperText}</FormHelperText>}
 
        {errors[name] && touched[name] ? (
          <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
@@ -74,7 +77,7 @@ const QuantityField = ({name, label, value, setFieldValue, errors, touched, help
          }}
          onChange={e => setFieldValue(name, e.target.value)}
        />
-       {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+       {helperText && <FormHelperText id={`${name}-helper-text`}>{helperText}</FormHelperText>}
        {errors[name] && touched[name] ? (
          <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
        ) : null}
@@ -104,7 +107,7 @@ const SquareMeterField = ({name, label, value, setFieldValue, errors, touched, h
            ),
          }}
        />
-       {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+       {helperText && <FormHelperText id={`${name}-helper-text`}>{helperText}</FormHelperText>}
        {errors[name] && touched[name] ? (
          <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
        ) : null}
@@ -135,7 +138,7 @@ const PercentageField = ({name, label, value, setFieldValue, errors, touched, he
             ),
          }}
       />
-      {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+      {helperText && <FormHelperText id={`${name}-helper-text`}>{helperText}</FormHelperText>}
       {errors[name] && touched[name] ? (
         <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
       ) : null}
@@ -158,7 +161,7 @@ const BooleanCheckField = ({name, label, value, setFieldValue, errors, touched, 
         name={name}
         Label={{ label: `${label}` }}
       />
-      {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+      {helperText && <FormHelperText id={`${name}-helper-text`}>{helperText}</FormHelperText>}
     </Fragment>
 )
 
@@ -176,7 +179,7 @@ const BooleanField = ({name, label, value, setFieldValue, errors, touched, helpe
        label = {label}
 
      />
-     {helperText && <FormHelperText id={`${name}-helper-text`}>helperText</FormHelperText>}
+     {helperText && <FormHelperText id={`${name}-helper-text`}>{helperText}</FormHelperText>}
     </Fragment>
 
 )
