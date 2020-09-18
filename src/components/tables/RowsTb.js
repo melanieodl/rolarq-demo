@@ -18,6 +18,7 @@ import CostTb from './CostTb'
 import MenuDial from './partials/MenuDial'
 
 import ConfirmationDialog from '../partials/ConfirmationDialog'
+import ExportDialog from '../partials/ExportDialog'
 
 import {SoleraForm, ZapataForm, ColumnaForm, ColumnaEspecialForm,
         CimientoForm, LosaPlanaForm, LosaInclinadaForm,
@@ -169,6 +170,23 @@ export default function EditableTb(props) {
   const handleClose = () => {
       setConfirmOpen(false)
   }
+
+  //export to excel information
+  const [exportOpen, setExportOpen] = useState(false)
+  const [reportData, setReportData] = useState([])
+  const onExport = async (data, fileName) => {
+    // A workbook is the name given to an Excel file
+     var wb = XLSX.utils.book_new() // make Workbook of Excel
+     // add Worksheet to Workbook
+     // Workbook contains one or more worksheets
+     XLSX.utils.book_append_sheet(wb, summaryWS(data), 'RESUMEN DE PRESUPUESTO')
+     XLSX.utils.book_append_sheet(wb, await materialsWS(data), 'LISTADO DE MATERIALES')
+     XLSX.utils.book_append_sheet(wb, await budgetWS(data), 'PRESUPUESTO DESGLOSADO')
+
+     // export Excel file
+     XLSX.writeFile(wb, `${fileName}.xlsx`) // name of the file is 'book.xlsx'
+  }
+  const handleReportCancel = () => setExportOpen(false)
 
   useEffect(() => {
 
@@ -378,24 +396,26 @@ export default function EditableTb(props) {
        {
          tooltip: 'Exportar a Excel',
          icon: tableIcons.Export,
-         onClick: async (evt, data) => {
-            console.log(data);
-
-
-            // A workbook is the name given to an Excel file
-            var wb = XLSX.utils.book_new() // make Workbook of Excel
-            // add Worksheet to Workbook
-            // Workbook contains one or more worksheets
-            XLSX.utils.book_append_sheet(wb, summaryWS(data), 'RESUMEN DE PRESUPUESTO')
-            XLSX.utils.book_append_sheet(wb, await materialsWS(data), 'LISTADO DE MATERIALES')
-            XLSX.utils.book_append_sheet(wb, await budgetWS(data), 'PRESUPUESTO DESGLOSADO')
-
-
-
-            // export Excel file
-            XLSX.writeFile(wb, 'budget.xlsx') // name of the file is 'book.xlsx'
-
-         }},
+         onClick: (evt, data) => {setReportData(data); setExportOpen(true);}
+         // onClick: async (evt, data) => {
+         //
+         //
+         //
+         //    // A workbook is the name given to an Excel file
+         //    var wb = XLSX.utils.book_new() // make Workbook of Excel
+         //    // add Worksheet to Workbook
+         //    // Workbook contains one or more worksheets
+         //    XLSX.utils.book_append_sheet(wb, summaryWS(data), 'RESUMEN DE PRESUPUESTO')
+         //    XLSX.utils.book_append_sheet(wb, await materialsWS(data), 'LISTADO DE MATERIALES')
+         //    XLSX.utils.book_append_sheet(wb, await budgetWS(data), 'PRESUPUESTO DESGLOSADO')
+         //
+         //
+         //
+         //    // export Excel file
+         //    XLSX.writeFile(wb, 'budget.xlsx') // name of the file is 'book.xlsx'
+         //
+         // }
+        },
 
          {
           tooltip: 'Eliminar renglones seleccionados',
@@ -450,6 +470,19 @@ export default function EditableTb(props) {
           data={confirmData}
           onConfirm={onConfirm}
       />
+      <ExportDialog
+            classes={{
+              paper: classes.paper,
+            }}
+            id="download-report"
+            keepMounted
+            showTitle = {() => `EXPORTAR A EXCEL`}
+            open={exportOpen}
+            budgetFullName = {props.budgetFullName}
+            onClose={handleReportCancel}
+            data={reportData}
+            onConfirm={onExport}
+        />
     </Fragment>
   );
 }
