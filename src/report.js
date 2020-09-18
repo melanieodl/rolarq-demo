@@ -56,6 +56,22 @@ const styles = {
           fgColor: {rgb: "FF1D4D87"},
         },
     },
+    supplierHeader: {									// style of the header cells of the table
+        font: {
+          name: 'Arial',
+          sz: 10,
+          bold: true,
+          color: { rgb: "ff0a6266" },
+        },
+        alignment: {
+          horizontal: 'center',
+          vertical: 'center'
+        },
+        fill: {
+          bgColor: {rgb: "ffe3f0f0"},
+          fgColor: {rgb: "ffe3f0f0"},
+        },
+    },
     tableSubTitle: {
         font: {
           name: 'Arial',
@@ -140,7 +156,9 @@ const materialsData = data => data.map((row, idx) => ({
                                 "CANTIDAD": row.amount,
                                 "UNIDAD": row.unit,
                                 "PRECIO": row.price,
-                                "TOTAL": row.total}))
+                                "TOTAL": row.total,
+                                "PROVEEDOR": row.supplier,
+                              }))
 
 
 const titleReport = name => ([[`PRESUPUESTO ${name.toUpperCase()}`]])
@@ -178,10 +196,13 @@ const setWSHeader = (data, title) => {
   ws['!cols'][3] = { wch: 12 };
   ws['!cols'][4] = { wch: 15 };
   ws['!cols'][5] = { wch: 18 };
+  ws['!cols'][6] = { wch: 50 };
+
 
   //Informacion de encabezado
   XLSX.utils.sheet_add_aoa(ws, titleReport(project.name), {origin: titleCellAdd});
   XLSX.utils.sheet_add_aoa(ws, [[`${title}`]], {origin: subTitleAdd});
+  XLSX.utils.sheet_add_aoa(ws, [['']], {origin: 'G8'});
   XLSX.utils.sheet_add_aoa(ws, projectInfo(project.address, client, architect), {origin: generalInfoAdd});
   XLSX.utils.sheet_add_aoa(ws, idInfo(name), {origin: dateCaptionAdd});
 
@@ -357,8 +378,9 @@ const materialsWS = async data => {
                                                     resume.unit = cost.unit.symbol
                                                     resume.price = cost.price
                                                     resume.total = resume.total + cost.totalPrice
+                                                    resume.supplier = cost.materialPrice.supplier ? `${cost.materialPrice.supplier.name || ''}`: ''
                                                     return resume
-                                                  } , {name: '', amount: 0, unit:'', price: '', total: 0} ))
+                                                  } , {name: '', amount: 0, unit:'', price: '', total: 0, supplier: ''} ))
   }
 
   //direcciones de las celdas origen
@@ -400,6 +422,8 @@ const materialsWS = async data => {
         workSheet[`D${tableDataRowAdd}`].s = styles.tableHeader
         workSheet[`E${tableDataRowAdd}`].s = styles.tableHeader
         workSheet[`F${tableDataRowAdd}`].s = styles.tableHeader
+        workSheet[`G${tableDataRowAdd - 1}`].s = styles.supplierHeader
+        workSheet[`G${tableDataRowAdd}`].s = styles.supplierHeader
 
 
 
@@ -408,7 +432,7 @@ const materialsWS = async data => {
 
       //celdas Tabla
       for(var i = range.s.r + 9; i <= nRows + 9; ++i){
-        for(var j = range.s.c; j <= 5; ++j){
+        for(var j = range.s.c; j <= 6; ++j){
           if(j < 2){
             if(!workSheet[XLSX.utils.encode_cell({r: i, c: j})]) continue;
             workSheet[XLSX.utils.encode_cell({r: i, c: j})].s = {...styles.tableCell, alignment: {horizontal: 'left', vertical: 'center'}}
