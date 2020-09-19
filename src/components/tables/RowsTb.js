@@ -478,7 +478,6 @@ export default function EditableTb(props) {
             keepMounted
             showTitle = {() => `EXPORTAR A EXCEL`}
             open={exportOpen}
-            budgetFullName = {props.budgetFullName}
             onClose={handleReportCancel}
             data={reportData}
             onConfirm={onExport}
