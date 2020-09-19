@@ -241,6 +241,75 @@ const setHeightRows = ws => {
   return ws
 }
 
+const setNumFormats = ws => {
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  //formato Q. currency
+  const N = XLSX.utils.decode_col("A"); // 1 numeracion
+  const C = XLSX.utils.decode_col("C"); // 1 numeracion
+  const U = XLSX.utils.decode_col("E"); // 5 costo unitario
+  const T = XLSX.utils.decode_col("F"); // 6 costo total
+  const gtq = '"Q"#,##0.00'; // formato Q0.00 currency GTQ
+  const no = '#'; // formato 1 numeracion
+  const qt = '0.00'; // formato 0.00 quantity
+
+  for(var i = range.s.r + 9; i <= range.e.r; i++) {
+    /* find the data cell (range.s.r + 1 skips the header row of the worksheet) */
+
+    let num = XLSX.utils.encode_cell({r:i, c:N});
+    let cant = XLSX.utils.encode_cell({r:i, c:C});
+    let unit = XLSX.utils.encode_cell({r:i, c:U});
+    let total = XLSX.utils.encode_cell({r:i, c:T});
+
+    /* if the particular row did not contain data for the column, the cell will not be generated */
+    if(ws[num]){
+      /* `.t == "n"` for number cells */
+      if(ws[num].t != 'n') {
+        continue;
+      } else {
+        /* assign the `.z` number format */
+        ws[num].z = no;
+      }
+    }
+
+    /* if the particular row did not contain data for the column, the cell will not be generated */
+    if(ws[cant]){
+      /* `.t == "n"` for number cells */
+      if(ws[cant].t != 'n') {
+        continue;
+      } else {
+        /* assign the `.z` number format */
+        ws[cant].z = qt;
+      }
+    }
+
+    /* if the particular row did not contain data for the column, the cell will not be generated */
+    if(ws[unit]){
+      /* `.t == "n"` for number cells */
+      if(ws[unit].t != 'n') {
+        continue;
+      } else {
+        /* assign the `.z` number format */
+        ws[unit].z = gtq;
+      }
+    }
+
+    /* if the particular row did not contain data for the column, the cell will not be generated */
+    if(ws[total]){
+      /* `.t == "n"` for number cells */
+      if(ws[total].t != 'n') {
+        continue;
+      } else {
+        /* assign the `.z` number format */
+        ws[total].z = gtq;
+      }
+    }
+
+  }
+
+  return ws
+
+
+}
 
 //RESUMEN DE PRESUPUESTO WS
 const summaryWS = data => {
@@ -302,38 +371,11 @@ const summaryWS = data => {
   workSheet[totalAdd].s = {...styles.subTitle, alignment: {horizontal:'right', vertical: 'center'}}
 
 
-  //formato Q. currency
-  var U = XLSX.utils.decode_col("E"); // 5 costo unitario
-  var T = XLSX.utils.decode_col("F"); // 6 costo total
-  var fmt = '"Q"#,##0.00'; // formato Q0.00
-
-  // for(var i = range.s.r + 9; i <= range.e.r; ++i) {
-  //   /* find the data cell (range.s.r + 1 skips the header row of the worksheet) */
-  //   var unit = XLSX.utils.encode_cell({r:i, c:U});
-  //
-  //   /* if the particular row did not contain data for the column, the cell will not be generated */
-  //   if(!workSheet[unit]) continue;
-  //   /* `.t == "n"` for number cells */
-  //   if(workSheet[unit].t != 'n') continue;
-  //   /* assign the `.z` number format */
-  //   workSheet[unit].z = fmt;
-  //
-  // }
-  // for(var i = range.s.r + 9; i <= range.e.r; ++i) {
-  //   /* find the data cell (range.s.r + 1 skips the header row of the worksheet) */
-  //   var total = XLSX.utils.encode_cell({r:i, c:T});
-  //
-  //   /* if the particular row did not contain data for the column, the cell will not be generated */
-  //   if(!workSheet[total]) continue;
-  //   /* `.t == "n"` for number cells */
-  //   if(workSheet[total].t != 'n') continue;
-  //   /* assign the `.z` number format */
-  //   workSheet[total].z = fmt;
-  //
-  // }
+  workSheet = setNumFormats(workSheet)
 
 
   //Formulas
+  workSheet[totalAdd].z = '"Q"#,##0.00'
   workSheet[totalAdd].f = `SUM(${XLSX.utils.encode_cell({r: 9, c: 5})}:${XLSX.utils.encode_cell({r: nRows + 8, c: 5})})`
   workSheet[totalAdd].F =`${totalAdd}:${totalAdd}`
 
@@ -450,30 +492,19 @@ const materialsWS = async data => {
         }
       }
 
-
-
       //total tabla
       if(await costs.length > 0){
         XLSX.utils.sheet_add_aoa(workSheet, [['COSTO TOTAL']], {origin: totalTitleAdd});
         //Formulas
         workSheet[totalTitleAdd].s = styles.subTitle
         //FORMULA DEL FINAL
+        workSheet[totalAdd].z = '"Q"#,##0.00'
         workSheet[totalAdd].F =`${totalAdd}:${totalAdd}`
         workSheet[totalAdd].f = `SUM(${XLSX.utils.encode_cell({r: 9, c: 5})}:${XLSX.utils.encode_cell({r: nRows + 8, c: 5})})`
         workSheet[totalAdd].s = {...styles.subTitle, alignment: {horizontal:'right', vertical: 'center'}}
-
-
       }
 
-
-      //formato Q. currency
-      var U = XLSX.utils.decode_col("E"); // 5 costo unitario
-      var T = XLSX.utils.decode_col("F"); // 6 costo total
-      var fmt = '"Q"#,##0.00'; // formato Q0.00
-
-
-
-
+  workSheet = setNumFormats(workSheet)
 
   console.log('costos', await costs);
   return setHeightRows(workSheet)
@@ -488,7 +519,9 @@ const budgetWS = async rows => {
   var activeRow = 9;
 
   const {project, client, architect, name} = rows[0].budget;
-
+  const gtq = '"Q"#,##0.00'; // formato Q0.00 currency GTQ
+  const no = '#'; // formato 1 numeracion
+  const qt = '0.00'; // formato 0.00 quantity
 
   async function addCosts(rows) {
     let costs = Promise.all(rows.map( async row => {
@@ -523,11 +556,16 @@ const budgetWS = async rows => {
 
         XLSX.utils.sheet_add_json(workSheet, rowData(row, idx), {origin: `A${activeRow++}`, skipHeader:true});
         workSheet[`A${activeRow - 1}`].s = styles.tableHeader
+        workSheet[`A${activeRow - 1}`].z = no
         workSheet[`B${activeRow - 1}`].s = {...styles.tableHeader, alignment: {horizontal: 'left', vertical: 'center'}}
         workSheet[`C${activeRow - 1}`].s = styles.tableHeader
+        workSheet[`C${activeRow - 1}`].z = qt
         workSheet[`D${activeRow - 1}`].s = styles.tableHeader
         workSheet[`E${activeRow - 1}`].s = {...styles.tableHeader, alignment: {horizontal: 'right', vertical: 'center'}}
+        workSheet[`E${activeRow - 1}`].z = gtq
         workSheet[`F${activeRow - 1}`].s = {...styles.tableHeader, alignment: {horizontal: 'right', vertical: 'center'}}
+        workSheet[`F${activeRow - 1}`].z = gtq
+
 
 
 
@@ -566,6 +604,11 @@ const budgetWS = async rows => {
                 }
               }
             }
+
+            for (var i = activeRow - 1; i < activeRow + row.materialCosts.length + 9; i++) {
+              if(!workSheet[XLSX.utils.encode_cell({r: i, c: 2})]) continue;
+              workSheet[XLSX.utils.encode_cell({r: i , c: 2})].z = qt
+            }
             activeRow += row.materialCosts.length
 
 
@@ -574,6 +617,9 @@ const budgetWS = async rows => {
             XLSX.utils.sheet_add_aoa(workSheet, [["", "Subtotal de materiales", "", "", "", `${row.materialCost}`]], {origin: `A${activeRow++}`});
             workSheet[`B${activeRow - 1}`].s = styles.groupTotal
             workSheet[`F${activeRow - 1}`].s = {...styles.groupTotal, alignment: {horizontal: 'right', vertical: 'center'}}
+            workSheet[`F${activeRow - 1}`].t = 'n'
+            workSheet[`F${activeRow - 1}`].z = gtq
+
 
         }
 
@@ -605,6 +651,11 @@ const budgetWS = async rows => {
                 }
               }
             }
+
+            for (var i = activeRow - 1; i < activeRow + row.workForceCosts.length + 9; i++) {
+              if(!workSheet[XLSX.utils.encode_cell({r: i, c: 2})]) continue;
+              workSheet[XLSX.utils.encode_cell({r: i , c: 2})].z = qt
+            }
             activeRow += row.workForceCosts.length
 
             workSheet['!merges'] = [ ...workSheet['!merges'],
@@ -612,6 +663,9 @@ const budgetWS = async rows => {
             XLSX.utils.sheet_add_aoa(workSheet, [["", "Subtotal de mano de obra", "", "", "", `${row.workForceCost}`]], {origin: `A${activeRow++}`});
             workSheet[`B${activeRow - 1}`].s = styles.groupTotal
             workSheet[`F${activeRow - 1}`].s = {...styles.groupTotal, alignment: {horizontal: 'right', vertical: 'center'}}
+            workSheet[`F${activeRow - 1}`].t = 'n'
+            workSheet[`F${activeRow - 1}`].z = gtq
+
 
         }
 
@@ -623,6 +677,9 @@ const budgetWS = async rows => {
             workSheet[`A${activeRow - 1}`].s = styles.rowSubTotal
             workSheet[`B${activeRow - 1}`].s = styles.rowSubTotal
             workSheet[`F${activeRow - 1}`].s = {...styles.rowSubTotal,  alignment: {horizontal: 'right', vertical: 'center'}}
+            workSheet[`F${activeRow - 1}`].t = 'n'
+            workSheet[`F${activeRow - 1}`].z = gtq
+
           }
 
         if(row.indirectCosts.length > 0){
@@ -652,6 +709,11 @@ const budgetWS = async rows => {
                 }
               }
             }
+            for (var i = activeRow - 1; i < activeRow + row.indirectCosts.length + 9; i++) {
+              if(!workSheet[XLSX.utils.encode_cell({r: i, c: 2})]) continue;
+
+                workSheet[XLSX.utils.encode_cell({r: i , c: 2})].z = qt
+            }
             activeRow += row.indirectCosts.length
 
         }
@@ -666,6 +728,8 @@ const budgetWS = async rows => {
                 workSheet[`A${activeRow - 1}`].s = styles.rowSubTotal
                 workSheet[`B${activeRow - 1}`].s = styles.rowSubTotal
                 workSheet[`F${activeRow - 1}`].s = {...styles.rowSubTotal,  alignment: {horizontal: 'right', vertical: 'center'}}
+                workSheet[`F${activeRow - 1}`].t = 'n'
+                workSheet[`F${activeRow - 1}`].z = gtq
 
         }
 
@@ -676,7 +740,10 @@ const budgetWS = async rows => {
              XLSX.utils.sheet_add_aoa(workSheet, [["", "COSTO TOTAL RENGLON", "", "", "", `${row.totalCost || 0}`]], {origin: `A${activeRow++}`});
              workSheet[`A${activeRow - 1}`].s = styles.tableHeader
              workSheet[`B${activeRow - 1}`].s = styles.tableHeader
+             workSheet[`F${activeRow - 1}`].t = 'n'
+             workSheet[`F${activeRow - 1}`].z = gtq
              workSheet[`F${activeRow - 1}`].s = {...styles.tableHeader, alignment: {horizontal: 'right', vertical: 'center'}}
+
            }
 
 
