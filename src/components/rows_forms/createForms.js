@@ -168,6 +168,8 @@ const CreateForm = ({getSteps, budgetId, apiId,
             ))}
           </Stepper>
           <Formik
+          enableReinitialize // missing piece!!
+
             initialValues={{...initialValues}}
             validationSchema={Yup.object().shape({...step.schema})}
             onSubmit={handleOnSubmit}
