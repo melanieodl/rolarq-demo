@@ -220,7 +220,7 @@ export default function FullScreenDialog(props) {
         </Grid>
         </Grid>
         <br/>
-        <Container className={classes.backTb} maxWidth="false">
+        <Container className={classes.backTb}>
           <EditTable setReload={setReload} units={units} options={options} data={data} setData={setData} columns={columns} url={`budgets/${props.id}/rows`} title='Renglones' label='renglon' budgetId={props.id}
           lookupEffects={[unitsEffect]} panels={panels}/>
         </Container>

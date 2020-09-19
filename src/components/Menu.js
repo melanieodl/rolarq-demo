@@ -1,14 +1,14 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {Divider, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core'
 import items from './menuData'
 
 function Menu(props) {
+  let val = 0
   return(
       <div>
-        <div  />
         {items.map((group) => {
             return (
-              <div>
+              <Fragment key={++val}>
                 <Divider />
                 <List>
                   {group.map((item, key) => {
@@ -23,7 +23,7 @@ function Menu(props) {
                     })
                   }
                 </List>
-              </div>
+              </Fragment>
             )
           })}
 

@@ -1,7 +1,7 @@
 import React, {useState, Fragment} from 'react';
 import api from '../../../api'
 import {Fab} from '@material-ui/core'
-import {ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList} from '@material-ui/core';
+import {ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList, Dialog} from '@material-ui/core';
 import { Button, LinearProgress } from '@material-ui/core';
 
 import Icon from '@material-ui/icons/MoreVert';
@@ -32,7 +32,7 @@ export default function MenuListComposition(props) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [openModal, setOpenModal] = React.useState(false);
-  const [formDialog, setFormDialog] = React.useState({active: Fragment})
+  const [formDialog, setFormDialog] = React.useState({active: props.actions[0].form})
 
 
   const handleToggle = () => {
@@ -107,7 +107,7 @@ export default function MenuListComposition(props) {
               <Paper elevation={10}>
                 <ClickAwayListener onClickAway={handleCloseMenu}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    {props.actions.map(item => (<MenuItem onClick={(e) => {handleOpenModal(e, item.form)}}>{item.name}</MenuItem>)
+                    {props.actions.map(item => (<MenuItem key={item.name} onClick={(e) => {handleOpenModal(e, item.form)}}>{item.name}</MenuItem>)
                     )}
                   </MenuList>
                 </ClickAwayListener>

@@ -80,13 +80,13 @@ const Budgets = props => {
    ]
 
   return (
-    <div>
+    <Fragment>
     <Box m={5} />
     <BudgetDetails open={open} handleClose={handleClose} id={idBudget}/>
     <Container fixed maxWidth="lg">
     <Table columns={columns} url='budgets' title='Presupuestos' label='presupuesto' lookupEffects={[projectsEffect]} />
     </Container>
-    </div>
+    </Fragment>
   )
 
 }

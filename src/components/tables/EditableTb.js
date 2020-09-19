@@ -12,7 +12,7 @@ import {Add, ArrowDownward, Check, ChevronLeft, ChevronRight, Clear,
 
 
 const tableIcons = {
-    Add: forwardRef((props, ref) => <Fab color="secondary" size="medium"><Add {...props} ref={ref} /> </Fab>),
+    Add: () => (<Fab color="secondary" size="medium"><Add /> </Fab>),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
     Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
     Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
