@@ -3,11 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import api from '../../api'
 
 
-import { Grid, TextField } from "@material-ui/core";
+import { Grid, TextField, Select } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { Field } from "formik";
 import {Typography,  MenuItem, InputLabel, FormControl, InputAdornment} from '@material-ui/core'
-import { Select } from 'formik-material-ui';
 import SpecialPriceIcon from '@material-ui/icons/StarRateRounded';
 
 const useStyles = makeStyles({
@@ -26,8 +25,14 @@ const CostGroup = ({url,
   const classes = useStyles()
 
   const [materials, setMaterials] = useState([])
+  const [price, setPrice] = useState('')
   const loading = materials.length === 0;
 
+  useEffect(()=>{console.log('price en effect', values[priceName]);
+    values[priceName] && setPrice(values[priceName])
+    console.log('valor de precio', price);
+
+}, [values[priceName]])
 
   useEffect(() => {
     if (!loading) {
@@ -57,10 +62,19 @@ const CostGroup = ({url,
           options={materials}
           value={values[materialName]}
           loading={loading}
+          openOnFocus
           onChange={(e, value) => {
             setFieldValue(materialName, value);
-            setFieldValue(priceName, '')
+            setFieldValue(priceName, value ? {...value.prices.reduce((defaultPrice, currentPrice) => {
+                                                          return currentPrice;},
+                                                         {id: '', material: {}, special: false, price: 0, supplier: {} })}
+                                            : null)
+            if(!value){
+              setPrice(null)
+            }
+
           }}
+
           getOptionLabel={option => option.name}
           getOptionDisabled={option => option.prices.length <= 0}
           renderInput={params => (
@@ -77,40 +91,37 @@ const CostGroup = ({url,
         ) : null}
       </Grid>
       <Grid item xs={12} md={3}>
-        <FormControl>
-          <InputLabel htmlFor={`${materialName}-price`}>{priceLabel}</InputLabel>
-          <Field
-            component={Select}
-            disabled={!values[materialName] || !values[materialName].prices|| values[materialName].prices.length === 0}
-            name={priceName}
-            defaultValue= {values[priceName] ? values[priceName] : { price: ""} }
-            renderValue={value => <MenuItem dense className={classes.denseItem} value={value}>
-                                  {value.special &&
-                                      <SpecialPriceIcon color='secondary' fontSize="small" />
-                                    }
-                                   {value.price === "" ? "" : new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'gtq' }).format(value.price)}
-                                  </MenuItem>
-                              }
-            inputProps={{
-              id: `${materialName}-price`,
-            }}
-
-          >
-
-              {values[materialName] && values[materialName].prices.map(cementPrice => <MenuItem value={cementPrice}>
-                  {cementPrice.special &&
-                      <SpecialPriceIcon color='secondary' fontSize="small" />}
-                  {cementPrice.price ?
-                     new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'gtq' }).format(cementPrice.price) : ''}
-
-                </MenuItem>)}
-
-          </Field>
-          {errors[priceName] && touched[priceName] ? (
-            <div><Typography color='error' variant='caption'>{errors[priceName]}</Typography></div>
-          ) : null}
+        <FormControl className={classes.formControl}>
+          <InputLabel id={`${priceName}-label`}>{priceLabel}</InputLabel>
+          <Select
+             labelId={`${priceName}-label`}
+             disabled={!values[materialName] || !values[materialName].prices|| values[materialName].prices.length === 0}
+             id="demo-simple-select"
+             value={price}
+             onChange={(evt, child) => setPrice(evt.target.value)}
+             defaultValue= {values[priceName] ? values[priceName] : null }
+             renderValue={value => value && value.price ? <MenuItem dense className={classes.denseItem} value={value}>
+                                            {value.special &&
+                                                <SpecialPriceIcon color='secondary' fontSize="small" />
+                                              }
+                                             {value.price && new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'gtq' }).format(value.price)}
+                                            </MenuItem>
+                                          : null}
+            displayEmpty
+            >
+             {values[materialName] && values[materialName].prices.map(cementPrice => <MenuItem key={cementPrice.id} value={cementPrice}>
+                 {cementPrice.special &&
+                     <SpecialPriceIcon color='secondary' fontSize="small" />}
+                 {cementPrice.price ?
+                    new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'gtq' }).format(cementPrice.price) : ''}
+               </MenuItem>)}
+           </Select>
+           {errors[priceName] && touched[priceName] ? (
+             <div><Typography color='error' variant='caption'>{errors[priceName]}</Typography></div>
+           ) : null}
         </FormControl>
       </Grid>
+
       <Grid item xs={12} md={3}>
           <Field
           component={TextField}
