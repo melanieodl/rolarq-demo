@@ -6,7 +6,7 @@ import api from '../../api'
 import { Grid, TextField, Select } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { Field } from "formik";
-import {Typography,  MenuItem, InputLabel, FormControl, InputAdornment} from '@material-ui/core'
+import {Typography,  MenuItem, InputLabel, FormControl, InputAdornment, FormHelperText} from '@material-ui/core'
 import SpecialPriceIcon from '@material-ui/icons/StarRateRounded';
 
 const useStyles = makeStyles({
@@ -142,6 +142,7 @@ const CostGroup = ({url,
              ),
            }}
          />
+         {<FormHelperText id={`${pctName}-helper-text`}>{`Opcional`}</FormHelperText>}
          {errors[pctName] && touched[pctName] ? (
            <div><Typography color='error' variant='caption'>{errors[pctName]}</Typography></div>
          ) : null}
