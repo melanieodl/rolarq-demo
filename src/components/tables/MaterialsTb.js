@@ -21,7 +21,7 @@ import MenuDial from './partials/MenuDial'
 import ConfirmationDialog from '../partials/ConfirmationDialog'
 
 import {CementForm, SandForm, GravelForm,
-        IronForm, TieWireForm, BlockForm, CoverPreMixForm} from '../materials_forms/createForms'
+        IronForm, TieWireForm, BlockForm, CoverPreMixForm, PaintForm} from '../materials_forms/createForms'
 
 import formsMap from '../materials_forms/forms_map'
 import {toCurrency} from '../../functions'
@@ -177,6 +177,7 @@ export default function MaterialsTb(props) {
      { name: 'Alambre de Amarre', form: TieWireForm },
      { name: 'Block', form: BlockForm  },
      { name: 'Recubrimiento Premezclado', form: CoverPreMixForm  },
+     { name: 'Pintura', form: PaintForm},
 
    ];
 

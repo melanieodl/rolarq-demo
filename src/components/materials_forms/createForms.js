@@ -8,7 +8,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 import {NameField, LinearMeterField, QuantityField, VolumeFields } from '../inputFields'
 
-import {name, length, width, height, knotsPerPound, sqrMtsPerBag} from '../schemas'
+import {name, length, width, height, knotsPerPound, sqrMtsPerBag, sqrMtsPerGal} from '../schemas'
 
 import * as Yup from 'yup';
 
@@ -20,6 +20,7 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
     setServerState({ok, msg});
   };
   const handleOnSubmit = (values, {setSubmitting, resetForm}) => {
+    console.log('values', values);
     api.post(`${apiId}`, {...values})
       .then(response => {
         api.get(`${apiId}/${response.data.id}`)
@@ -176,6 +177,25 @@ const CoverPreMixForm = ({openModal, closeModal, setData}) => {
 
 }
 
+const PaintForm = ({openModal, closeModal, setData}) => {
+  const SpecsForm = ({values, setFieldValue, errors, touched}) => (
+    <Fragment>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <QuantityField name='sqrMtsPerGal' label='&#13217; / &#13311;' value={values.sqrMtsPerGal}
+            helperText='Rendimiento: Cantidad de metros cuadrados por galón de pintura'
+            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+        </Grid>
+      </Grid>
+    </Fragment>
+  )
+
+  return (
+    <CreateForm apiId='paints' title='Pintura' label='pintura'
+      Specs={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData} schema={{sqrMtsPerGal}}/>)
+
+}
 
 
-export {CementForm, SandForm, GravelForm, IronForm, TieWireForm, BlockForm, CoverPreMixForm}
+
+export {CementForm, SandForm, GravelForm, IronForm, TieWireForm, BlockForm, CoverPreMixForm, PaintForm}
