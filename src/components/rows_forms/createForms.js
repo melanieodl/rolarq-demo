@@ -571,15 +571,14 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
 
   // const initialValues = {name: 'COLUMNA'}
 
-    const {amount, length, width, height, recubrimiento,
-      cantLongsElems, separacion, longPata, longHook} = initials
+
 
     const frameInitials = {}
 
     const initialValues = {
-      name: `COLUMNA `, amount, length, width, height,
-      recubrimiento, cantLongsElems, cantLongsAuxElems: '',  estribosDouble: false,
-      separacion, longHook, longPata,
+      name: `COLUMNA `, amount: '', length: '', width: '', height: '',
+      recubrimiento: '', cantLongsElems: '', cantLongsAuxElems: '',  estribosDouble: false,
+      separacion: '', longHook: '', longPata: '',
       ...concretoInitials, ...frameTriIronInitials
     }
 
