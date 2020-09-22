@@ -428,7 +428,7 @@ const MezclonMorteroForm = ({budgetId, rowId, open, closeModal}) => {
 
 const MezclonConcretoForm = ({budgetId, rowId, open, closeModal}) => {
   const [mezclon, setMezclon] = useState({})
-  const apiId = 'extmezclones'
+  const apiId = 'concmezclones'
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setMezclon(res.data))
@@ -451,6 +451,36 @@ const MezclonConcretoForm = ({budgetId, rowId, open, closeModal}) => {
   }
   return(
     <UpdateForm apiId={apiId} title="Mezclón de Concreto"
+      form={{inner: Form}} formData={mezclon} validationSchema={areaVolSchema}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
+
+const MezclonExtForm = ({budgetId, rowId, open, closeModal}) => {
+  const [mezclon, setMezclon] = useState({})
+  const apiId = 'extmezclones'
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => setMezclon(res.data))
+    .catch(err => console.log(err))
+  }, [open])
+
+
+  const Form = ({values, setFieldValue, errors, touched}) => {
+    return (
+         <Fragment>
+            <AreaVolForm values={values} setFieldValue={setFieldValue}
+              errors={errors} touched={touched}/>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                  <ConcretoProp errors={errors} touched={touched} value={mezclon.mixProp}/>
+              </Grid>
+            </Grid>
+          </Fragment>
+    )
+  }
+  return(
+    <UpdateForm apiId={apiId} title="Concreteado de Garage y Banquetas"
       form={{inner: Form}} formData={mezclon} validationSchema={areaVolSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
@@ -525,4 +555,4 @@ const PinturaForm = ({budgetId, rowId, open, closeModal}) => {
 
 export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,
         SoleraForm, ColumnaForm, ColumnaEspecialForm, MuroForm, MezclonMorteroForm,
-        MezclonConcretoForm, RepelloForm, PinturaForm}
+        MezclonConcretoForm, RepelloForm, PinturaForm, MezclonExtForm}
