@@ -13,7 +13,7 @@ import { Autocomplete } from "@material-ui/lab";
 import { Formik, Form, Field } from "formik";
 import { Select } from 'formik-material-ui';
 
-import {PreMixCost, BlockCost, WallPaintCost, CeilPaintCost} from './costFields'
+import {PreMixCost, BlockCost, WallPaintCost, CeilPaintCost, ElectromallaCost} from './costFields'
 
 import {NameField, LinearMeterField, QuantityField,
         SquareMeterField, PercentageField, BooleanField,
@@ -30,7 +30,8 @@ import {name, amount, length, width, height,
         sand, sandPrice, sandWastePct,
         preMix, preMixPrice, preMixWastePct,
         wallPaint, wallPaintPrice, wallPaintWastePct,
-        ceilPaint, ceilPaintPrice, ceilPaintWastePct} from '../schemas'
+        ceilPaint, ceilPaintPrice, ceilPaintWastePct,
+        electromalla, electromallaPrice, electromallaWastePct} from '../schemas'
 
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup, frameTriIronGroup,
@@ -476,7 +477,7 @@ const MezclonConcretoForm =({budgetId, openModal, closeModal, setData}) => {
   const {name: nameInitial, area, height} = initials
   const initialValues = {nameInitial, area, height, ...morteroInitials}
 
-  return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="extmezclones"
+  return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="concmezclones"
     budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
 }
 
@@ -495,6 +496,30 @@ const MezclonMorteroForm =({budgetId, openModal, closeModal, setData}) => {
   const initialValues = {nameInitial, area, height, ...morteroInitials}
 
   return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="mezclones"
+    budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
+}
+
+const MezclonExtForm =({budgetId, openModal, closeModal, setData}) => {
+
+
+  const getSteps = () => ([
+    { label:'Especificaciones de Mezclón de Garage y Banquetas',
+      schema: areaVolSchema,
+      form: AreaVolForm},
+    { label:'Agregar costos de Materiales',
+      schema: {...concretoSchema, electromalla,
+                  electromallaPrice, electromallaWastePct},
+      form: ({values, setFieldValue, errors, touched}) => (
+            <Fragment>
+              <ConcretoForm values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+              <ElectromallaCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+            </Fragment>)}
+  ])
+
+  const {name: nameInitial, area, height} = initials
+  const initialValues = {nameInitial, area, height, ...morteroInitials}
+
+  return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="extmezclones"
     budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
 }
 
@@ -630,5 +655,6 @@ const PinturaForm =({budgetId, openModal, closeModal, setData}) => {
 
 export {SoleraForm, CimientoForm, ColumnaForm, ColumnaEspecialForm, ZapataForm,
         LosaPlanaForm, LosaInclinadaForm,
-        RepelloCernidoForm, MuroForm, MezclonConcretoForm, MezclonMorteroForm,
+        RepelloCernidoForm, MuroForm,
+        MezclonConcretoForm, MezclonMorteroForm, MezclonExtForm,
         PinturaForm}

@@ -22,7 +22,8 @@ import ExportDialog from '../partials/ExportDialog'
 
 import {SoleraForm, ZapataForm, ColumnaForm, ColumnaEspecialForm,
         CimientoForm, LosaPlanaForm, LosaInclinadaForm,
-        RepelloCernidoForm, MuroForm, MezclonConcretoForm, MezclonMorteroForm,
+        RepelloCernidoForm, MuroForm,
+        MezclonConcretoForm, MezclonMorteroForm, MezclonExtForm,
         PinturaForm} from '../rows_forms/createForms'
 
 import {toCurrency} from '../../functions'
@@ -60,10 +61,12 @@ const tableIcons = {
     { name: 'Losa Plana', form: LosaPlanaForm },
     { name: 'Losa Inclinada', form: LosaInclinadaForm },
     { name: 'Muro', form: MuroForm },
-    { name: 'Mezclón Concreto', form: MezclonConcretoForm },
     { name: 'Mezclón Mortero', form: MezclonMorteroForm },
+    { name: 'Mezclón Concreto', form: MezclonConcretoForm },
+    { name: 'Mezclón Garage y Banquetas', form: MezclonExtForm },
     { name: 'Repello y Cernido', form: RepelloCernidoForm },
-    { name: 'Pintura', form: PinturaForm }
+    { name: 'Pintura', form: PinturaForm },
+
 
 
   ];

@@ -251,6 +251,16 @@ const CeilPaintCost = ({values, setFieldValue, errors, touched}) => (
 )
 
 
+const ElectromallaCost = ({values, setFieldValue, errors, touched}) => (
+  <CostGroup url='electromallas'
+               materialName='electromalla' materialLabel='Electromalla'
+               priceName='electromallaPrice' priceLabel='Precio de electromalla'
+               pctName='electromallaWastePct' pctLabel='Pct. de Desperdicio'
+               values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+)
+
+
 export {CementCost, SandCost, GravelCost,
         IronCost, LongIronCost, LongIronAuxCost, TransIronCost,
-        TieWireCost, BlockCost, PreMixCost, WallPaintCost, CeilPaintCost}
+        TieWireCost, BlockCost, PreMixCost, WallPaintCost, CeilPaintCost,
+        ElectromallaCost}
