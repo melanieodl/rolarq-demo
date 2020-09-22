@@ -8,7 +8,8 @@ const map = {
   5: TieWireForm,
   6: BlockForm,
   7: CoverPreMixForm,
-  8: Fragment
+  8: Fragment,
+  9: Fragment
 
 }
 

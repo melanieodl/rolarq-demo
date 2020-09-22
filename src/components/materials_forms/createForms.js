@@ -6,9 +6,10 @@ import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import {NameField, LinearMeterField, QuantityField, VolumeFields } from '../inputFields'
+import {NameField, LinearMeterField, SquareMeterField, QuantityField,
+        VolumeFields } from '../inputFields'
 
-import {name, length, width, height, knotsPerPound, sqrMtsPerBag, sqrMtsPerGal} from '../schemas'
+import {name, area, length, width, height, knotsPerPound, sqrMtsPerBag, sqrMtsPerGal} from '../schemas'
 
 import * as Yup from 'yup';
 
@@ -196,6 +197,25 @@ const PaintForm = ({openModal, closeModal, setData}) => {
 
 }
 
+const ElectromallaForm = ({openModal, closeModal, setData}) => {
+  const SpecsForm = ({values, setFieldValue, errors, touched}) => (
+    <Fragment>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <SquareMeterField name='area' label='Area' value={values.areal}
+            helperText='Superficie de la plancha de electromalla'
+            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+        </Grid>
+      </Grid>
+    </Fragment>
+  )
+
+  return (
+    <CreateForm apiId='electromallas' title='Electromalla' label='electromalla'
+      Specs={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData} schema={{area}}/>)
+
+}
 
 
-export {CementForm, SandForm, GravelForm, IronForm, TieWireForm, BlockForm, CoverPreMixForm, PaintForm}
+export {CementForm, SandForm, GravelForm, IronForm, TieWireForm, BlockForm, CoverPreMixForm, PaintForm,
+        ElectromallaForm}
