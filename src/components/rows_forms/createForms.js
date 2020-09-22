@@ -1,4 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react";
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+
 import api from '../../api'
 import * as Yup from 'yup';
 
@@ -46,6 +48,14 @@ const [zapataSchema, ZapataFormGroup] = zapataGroup
 const [losaPlanaSchema, LosaPlanaSpecsForm] = losaPlanaGroup
 const [losaInclinadaSchema, LosaInclinadaSpecsForm] = losaInclinadaGroup
 const [muroSchema, MuroSpecsForm] = muroGroup
+
+
+const useStyles = makeStyles((theme) => ({
+  soloInput: {
+    textAlign: 'right'
+  },
+}));
+
 
 const initials =  {
     name: ``,
@@ -96,6 +106,7 @@ const CreateForm = ({getSteps, budgetId, apiId,
                      initialValues,
                      openModal, closeModal,
                      setData, errors, touched, values, setFieldValue}) => {
+
 
     const url = `budgets/${budgetId}/${apiId}`
 
@@ -497,6 +508,8 @@ const MezclonMorteroForm =({budgetId, openModal, closeModal, setData}) => {
 }
 
 const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
+  const classes = useStyles();
+
   const specsSchema = {
     name, amount, length, width, height,
     estribosDouble, recubrimiento, cantLongsElems, cantLongsAuxElems,
@@ -546,9 +559,9 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
          setFieldValue={setFieldValue} errors={errors} touched={touched}/>
        </Grid>
      </Grid>
-     <Grid container spacing={3}>
-       <Grid item xs={3}>
-         <BooleanField name="estribosDouble" label="Estribos dobles"/>
+     <Grid container direction="row-reverse" justify="flex-start" spacing={3}>
+       <Grid item alignItems="flex-end" className={classes.soloInput} xs={3}>
+         <BooleanField name="estribosDouble" label="Estribos dobles" />
        </Grid>
      </Grid>
      </Fragment>
