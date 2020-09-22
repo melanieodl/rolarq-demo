@@ -1,5 +1,7 @@
 import React, {useState, useEffect, Fragment} from "react";
 import ReactDOM from "react-dom";
+import columnImg from '../../imgs/columna.png';
+import HelpImg from '../partials/HelpImg'
 import { Grid, TextField, CircularProgress } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { Formik, Form, Field } from "formik";
@@ -42,7 +44,8 @@ const TitleIcon = () => <DonutLargeIcon fontSize='large' color='primary' />
 
 const UpdateForm = ({apiId, budgetId,
                      form, title, formData,
-                     validationSchema, open, closeModal}) => {
+                     validationSchema, open, closeModal,
+                     maxWidth}) => {
 
   const url= `budgets/${budgetId}/${apiId}`
 
@@ -82,7 +85,7 @@ const UpdateForm = ({apiId, budgetId,
 
   return (
 
-    <Dialog maxWidth='md' fullWidth open={open} onClose={() => closeModal} aria-labelledby="form-dialog-title">
+    <Dialog maxWidth={maxWidth || 'md'} fullWidth open={open} onClose={() => closeModal} aria-labelledby="form-dialog-title">
     <DialogContent>
         <Stepper alternativeLabel>
             <Step key={`${title}`}>
@@ -303,23 +306,33 @@ const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
     .catch(err => console.log(err))
   }, [open])
 
+
+
+
+
   const Form = ({values, setFieldValue, errors, touched}) => {
     return (
-            <Fragment>
-              <TransQuantityForm values={values} setFieldValue={setFieldValue}
-                errors={errors} touched={touched}/>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <ConcretoProp errors={errors} touched={touched} value={columna.mixProp}/>
-                </Grid>
+            <Grid container alignItems="center">
+              <Grid item xs={3}>
+                 <HelpImg image={columnImg}/>
               </Grid>
-            </Fragment>
+              <Grid item xs={9}>
+                  <TransQuantityForm values={values} setFieldValue={setFieldValue}
+                    errors={errors} touched={touched}/>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <ConcretoProp errors={errors} touched={touched} value={columna.mixProp}/>
+                    </Grid>
+                  </Grid>
+              </Grid>
+            </Grid>
+
     )
   }
   return(
     <UpdateForm apiId="columnas" title="Columna"
       form={{inner: Form}} formData={columna} validationSchema={transQuantitySchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal} maxWidth='lg'/>
   )
 }
 
@@ -335,7 +348,11 @@ const ColumnaEspecialForm = ({budgetId, rowId, open, closeModal}) => {
 
   const Form = ({values, setFieldValue, errors, touched}) => {
     return (
-        <Fragment>
+      <Grid container alignItems="center">
+        <Grid item xs={3}>
+           <HelpImg image={columnImg}/>
+        </Grid>
+        <Grid item xs={9}>
           <ColumnaEspecialSpecsForm values={values} setFieldValue={setFieldValue}
             errors={errors} touched={touched}/>
           <Grid container spacing={3}>
@@ -343,13 +360,14 @@ const ColumnaEspecialForm = ({budgetId, rowId, open, closeModal}) => {
                 <ConcretoProp errors={errors} touched={touched} value={columna.mixProp}/>
             </Grid>
           </Grid>
-        </Fragment>
+        </Grid>
+      </Grid>
     )
   }
   return(
     <UpdateForm apiId={apiId} title="Columna Especial"
       form={{inner: Form}} formData={columna} validationSchema={columnaEspecialSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal} maxWidth='lg'/>
   )
 }
 

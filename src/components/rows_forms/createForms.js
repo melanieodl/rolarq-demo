@@ -1,9 +1,9 @@
 import React, {useState, useEffect, Fragment} from "react";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-
 import api from '../../api'
 import * as Yup from 'yup';
-
+import columnImg from '../../imgs/columna.png';
+import HelpImg from '../partials/HelpImg'
 import {Stepper, Step, StepLabel, StepContent,
         Grid, TextField, CircularProgress } from '@material-ui/core'
 
@@ -109,7 +109,8 @@ const EmptyForm = props => <Fragment />
 const CreateForm = ({getSteps, budgetId, apiId,
                      initialValues,
                      openModal, closeModal,
-                     setData, errors, touched, values, setFieldValue}) => {
+                     setData, errors, touched, values, setFieldValue,
+                     maxWidth}) => {
 
 
     const url = `budgets/${budgetId}/${apiId}`
@@ -173,7 +174,7 @@ const CreateForm = ({getSteps, budgetId, apiId,
 
     return (
 
-      <Dialog maxWidth='md' fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
+      <Dialog maxWidth={maxWidth  || 'md'} fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
       <DialogContent>
           <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map(({label}) => (
@@ -304,11 +305,20 @@ const CimientoForm = ({budgetId, openModal, closeModal, setData}) => {
 }
 
 const ColumnaForm = ({budgetId, openModal, closeModal, setData}) => {
-
+  const classes = useStyles()
   const getSteps = () => ([
     { label:'Especificaciones de Columna',
       schema: transQuantitySchema,
-      form: TransQuantityForm},
+      form: ({values, setFieldValue, errors, touched}) => (
+        <Grid container alignItems="center">
+          <Grid item xs={3}>
+             <HelpImg image={columnImg}/>
+          </Grid>
+          <Grid item xs={9}>
+          <TransQuantityForm values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+          </Grid>
+        </Grid>
+      )},
     { label:'Agregar Costos de Concreto',
       schema: concretoSchema,
       form: ConcretoForm},
@@ -327,11 +337,10 @@ const ColumnaForm = ({budgetId, openModal, closeModal, setData}) => {
     ...concretoInitials, ...frameBiIronInitials
   }
 
-  return (
-    <CreateForm getSteps={getSteps} budgetId={budgetId} apiId="columnas" initialValues={initialValues}
-                setData={setData}
-                openModal={openModal} closeModal={closeModal}/>
-  )
+  return (<CreateForm getSteps={getSteps} budgetId={budgetId} apiId="columnas" initialValues={initialValues}
+                    setData={setData}
+                    openModal={openModal} closeModal={closeModal}
+                    maxWidth='lg'/>)
 }
 
 const ZapataForm = ({budgetId, openModal, closeModal, setData}) => {
@@ -543,55 +552,61 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
     separacion, longHook, longPata
   }
 
+
   const SpecsForm = ({values, setFieldValue, errors, touched}) => (
-     <Fragment>
-     <Grid container spacing={3}>
-       <Grid item xs={8}>
-          <NameField value={values.name} setFieldValue={setFieldValue}
-          errors={errors} touched={touched}/>
-       </Grid>
-       <Grid item xs={4}>
-          <QuantityField name="amount" label="Cantidad" value={values.amount}
-          setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-       </Grid>
-     </Grid>
-     <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
-     <Grid container spacing={3}>
-      <Grid item xs={6}>
-        <QuantityField name="cantLongsElems" label="Cantidad Elementos Esquinas"
-        value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+    <Grid container alignItems="center">
+      <Grid item xs={3}>
+         <HelpImg image={columnImg}/>
       </Grid>
-      <Grid item xs={6}>
-        <QuantityField name="cantLongsAuxElems" label="Cantidad Elementos Auxiliares"
-        value={values.cantLongsAuxElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-      </Grid>
-     </Grid>
-     <Grid container spacing={3}>
-       <Grid item xs={6}>
-         <LinearMeterField name="longPata" label="Largo Patas"
-         value={values.longPata} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-       </Grid>
-       <Grid item xs={6}>
-         <LinearMeterField name="longHook" label="Largo Gancho"
-           value={values.longHook} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-       </Grid>
-     </Grid>
-     <Grid container spacing={3}>
-       <Grid item xs={6}>
-         <LinearMeterField name="separacion" label="Separacion Estribos"
-         value={values.separacion} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-       </Grid>
-       <Grid item xs={6}>
-         <LinearMeterField name="recubrimiento" label="Recubrimiento" value={values.recubrimiento}
-         setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-       </Grid>
-     </Grid>
-     <Grid container direction="row-reverse" justify="flex-start" spacing={3}>
-       <Grid item alignItems="flex-end" className={classes.soloInput} xs={3}>
-         <BooleanField name="estribosDouble" label="Estribos dobles" />
-       </Grid>
-     </Grid>
-     </Fragment>
+      <Grid item xs={9}>
+           <Grid container spacing={3}>
+             <Grid item xs={8}>
+                <NameField value={values.name} setFieldValue={setFieldValue}
+                errors={errors} touched={touched}/>
+             </Grid>
+             <Grid item xs={4}>
+                <QuantityField name="amount" label="Cantidad" value={values.amount}
+                setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+           </Grid>
+           <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
+           <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <QuantityField name="cantLongsElems" label="Cantidad Elementos Esquinas"
+              value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+            </Grid>
+            <Grid item xs={6}>
+              <QuantityField name="cantLongsAuxElems" label="Cantidad Elementos Auxiliares"
+              value={values.cantLongsAuxElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+            </Grid>
+           </Grid>
+           <Grid container spacing={3}>
+             <Grid item xs={6}>
+               <LinearMeterField name="longPata" label="Largo Patas"
+               value={values.longPata} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+             <Grid item xs={6}>
+               <LinearMeterField name="longHook" label="Largo Gancho"
+                 value={values.longHook} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+           </Grid>
+           <Grid container spacing={3}>
+             <Grid item xs={6}>
+               <LinearMeterField name="separacion" label="Separacion Estribos"
+               value={values.separacion} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+             <Grid item xs={6}>
+               <LinearMeterField name="recubrimiento" label="Recubrimiento" value={values.recubrimiento}
+               setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+           </Grid>
+           <Grid container direction="row-reverse" justify="flex-start" spacing={3}>
+             <Grid item alignItems="flex-end" className={classes.soloInput} xs={3}>
+               <BooleanField name="estribosDouble" label="Estribos dobles" />
+             </Grid>
+           </Grid>
+        </Grid>
+        </Grid>
    )
 
   // const armazonSchema =
@@ -624,7 +639,7 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
 
   return(
           <CreateForm getSteps={getSteps} initialValues={initialValues} apiId="columnasespeciales"
-          budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>
+          budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData} maxWidth='lg'/>
         )
 }
 
