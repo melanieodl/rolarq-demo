@@ -13,13 +13,14 @@ import { Autocomplete } from "@material-ui/lab";
 import { Formik, Form, Field } from "formik";
 import { Select } from 'formik-material-ui';
 
-import {PreMixCost, BlockCost} from './costFields'
+import {PreMixCost, BlockCost, WallPaintCost, CeilPaintCost} from './costFields'
 
 import {NameField, LinearMeterField, QuantityField,
         SquareMeterField, PercentageField, BooleanField,
         VolumeFields} from '../inputFields'
 
 import {name, amount, length, width, height,
+        wallArea, ceilArea,
         cantLongsElems, cantLongsAuxElems,
         recubrimiento, separacion,
         longHook, longPata,
@@ -27,7 +28,9 @@ import {name, amount, length, width, height,
         mixProp,
         cement, cementPrice, cementWastePct,
         sand, sandPrice, sandWastePct,
-        preMix, preMixPrice, preMixWastePct} from '../schemas'
+        preMix, preMixPrice, preMixWastePct,
+        wallPaint, wallPaintPrice, wallPaintWastePct,
+        ceilPaint, ceilPaintPrice, ceilPaintWastePct} from '../schemas'
 
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup, frameTriIronGroup,
@@ -257,7 +260,6 @@ const SoleraForm = ({budgetId, openModal, closeModal, setData}) => {
                 openModal={openModal} closeModal={closeModal}/>
   )
 }
-
 
 const CimientoForm = ({budgetId, openModal, closeModal, setData}) => {
 
@@ -589,8 +591,44 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
         )
 }
 
+const PinturaForm =({budgetId, openModal, closeModal, setData}) => {
 
+  const getSteps = () => ([
+    { label:'Pintura Exterior y Exterior',
+      schema: { name, wallArea, ceilArea,
+                wallPaint, wallPaintPrice, wallPaintWastePct,
+                ceilPaint, ceilPaintPrice, ceilPaintWastePct,
+              },
+      form: ({values, setFieldValue, errors, touched}) => (
+         <Fragment>
+           <Grid container spacing={4}>
+             <Grid item xs={12}>
+                <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+           </Grid>
+           <Grid container spacing={4}>
+             <Grid item xs={6}>
+               <SquareMeterField name="wallArea" label="Area de Pared" value={values.wallArea} helperText='Area de paredes interiores/exteriores'
+               setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+             <Grid item xs={6}>
+               <SquareMeterField name="ceilArea" label="Area de Cielo" value={values.ceilArea} helperText='Area de superficies de cielo (Opcional)'
+               setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+           </Grid>
+           <WallPaintCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+           <CeilPaintCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+
+         </Fragment>)},
+  ])
+
+  const initialValues = {name: 'PINTURA INTERIOR/EXTERIOR', wallArea: '', ceilArea: ''}
+
+  return(<CreateForm getSteps={getSteps} initialValues={initialValues} apiId="pinturas"
+    budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
+}
 
 export {SoleraForm, CimientoForm, ColumnaForm, ColumnaEspecialForm, ZapataForm,
         LosaPlanaForm, LosaInclinadaForm,
-        RepelloCernidoForm, MuroForm, MezclonConcretoForm, MezclonMorteroForm}
+        RepelloCernidoForm, MuroForm, MezclonConcretoForm, MezclonMorteroForm,
+        PinturaForm}

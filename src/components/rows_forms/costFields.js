@@ -234,7 +234,23 @@ const PreMixCost = ({values, setFieldValue, errors, touched}) => (
                values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
 )
 
+const WallPaintCost = ({values, setFieldValue, errors, touched}) => (
+  <CostGroup url='paints'
+               materialName='wallPaint' materialLabel='Pintura para Paredes'
+               priceName='wallPaintPrice' priceLabel='Precio de Pintura'
+               pctName='wallPaintWastePct' pctLabel='Pct. de Desperdicio'
+               values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+)
+
+const CeilPaintCost = ({values, setFieldValue, errors, touched}) => (
+  <CostGroup url='paints'
+               materialName='ceilPaint' materialLabel='Pintura para Cielos'
+               priceName='ceilPaintPrice' priceLabel='Precio de Pintura'
+               pctName='ceilPaintWastePct' pctLabel='Pct. de Desperdicio'
+               values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+)
+
 
 export {CementCost, SandCost, GravelCost,
         IronCost, LongIronCost, LongIronAuxCost, TransIronCost,
-        TieWireCost, BlockCost, PreMixCost}
+        TieWireCost, BlockCost, PreMixCost, WallPaintCost, CeilPaintCost}

@@ -17,7 +17,7 @@ import {NameField, LinearMeterField, QuantityField,
 
 import {ConcretoProp, MorteroProp} from './propFields'
 
-import {name, area, junta} from '../schemas'
+import {name, area, junta, wallArea, ceilArea} from '../schemas'
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
         areaVolGroup, transMeterGroup, transQuantityGroup, columnaEspecialGroup,
@@ -486,6 +486,43 @@ const RepelloForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
+const PinturaForm = ({budgetId, rowId, open, closeModal}) => {
+  const [pintura, setPintura] = useState({})
+  const apiId = 'pinturas'
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => setPintura(res.data))
+    .catch(err => console.log(err))
+  }, [open])
+
+
+  const Form = ({values, setFieldValue, errors, touched}) => (
+     <Fragment>
+       <Grid container spacing={4}>
+         <Grid item xs={12}>
+            <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+         </Grid>
+       </Grid>
+       <Grid container spacing={4}>
+         <Grid item xs={6}>
+           <SquareMeterField name="wallArea" label="Area de Pared" value={values.wallArea} helperText='Area de paredes interiores/exteriores'
+           setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+         </Grid>
+         <Grid item xs={6}>
+           <SquareMeterField name="ceilArea" label="Area de Cielo" value={values.ceilArea} helperText='Area de superficies de cielo (Opcional)'
+           setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+         </Grid>
+       </Grid>
+     </Fragment>)
+
+  return(
+    <UpdateForm apiId={apiId} title="Pintura Interior/Exterior"
+      form={{inner: Form}} formData={pintura}
+      validationSchema={{ name, wallArea, ceilArea}}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
+
 export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,
         SoleraForm, ColumnaForm, ColumnaEspecialForm, MuroForm, MezclonMorteroForm,
-        MezclonConcretoForm, RepelloForm}
+        MezclonConcretoForm, RepelloForm, PinturaForm}
