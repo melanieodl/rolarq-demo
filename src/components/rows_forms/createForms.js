@@ -1,4 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react";
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+
 import api from '../../api'
 import * as Yup from 'yup';
 
@@ -51,6 +53,14 @@ const [losaPlanaSchema, LosaPlanaSpecsForm] = losaPlanaGroup
 const [losaInclinadaSchema, LosaInclinadaSpecsForm] = losaInclinadaGroup
 const [muroSchema, MuroSpecsForm] = muroGroup
 
+
+const useStyles = makeStyles((theme) => ({
+  soloInput: {
+    textAlign: 'right'
+  },
+}));
+
+
 const initials =  {
     name: ``,
     amount: ``,
@@ -100,6 +110,7 @@ const CreateForm = ({getSteps, budgetId, apiId,
                      initialValues,
                      openModal, closeModal,
                      setData, errors, touched, values, setFieldValue}) => {
+
 
     const url = `budgets/${budgetId}/${apiId}`
 
@@ -524,6 +535,8 @@ const MezclonExtForm =({budgetId, openModal, closeModal, setData}) => {
 }
 
 const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
+  const classes = useStyles();
+
   const specsSchema = {
     name, amount, length, width, height,
     estribosDouble, recubrimiento, cantLongsElems, cantLongsAuxElems,
@@ -573,9 +586,9 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
          setFieldValue={setFieldValue} errors={errors} touched={touched}/>
        </Grid>
      </Grid>
-     <Grid container spacing={3}>
-       <Grid item xs={3}>
-         <BooleanField name="estribosDouble" label="Estribos dobles"/>
+     <Grid container direction="row-reverse" justify="flex-start" spacing={3}>
+       <Grid item alignItems="flex-end" className={classes.soloInput} xs={3}>
+         <BooleanField name="estribosDouble" label="Estribos dobles" />
        </Grid>
      </Grid>
      </Fragment>
@@ -598,15 +611,14 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
 
   // const initialValues = {name: 'COLUMNA'}
 
-    const {amount, length, width, height, recubrimiento,
-      cantLongsElems, separacion, longPata, longHook} = initials
+
 
     const frameInitials = {}
 
     const initialValues = {
-      name: `COLUMNA `, amount, length, width, height,
-      recubrimiento, cantLongsElems, cantLongsAuxElems: '',  estribosDouble: false,
-      separacion, longHook, longPata,
+      name: `COLUMNA `, amount: '', length: '', width: '', height: '',
+      recubrimiento: '', cantLongsElems: '', cantLongsAuxElems: '',  estribosDouble: false,
+      separacion: '', longHook: '', longPata: '',
       ...concretoInitials, ...frameTriIronInitials
     }
 
