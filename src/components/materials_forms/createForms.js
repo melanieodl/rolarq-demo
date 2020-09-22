@@ -1,5 +1,7 @@
 import React, {useState, Fragment} from 'react'
 import api from '../../api'
+import blockImg from '../../imgs/block.png';
+import HelpImg from '../partials/HelpImg'
 import {Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText,
         Button, LinearProgress, Grid, CircularProgress} from '@material-ui/core'
 import { Formik, Form, Field } from 'formik';
@@ -14,7 +16,8 @@ import {name, area, length, width, height, knotsPerPound, sqrMtsPerBag, sqrMtsPe
 import * as Yup from 'yup';
 
 const CreateForm = ({schema, apiId, title, label, initialValues,
-                     openModal, closeModal, setData, Specs}) => {
+                     openModal, closeModal, setData, Specs,
+                     maxWidth, image, imgSpacing}) => {
 
   const [serverState, setServerState] = useState();
   const handleServerResponse = (ok, msg) => {
@@ -43,7 +46,7 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
   };
 
         return (
-          <Dialog maxWidth='sm' fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
+          <Dialog maxWidth={maxWidth || 'sm'} fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Nuevo {title}</DialogTitle>
           <DialogContent>
            <DialogContentText>
@@ -60,13 +63,18 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
              >
                {({submitForm, isSubmitting, setFieldValue, values, errors, touched }) => (
                  <Form>
-                     <Grid container spacing={4}>
-                         <Grid item xs={12}>
+                     <Grid container spacing={4} alignItems="center">
+                         {image && <Grid item xs={imgSpacing|| 4}>
+                          <HelpImg image={image}/>
+                         </Grid>}
+                         <Grid item xs={12 - (imgSpacing || 0)}>
                          <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
-                         </Grid>
-                     </Grid>
-                     {Specs && <Specs values={values} setFieldValue={setFieldValue}
-                             errors={errors} touched={touched} />}
+                         {Specs && <Specs values={values} setFieldValue={setFieldValue}
+                                 errors={errors} touched={touched} />}
+                          </Grid>
+
+                      </Grid>
+
                    {isSubmitting && <LinearProgress />}
                    <br />
                    <DialogActions>
@@ -156,9 +164,11 @@ const TieWireForm = ({openModal, closeModal, setData}) => {
 }
 
 const BlockForm = ({openModal, closeModal, setData}) =>  (
-    <CreateForm apiId='blocks' title='BlockForm' label='block' Specs={VolumeFields}
-      openModal={openModal} closeModal={closeModal} setData={setData} schema={{length, width, height}}/>
-)
+      <CreateForm apiId='blocks' title='BlockForm' label='block' Specs={VolumeFields}
+      openModal={openModal} closeModal={closeModal} setData={setData} schema={{length, width, height}}
+      maxWidth='md' image={blockImg} imgSpacing={4}/>
+    )
+
 
 const CoverPreMixForm = ({openModal, closeModal, setData}) => {
   const SpecsForm = ({values, setFieldValue, errors, touched}) => (
