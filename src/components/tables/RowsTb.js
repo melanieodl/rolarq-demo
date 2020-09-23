@@ -6,6 +6,7 @@ import localization from './localization'
 import MaterialTable, {MTableToolbar} from 'material-table';
 import { makeStyles } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
+import updateForms from '../rows_forms/info/forms_map'
 
 import {Paper, Fab, List, ListItem, ListItemText, Typography, Divider, Grid,
         Avatar, ListItemAvatar} from '@material-ui/core';
@@ -143,6 +144,21 @@ export default function EditableTb(props) {
   const classes = useStyles()
   const tableRef = createRef()
   const [isLoading, setLoading] = useState(true)
+
+  //edit handling for special rowS
+  const [open, setOpen] = useState(false);
+  const [updateDialog, setUpdateDialog] = React.useState({active: Fragment})
+
+  const handleOpenModal = (form, rowData) => {
+    setUpdateDialog({active: form, data: rowData})
+    setOpen(true)
+  }
+
+   const handleCloseModal = () => {
+    setOpen(false);
+   };
+
+
 
   //error handling
   const [isError, setIsError] = useState(false)
@@ -319,6 +335,7 @@ export default function EditableTb(props) {
       data={props.data}
       isLoading={isLoading}
       editable={{
+        isEditHidden: rowData => true,
         isEditable: rowData => !rowData.restricted, // only name(a) rows would be editable
         isDeletable: rowData => !rowData.restricted, // only name(b) rows would be deletable,
 
@@ -399,27 +416,26 @@ export default function EditableTb(props) {
 
      actions={[
        {
+          icon: tableIcons.Edit,
+          tooltip: 'Editar',
+          onClick: (event, rowData) => {
+            if(rowData.type){
+              handleOpenModal(updateForms[rowData.type.id], rowData)
+            } else {
+                tableRef.current.dataManager.changeRowEditing(rowData, 'update');
+                tableRef.current.setState({
+                  ...tableRef.current.dataManager.getRenderState(),
+                });
+            }
+
+          },
+          position: 'row'
+        },
+
+       {
          tooltip: 'Exportar a Excel',
          icon: tableIcons.Export,
          onClick: (evt, data) => {setReportData(data); setExportOpen(true);}
-         // onClick: async (evt, data) => {
-         //
-         //
-         //
-         //    // A workbook is the name given to an Excel file
-         //    var wb = XLSX.utils.book_new() // make Workbook of Excel
-         //    // add Worksheet to Workbook
-         //    // Workbook contains one or more worksheets
-         //    XLSX.utils.book_append_sheet(wb, summaryWS(data), 'RESUMEN DE PRESUPUESTO')
-         //    XLSX.utils.book_append_sheet(wb, await materialsWS(data), 'LISTADO DE MATERIALES')
-         //    XLSX.utils.book_append_sheet(wb, await budgetWS(data), 'PRESUPUESTO DESGLOSADO')
-         //
-         //
-         //
-         //    // export Excel file
-         //    XLSX.writeFile(wb, 'budget.xlsx') // name of the file is 'book.xlsx'
-         //
-         // }
         },
 
          {
@@ -487,6 +503,11 @@ export default function EditableTb(props) {
             data={reportData}
             onConfirm={onExport}
         />
+
+        <updateDialog.active closeModal={handleCloseModal} open={open}
+        rowData={updateDialog.data} rowsData={props.data} setRowsData={props.setData}
+        />
+
     </Fragment>
   );
 }

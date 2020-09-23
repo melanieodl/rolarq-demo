@@ -147,10 +147,12 @@ const UpdateForm = ({apiId, budgetId,
   );
 }
 
-const ZapataForm = ({budgetId, rowId, open, closeModal}) => {
+const ZapataForm = ({open, closeModal, rowData}) => {
   const [zapata, setZapata] = useState({})
   const apiId = 'zapatas'
-
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setZapata(res.data))
@@ -177,10 +179,12 @@ const ZapataForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const LosaPlanaForm = ({budgetId, rowId, open, closeModal}) => {
+const LosaPlanaForm = ({open, closeModal, rowData}) => {
   const [losa, setLosa] = useState({})
   const apiId = 'losasplanas'
-
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setLosa(res.data))
@@ -207,10 +211,12 @@ const LosaPlanaForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const LosaInclinadaForm = ({budgetId, rowId, open, closeModal}) => {
+const LosaInclinadaForm = ({open, closeModal, rowData}) => {
   const [losa, setLosa] = useState({})
   const apiId = 'losas'
-
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setLosa(res.data))
@@ -237,10 +243,12 @@ const LosaInclinadaForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const CimientoCorridoForm = ({budgetId, rowId, open, closeModal}) => {
+const CimientoCorridoForm = ({open, closeModal, rowData}) => {
   const [cimiento, setCimiento] = useState({})
   const apiId = 'cimcorridos'
-
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setCimiento(res.data))
@@ -267,10 +275,12 @@ const CimientoCorridoForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const SoleraForm = ({budgetId, rowId, open, closeModal}) => {
+const SoleraForm = ({open, closeModal, rowData}) => {
   const [solera, setSolera] = useState({})
   const apiId = 'soleras'
-
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setSolera(res.data))
@@ -297,9 +307,11 @@ const SoleraForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
+const ColumnaForm = ({open, closeModal, rowData}) => {
   const [columna, setColumna] = useState({})
-
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/columnas/${rowId}`)
     .then(res => setColumna(res.data))
@@ -336,10 +348,13 @@ const ColumnaForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const ColumnaEspecialForm = ({budgetId, rowId, open, closeModal}) => {
+const ColumnaEspecialForm = ({open, closeModal, rowData}) => {
 
   const [columna, setColumna] = useState({})
   const apiId = 'columnasespeciales'
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setColumna(res.data))
@@ -371,9 +386,12 @@ const ColumnaEspecialForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const MuroForm = ({budgetId, rowId, open, closeModal}) => {
+const MuroForm = ({open, closeModal, rowData}) => {
   const [muro, setMuro] = useState({})
   const apiId = 'muros'
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setMuro(res.data))
@@ -414,9 +432,12 @@ const MuroForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const MezclonMorteroForm = ({budgetId, rowId, open, closeModal}) => {
+const MezclonMorteroForm = ({open, closeModal, rowData}) => {
   const [mezclon, setMezclon] = useState({})
   const apiId = 'mezclones'
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setMezclon(res.data))
@@ -444,9 +465,12 @@ const MezclonMorteroForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const MezclonConcretoForm = ({budgetId, rowId, open, closeModal}) => {
+const MezclonConcretoForm = ({open, closeModal, rowData}) => {
   const [mezclon, setMezclon] = useState({})
   const apiId = 'concmezclones'
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setMezclon(res.data))
@@ -474,9 +498,12 @@ const MezclonConcretoForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const MezclonExtForm = ({budgetId, rowId, open, closeModal}) => {
+const MezclonExtForm = ({open, closeModal, rowData}) => {
   const [mezclon, setMezclon] = useState({})
   const apiId = 'extmezclones'
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setMezclon(res.data))
@@ -504,9 +531,12 @@ const MezclonExtForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const RepelloForm = ({budgetId, rowId, open, closeModal}) => {
+const RepelloForm = ({open, closeModal, rowData}) => {
   const [repello, setRepello] = useState({})
   const apiId = 'repellos'
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setRepello(res.data))
@@ -534,9 +564,12 @@ const RepelloForm = ({budgetId, rowId, open, closeModal}) => {
   )
 }
 
-const PinturaForm = ({budgetId, rowId, open, closeModal}) => {
+const PinturaForm = ({open, closeModal, rowData}) => {
   const [pintura, setPintura] = useState({})
   const apiId = 'pinturas'
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setPintura(res.data))

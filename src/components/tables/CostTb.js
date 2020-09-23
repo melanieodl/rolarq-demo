@@ -18,7 +18,6 @@ import CheckIcon from '@material-ui/icons/Check';
 import EditAttributesIcon from '@material-ui/icons/EditAttributesRounded';
 import SpecialPriceIcon from '@material-ui/icons/StarRateRounded';
 
-import updateForms from '../rows_forms/info/forms_map'
 import api from '../../api'
 
 const materialData = {"97":"Arena","146":"Block","123":"Cemento ","147":"crestuco","142":"Hierro ","149":"material normal","99":"Piedrin","106":"TieWire"}
@@ -40,31 +39,11 @@ const CostTb = (props) => {
   const workforceRef = useRef(null)
   const indirectRef = useRef(null)
 
-  const [open, setOpen] = useState(false);
-  const [updateDialog, setUpdateDialog] = React.useState({active: Fragment})
-
-
-
-
  const [priceList, setPriceList] = useState([])
  const [inputValue, setInputValue] = React.useState('');
  const [options, setOptions] = useState([])
 
  const loading = options.length === 0;
-
-
- const handleOpenModal = form => {
-   setUpdateDialog({active: form})
-   setOpen(true)
- }
-
-  const handleCloseModal = () => {
-   setOpen(false);
-  };
-
-
-
-
 
  useEffect(() => {
    if (!loading) {
@@ -326,26 +305,6 @@ const refreshRow = () => {
      console.log(props.rowData);
     return (
       <Fragment>
-        <Grid container spacing={3}
-              justify="flex-end"
-              alignItems="center">
-          <Grid item xs={8} alignContent="flex-end" alignItems="flex-end">
-              {props.rowData.type && (<Button
-               color="secondary"
-               size="small"
-               className={classes.button}
-               startIcon={<EditAttributesIcon />}
-               onClick={(e) => {handleOpenModal(updateForms[props.rowData.type.id])}}
-               >
-               { `Especificaciones ${props.rowData.type.name}`}
-             </Button>)
-           }
-         </Grid>
-           <Grid item xs={4}>
-          </Grid>
-          <br/>
-        </Grid>
-
         <DetailTb onChangeHandler={refreshRow} tableRef={materialRef} url={`${props.url}/mtlcosts`} columns={columnsMaterials} title='Material' label='costo' header={false} color='#26a69a'/>
         <Table  aria-label="spanning table" className={classes.tableTotal}>
             <TableBody>
@@ -391,9 +350,7 @@ const refreshRow = () => {
                      </TableRow>
              </TableBody>
          </Table>
-         <updateDialog.active closeModal={handleCloseModal} open={open}
-         rowData={props.rowData} rowsData={props.rowsData} setRowsData={props.setRowsData}
-         budgetId={props.rowData.budget.id} rowId={props.rowData.id}/>
+
 
       </Fragment>
 

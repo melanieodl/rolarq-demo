@@ -106,6 +106,9 @@ export default function EditableTb(props) {
   }
 
   const handleRowUpdate = (newData, oldData, resolve) => {
+    console.log(oldData);
+    console.log(newData);
+
     let errorList = []
 
     if(errorList.length < 1){
