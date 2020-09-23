@@ -24,7 +24,7 @@ import {CementForm, SandForm, GravelForm,
         IronForm, TieWireForm, BlockForm, CoverPreMixForm,
         PaintForm, ElectromallaForm} from '../materials_forms/createForms'
 
-import formsMap from '../materials_forms/forms_map'
+import updateForms from '../materials_forms/forms_map'
 import {toCurrency} from '../../functions'
 
 const tableIcons = {
@@ -109,6 +109,19 @@ export default function MaterialsTb(props) {
   const [isError, setIsError] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
 
+  //edit mode handling
+  const [open, setOpen] = useState(false);
+  const [updateDialog, setUpdateDialog] = React.useState({active: Fragment})
+
+  const handleOpenModal = (form, rowData) => {
+    setUpdateDialog({active: form, data: rowData})
+    setOpen(true)
+  }
+   const handleCloseModal = () => {
+    setOpen(false);
+   };
+
+  //confimar multiple delete
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [confirmData, setConfirmData] = useState([])
   const onConfirm = async (materials) => {
@@ -166,8 +179,6 @@ export default function MaterialsTb(props) {
             )
           }
       },
-     { title: 'Specs', field: 'specifications.data', hidden: true},
-
    ]
 
    const actions = [
@@ -312,6 +323,7 @@ export default function MaterialsTb(props) {
       isLoading={isLoading}
 
       editable={{
+        isEditHidden: rowData => true,
         isEditable: rowData => !rowData.restricted, // only name(a) rows would be editable
         isDeletable: rowData => !rowData.restricted, // only name(b) rows would be deletable,
 
@@ -331,36 +343,13 @@ export default function MaterialsTb(props) {
       detailPanel={[
         rowData => ({
         tooltip: 'Detalles',
-        render: rowData => {
-          const Form = rowData.type ? formsMap[rowData.type.id] ? formsMap[rowData.type.id] : null : null
-        return (
-          <div
-            className={classes.panel}
-          >
-
-          {rowData.specifications != null && Object.keys(rowData.specifications).length != 0 &&
-            (<Fragment>
-                <br/>
-                <Typography color='primary' variant='body2'>Especificaciones</Typography>
-                <br/>
-                <Form id={rowData.id} specs={rowData.specifications} materialData={rowData}
-                tableData={rowData.tableData} materialsData={data} setMaterialsData={setData}
-                apiId={props.url} />
-                <br/>
-                <Divider/>
-                <br/>
-            </Fragment>)
-          }
-
-
+        render: rowData => (
+          <div className={classes.panel}>
           <DetailsTb url={`/materials/${rowData.id}/prices`} parentId={rowData.id}
           title='Precios' label="precio"
           />
-
-
-          </div>
-        )
-      }}),
+          </div>)
+              }),
 
     ]}
       options={{
@@ -402,6 +391,23 @@ export default function MaterialsTb(props) {
      }}
      actions={[
        {
+          icon: tableIcons.Edit,
+          tooltip: 'Editar',
+          onClick: (event, rowData) => {
+            if(rowData.type){
+              handleOpenModal(updateForms[rowData.type.id], rowData)
+            } else {
+                // tableRef.current.dataManager.changeRowEditing(rowData, 'update');
+                // tableRef.current.setState({
+                //   ...tableRef.current.dataManager.getRenderState(),
+                // });
+                handleOpenModal(updateForms[0], rowData)
+            }
+
+          },
+          position: 'row'
+        },
+       {
          icon: tableIcons.Refresh,
          tooltip: 'Actualizar',
          isFreeAction: true,
@@ -439,12 +445,6 @@ export default function MaterialsTb(props) {
         ),
 
 
-
-
-        // Body: props => (
-        //   <div style={{width: '100%'}}><Paper><MTableBody {...props} /></Paper></div>
-        // ),
-
      }}
      localization={localization(props.label)}
     />
@@ -460,6 +460,9 @@ export default function MaterialsTb(props) {
           onClose={handleClose}
           data={confirmData}
           onConfirm={onConfirm}
+      />
+      <updateDialog.active closeModal={handleCloseModal} open={open}
+      rowData={updateDialog.data} rowsData={data} setRowsData={setData}
       />
       </Fragment>
   );

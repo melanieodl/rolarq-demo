@@ -4,6 +4,8 @@ import blockImg from '../../imgs/block.png';
 import HelpImg from '../partials/HelpImg'
 import {Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText,
         Button, LinearProgress, Grid, CircularProgress} from '@material-ui/core'
+import {Stepper, Step, StepLabel} from '@material-ui/core';
+
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -14,6 +16,9 @@ import {NameField, LinearMeterField, SquareMeterField, QuantityField,
 import {name, area, length, width, height, knotsPerPound, sqrMtsPerBag, sqrMtsPerGal} from '../schemas'
 
 import * as Yup from 'yup';
+import MaterialIcon from '@material-ui/icons/LocalMall';
+
+const TitleIcon = () => <MaterialIcon fontSize='large' color='primary' />
 
 const CreateForm = ({schema, apiId, title, label, initialValues,
                      openModal, closeModal, setData, Specs,
@@ -47,11 +52,12 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
 
         return (
           <Dialog maxWidth={maxWidth || 'sm'} fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Nuevo {title}</DialogTitle>
           <DialogContent>
-           <DialogContentText>
-             Agregar {label} a materiales
-           </DialogContentText>
+              <Stepper alternativeLabel>
+                  <Step key={`${title}`}>
+                    <StepLabel StepIconComponent={TitleIcon}> {`Agregar ${title || `Material`}`}</StepLabel>
+                  </Step>
+              </Stepper>
               <Formik
                initialValues={{name: ''}}
                validationSchema={
@@ -164,7 +170,7 @@ const TieWireForm = ({openModal, closeModal, setData}) => {
 }
 
 const BlockForm = ({openModal, closeModal, setData}) =>  (
-      <CreateForm apiId='blocks' title='BlockForm' label='block' Specs={VolumeFields}
+      <CreateForm apiId='blocks' title='Block' label='block' Specs={VolumeFields}
       openModal={openModal} closeModal={closeModal} setData={setData} schema={{length, width, height}}
       maxWidth='md' image={blockImg} imgSpacing={4}/>
     )
@@ -212,7 +218,7 @@ const ElectromallaForm = ({openModal, closeModal, setData}) => {
     <Fragment>
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          <SquareMeterField name='area' label='Area' value={values.areal}
+          <SquareMeterField name='area' label='Area' value={values.area}
             helperText='Superficie de la plancha de electromalla'
             setFieldValue={setFieldValue} errors={errors} touched={touched}/>
         </Grid>

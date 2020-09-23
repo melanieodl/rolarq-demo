@@ -58,16 +58,6 @@ const CostTb = (props) => {
    })
  }, [])
 
-
- const getPrices = materialId => {
-
-   api.get(`/materials/${materialId}/prices`)
-   .then(res => {
-     return(res.data)
-   })
-   .catch(err => {return([])})
- }
-
 const refreshRow = () => {
   api.get(`budgets/${props.rowData.budget.id}/rows/${props.rowData.id}`)
   .then(res => {
