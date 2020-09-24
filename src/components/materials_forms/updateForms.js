@@ -19,6 +19,7 @@ import {VolumeFields, LinearMeterField, NameField, SquareMeterField, QuantityFie
 import {name, length, width, height, area, knotsPerPound, sqrMtsPerBag, sqrMtsPerGal} from '../schemas'
 
 import MaterialIcon from '@material-ui/icons/LocalMall';
+import PricesTb from '../tables/partials/MaterialPricesTb'
 
 const TitleIcon = () => <MaterialIcon fontSize='large' color='primary' />
 
@@ -90,6 +91,9 @@ const UpdateForm = ({apiId, id, rowData,
                      </Grid>}
                      <Grid item xs={12 - (imgSpacing || 0)}>
                       <FormMaterial values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                      <PricesTb url={`/materials/${id}/prices`} parentId={id}
+                      title='Precios' label="precio"
+                      />
                       </Grid>
                   </Grid>
 

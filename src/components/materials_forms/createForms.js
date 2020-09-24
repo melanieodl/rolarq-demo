@@ -15,6 +15,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import {NameField, LinearMeterField, SquareMeterField, QuantityField,
         VolumeFields } from '../inputFields'
 
+import AddPricesTb from '../tables/partials/AddPricesTb'
+
 import {name, area, length, width, height, knotsPerPound, sqrMtsPerBag, sqrMtsPerGal} from '../schemas'
 
 import * as Yup from 'yup';
@@ -26,13 +28,16 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
                      openModal, closeModal, setData, FormFields,
                      maxWidth, image, imgSpacing}) => {
 
+  //prices que se agregan
+  const [prices, setPrices] = useState([])
+
   const [serverState, setServerState] = useState();
   const handleServerResponse = (ok, msg) => {
     setServerState({ok, msg});
   };
   const handleOnSubmit = (values, {setSubmitting, resetForm}) => {
     console.log('values', values);
-    api.post(`${apiId}`, {...values})
+    api.post(`${apiId}`, {...values, prices: prices})
       .then(response => {
         api.get(`${apiId}/${response.data.id}`)
         .then(res => {
@@ -78,6 +83,7 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
                          <Grid item xs={12 - (imgSpacing || 0)}>
                          {FormFields && <FormFields values={values} setFieldValue={setFieldValue}
                                  errors={errors} touched={touched} />}
+                         <AddPricesTb title='Precios' label="precio" prices={prices} setPrices={setPrices}/>
                           </Grid>
 
                       </Grid>

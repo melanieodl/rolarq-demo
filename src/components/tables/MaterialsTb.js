@@ -338,18 +338,7 @@ export default function MaterialsTb(props) {
             handleRowDelete(oldData, resolve)
           }),
       }}
-      detailPanel={[
-        rowData => ({
-        tooltip: 'Detalles',
-        render: rowData => (
-          <div className={classes.panel}>
-          <DetailsTb url={`/materials/${rowData.id}/prices`} parentId={rowData.id}
-          title='Precios' label="precio"
-          />
-          </div>)
-              }),
-
-    ]}
+    
       options={{
        actionsColumnIndex: -1,
        filtering: true,
