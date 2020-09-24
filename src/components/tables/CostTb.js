@@ -49,7 +49,7 @@ const CostTb = (props) => {
    if (!loading) {
      return undefined;
    }
-   api.get('materials/prices')
+   api.get('materials')
    .then(response => {
      setOptions(response.data)
    })

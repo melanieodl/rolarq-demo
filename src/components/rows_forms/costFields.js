@@ -39,7 +39,7 @@ const CostGroup = ({url,
       return undefined;
     }
 
-    api.get(`${url}/prices`)
+    api.get(`${url}`)
     .then(response => {
 
       setMaterials(response.data)
