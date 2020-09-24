@@ -160,7 +160,7 @@ const refreshRow = () => {
         />
       )},
      { title: 'Cantidad', field: 'amount', type: 'numeric',
-     render: rowData => rowData.amount * (rowData.wastePct/100+1), width: '15%', align: 'right',
+     render: rowData => (rowData.amount * (rowData.wastePct/100+1)).toFixed(2), width: '15%', align: 'right',
      validate: rowData => ( typeof rowData.amount != 'undefined'?
                                 rowData.amount.length <= 0 ?
                                     { isValid: false, helperText: 'Cantidad es requerido' } : true
@@ -250,7 +250,7 @@ const refreshRow = () => {
                                    rowData.amount.length <= 0 ?
                                        { isValid: false, helperText: 'Cantidad es requerido' } : true
                                    : false),
-        render: rowData => rowData.amount, width: '15%', align: 'right'},
+        render: rowData => (rowData.amount).toFixed(2), width: '15%', align: 'right'},
       { title: 'Unidad', field: 'unit.id', lookup: props.units,
         validate: rowData => ( typeof rowData.unit != 'undefined'),
         width: '15%', align: 'right'},
@@ -273,7 +273,7 @@ const refreshRow = () => {
                                     rowData.name.trim() === '' ?
                                         { isValid: false, helperText: 'Nombre es requerido' } : true
                                     : false)},
-       { title: 'Cantidad', field: 'amount', type: 'numeric', render: rowData => rowData.amount, width: '15%', align: 'right',
+       { title: 'Cantidad', field: 'amount', type: 'numeric', render: rowData => rowData.amount.toFixed(2), width: '15%', align: 'right',
          validate: rowData => ( typeof rowData.amount != 'undefined'?
                                     rowData.amount.length <= 0 ?
                                         { isValid: false, helperText: 'Cantidad es requerido' } : true
