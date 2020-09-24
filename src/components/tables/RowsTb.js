@@ -432,6 +432,7 @@ export default function EditableTb(props) {
           position: 'row'
         },
 
+
        {
          tooltip: 'Exportar a Excel',
          icon: tableIcons.Export,

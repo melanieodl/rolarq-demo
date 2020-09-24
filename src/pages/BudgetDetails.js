@@ -1,15 +1,15 @@
-import React, {useState, useEffect, createRef, useRef, useCallback, useMemo} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {useState, useEffect, createRef, useRef, useCallback, useMemo, Fragment} from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import api from '../api'
 
 import {Button, Dialog, ListItemText, ListItem, List, Divider, AppBar, Toolbar,
         IconButton, Typography, Slide, Grid, Paper, TextField, Container,
-        FormControl, Select, MenuItem, Box} from '@material-ui/core'
+        FormControl, Select, MenuItem, Box,Tooltip} from '@material-ui/core'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 import CloseIcon from '@material-ui/icons/Close';
 import ExpandLess from '@material-ui/icons/ExpandLessRounded';
-
+import InfoIcon from '@material-ui/icons/InfoOutlined';
 
 import EditTable from '../components/tables/RowsTb'
 import SpeedDial from '../components/tables/partials/SpeedDial'
@@ -47,6 +47,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.black,
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+  },
+  arrow: {
+    color: theme.palette.common.black,
+  },
+}))(Tooltip);
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -119,7 +129,13 @@ export default function FullScreenDialog(props) {
 
   const columns =    [
      { title: 'Id', field: 'id', hidden: true },
-     { title: 'Nombre', field: 'name', width: '40%', render: rowData => rowData.fullName },
+     { width: '1%',  align: 'left', sorting: false, render: (rowData) =>  typeof rowData != 'undefined' && rowData.type &&
+              <LightTooltip title={rowData.type.name} placement="bottom">
+                <IconButton  size='small' aria-label="upload picture" component="span">
+                  <InfoIcon />
+                </IconButton>
+              </LightTooltip>},
+     { title: 'Nombre', field: 'name', width: '40%', render: rowData => rowData.fullName},
      { title: 'Cantidad', field: 'unitAmount', type: 'numeric', width: '15%', align: 'right'},
      { title: 'Unidad', field: 'unit.id', lookup: units, width: '15%', align: 'right',
        validate: rowData => ( typeof rowData.unit != 'undefined'),
@@ -220,7 +236,7 @@ export default function FullScreenDialog(props) {
         </Grid>
         </Grid>
         <br/>
-        <Container className={classes.backTb}>
+        <Container maxWidth='xl' className={classes.backTb}>
           <EditTable setReload={setReload} units={units} options={options} data={data} setData={setData} columns={columns} url={`budgets/${props.id}/rows`} title='Renglones' label='renglon' budgetId={props.id}
           lookupEffects={[unitsEffect]} panels={panels}/>
         </Container>
