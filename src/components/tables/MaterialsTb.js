@@ -22,7 +22,7 @@ import ConfirmationDialog from '../partials/ConfirmationDialog'
 
 import {CementForm, SandForm, GravelForm,
         IronForm, TieWireForm, BlockForm, CoverPreMixForm,
-        PaintForm, ElectromallaForm} from '../materials_forms/createForms'
+        PaintForm, ElectromallaForm, MaterialForm} from '../materials_forms/createForms'
 
 import updateForms from '../materials_forms/forms_map'
 import {toCurrency} from '../../functions'
@@ -109,6 +109,8 @@ export default function MaterialsTb(props) {
   const [isError, setIsError] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
 
+  //create material normal
+  const [openCreate, setOpenCreate] = useState(false)
   //edit mode handling
   const [open, setOpen] = useState(false);
   const [updateDialog, setUpdateDialog] = React.useState({active: Fragment})
@@ -464,6 +466,7 @@ export default function MaterialsTb(props) {
       <updateDialog.active closeModal={handleCloseModal} open={open}
       rowData={updateDialog.data} rowsData={data} setRowsData={setData}
       />
+      <MaterialForm closeModal={() => setOpenCreate(false)} openModal={openCreate} setData={setData}/>
       </Fragment>
   );
 }

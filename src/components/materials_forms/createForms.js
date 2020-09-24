@@ -1,10 +1,12 @@
-import React, {useState, Fragment} from 'react'
+import React, {useState, useEffect, Fragment} from 'react'
 import api from '../../api'
+import { makeStyles } from '@material-ui/core/styles';
 import blockImg from '../../imgs/block.png';
 import HelpImg from '../partials/HelpImg'
 import {Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText,
         Button, LinearProgress, Grid, CircularProgress} from '@material-ui/core'
-import {Stepper, Step, StepLabel} from '@material-ui/core';
+import {Stepper, Step, StepLabel, InputLabel, Select, MenuItem, Typography,
+        FormControl} from '@material-ui/core';
 
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -21,7 +23,7 @@ import MaterialIcon from '@material-ui/icons/LocalMall';
 const TitleIcon = () => <MaterialIcon fontSize='large' color='primary' />
 
 const CreateForm = ({schema, apiId, title, label, initialValues,
-                     openModal, closeModal, setData, Specs,
+                     openModal, closeModal, setData, FormFields,
                      maxWidth, image, imgSpacing}) => {
 
   const [serverState, setServerState] = useState();
@@ -51,7 +53,7 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
   };
 
         return (
-          <Dialog maxWidth={maxWidth || 'sm'} fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
+          <Dialog maxWidth={maxWidth || 'md'} fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
           <DialogContent>
               <Stepper alternativeLabel>
                   <Step key={`${title}`}>
@@ -59,7 +61,7 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
                   </Step>
               </Stepper>
               <Formik
-               initialValues={{name: ''}}
+               initialValues={{...initialValues}}
                validationSchema={
                  Yup.object().shape({
                     name,
@@ -74,8 +76,7 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
                           <HelpImg image={image}/>
                          </Grid>}
                          <Grid item xs={12 - (imgSpacing || 0)}>
-                         <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
-                         {Specs && <Specs values={values} setFieldValue={setFieldValue}
+                         {FormFields && <FormFields values={values} setFieldValue={setFieldValue}
                                  errors={errors} touched={touched} />}
                           </Grid>
 
@@ -117,121 +118,188 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
         )
 }
 
+const NameForm = ({values, setFieldValue, errors, touched}) => (
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+          <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
+      </Grid>
+    </Grid>
+)
 
-const CementForm = ({openModal, closeModal, setData}) => (
+const FieldForm = ({values, setFieldValue, errors, touched, Field, name, label, helperText}) => (
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={8}>
+          <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
+      </Grid>
+      <Grid item xs={12} sm={4}>
+        <Field name={name} label={label} helperText={helperText}
+        value={values[name]} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+      </Grid>
+    </Grid>
+)
+const CementForm = ({openModal, closeModal, setData}) =>(
   <CreateForm apiId="cements" title="Cemento" label="cemento"
-      openModal={openModal} closeModal={closeModal} setData={setData}/>
+      openModal={openModal} closeModal={closeModal} setData={setData}
+      FormFields={NameForm} initialValues={{name: 'Cemento '}} />
 )
 
 const SandForm = ({openModal, closeModal, setData}) => (
   <CreateForm apiId="sands" title="Arena" label="arena"
-      openModal={openModal} closeModal={closeModal} setData={setData}/>
+      openModal={openModal} closeModal={closeModal} setData={setData}
+      FormFields={NameForm} initialValues={{name: 'Arena '}}/>
 )
 
 const GravelForm = ({openModal, closeModal, setData}) => (
   <CreateForm apiId="gravels" title="Piedrin" label="piedrin"
-      openModal={openModal} closeModal={closeModal} setData={setData}/>
+      openModal={openModal} closeModal={closeModal} setData={setData}
+      FormFields={NameForm} initialValues={{name: 'Piedrin '}}/>
 )
 
 const IronForm = ({openModal, closeModal, setData}) => {
   const SpecsForm = ({values, setFieldValue, errors, touched}) => (
-    <Fragment>
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <LinearMeterField name='length' label='Largo Útil' value={values.length}
-            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-        </Grid>
-      </Grid>
-    </Fragment>
+      <FieldForm values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
+        Field={LinearMeterField} name='length' label='Largo Útil' />
   )
 
   return (
-    <CreateForm apiId='irons' title='Hierro' label='hierro' Specs={SpecsForm}
-      openModal={openModal} closeModal={closeModal} setData={setData} schema={{length}}/>)
+    <CreateForm apiId='irons' title='Hierro' label='hierro' FormFields={SpecsForm}
+      openModal={openModal} closeModal={closeModal} setData={setData} schema={{length}}
+      initialValues={{name: 'Hierro '}}/>)
 
 }
 
 const TieWireForm = ({openModal, closeModal, setData}) => {
   const SpecsForm = ({values, setFieldValue, errors, touched}) => (
-    <Fragment>
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <QuantityField name='knotsPerPound' label='Nudos / Lb' value={values.knotsPerPound}
-            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-        </Grid>
-      </Grid>
-    </Fragment>
+    <FieldForm values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
+      Field={QuantityField} name='knotsPerPound' label='Nudos / Lb' helperText='Cantidad de nudos por libra de alambre'/>
   )
 
   return (
-    <CreateForm apiId='tiewires' title='Alambre de Amarre' label='alambre' Specs={SpecsForm}
-      openModal={openModal} closeModal={closeModal} setData={setData} schema={{knotsPerPound}}/>)
+    <CreateForm apiId='tiewires' title='Alambre de Amarre' label='alambre' FormFields={SpecsForm}
+      openModal={openModal} closeModal={closeModal} setData={setData} schema={{knotsPerPound}}
+      initialValues={{name: 'Alambre de amarre '}}/>)
 
 }
 
-const BlockForm = ({openModal, closeModal, setData}) =>  (
-      <CreateForm apiId='blocks' title='Block' label='block' Specs={VolumeFields}
+const BlockForm = ({openModal, closeModal, setData}) =>  {
+  const Form = ({values, setFieldValue, errors, touched}) => (
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+          <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
+      </Grid>
+      <Grid item xs={12}>
+          <VolumeFields values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+      </Grid>
+    </Grid>
+  )
+    return(
+      <CreateForm apiId='blocks' title='Block' label='block' FormFields={Form}
       openModal={openModal} closeModal={closeModal} setData={setData} schema={{length, width, height}}
-      maxWidth='md' image={blockImg} imgSpacing={4}/>
-    )
+      maxWidth='md' image={blockImg} imgSpacing={4} initialValues={{name: 'Block '}}/>
+    )}
 
 
 const CoverPreMixForm = ({openModal, closeModal, setData}) => {
   const SpecsForm = ({values, setFieldValue, errors, touched}) => (
-    <Fragment>
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <QuantityField name='sqrMtsPerBag' label='&#13217; / bolsa' value={values.sqrMtsPerBag}
-            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-        </Grid>
-      </Grid>
-    </Fragment>
+
+        <FieldForm values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
+          Field={SquareMeterField} name='sqrMtsPerBag' label='&#13217; / bolsa'
+          helperText='Rendimiento: Cantidad de &#13217; por bolsa'/>
+
   )
 
   return (
     <CreateForm apiId='premixes' title='Recubrimiento Premezclado' label='recubrimiento premezclado'
-      Specs={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData} schema={{sqrMtsPerBag}}/>)
+      FormFields={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData} schema={{sqrMtsPerBag}}
+      initialValues={{name: ''}}/>)
 
 }
 
 const PaintForm = ({openModal, closeModal, setData}) => {
   const SpecsForm = ({values, setFieldValue, errors, touched}) => (
-    <Fragment>
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <QuantityField name='sqrMtsPerGal' label='&#13217; / &#13311;' value={values.sqrMtsPerGal}
-            helperText='Rendimiento: Cantidad de metros cuadrados por galón de pintura'
-            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-        </Grid>
-      </Grid>
-    </Fragment>
+    <FieldForm values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
+      Field={SquareMeterField}  name='sqrMtsPerGal' label='&#13217; / &#13311;'
+      helperText='Rendimiento: Cantidad de metros cuadrados por galón de pintura'/>
   )
 
   return (
     <CreateForm apiId='paints' title='Pintura' label='pintura'
-      Specs={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData} schema={{sqrMtsPerGal}}/>)
+      FormFields={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData} schema={{sqrMtsPerGal}}
+      initialValues={{name: 'Pintura '}}/>)
 
 }
 
 const ElectromallaForm = ({openModal, closeModal, setData}) => {
   const SpecsForm = ({values, setFieldValue, errors, touched}) => (
-    <Fragment>
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <SquareMeterField name='area' label='Area' value={values.area}
-            helperText='Superficie de la plancha de electromalla'
-            setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-        </Grid>
-      </Grid>
-    </Fragment>
+    <FieldForm values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
+      Field={SquareMeterField}  name='area' label='Area'
+      helperText='Superficie de la plancha de electromalla'/>
   )
 
   return (
     <CreateForm apiId='electromallas' title='Electromalla' label='electromalla'
-      Specs={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData} schema={{area}}/>)
+      FormFields={SpecsForm} openModal={openModal} closeModal={closeModal} setData={setData} schema={{area}}
+      initialValues={{name: 'Electromalla '}}/>)
 
 }
+const MaterialForm = ({ openModal, closeModal, setData}) => {
+  const [units, setUnits] = useState([])
+  useEffect(() => {
+    api.get('units')
+    .then(response => {
+      setUnits(response.data)
+    })
+    .catch(err => {
+    })
+  }, [])
 
+  const useStyles = makeStyles({
+      denseItem:{
+      paddingTop: 0,
+      paddingBottom: 0,
+    },
+  });
+
+  const classes = useStyles()
+
+  const FormFields = ({values, setFieldValue, errors, touched}) => (
+    <Grid container spacing={3}>
+          <Grid item xs={12} sm={8}>
+            <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+              <FormControl>
+                <InputLabel htmlFor="unit">{`Unidad de Medida`}</InputLabel>
+                <Field
+                  component={Select}
+                  disabled={units.length === 0}
+                  name='unit'
+                  onChange = {(evt, child) => setFieldValue('unit', evt.target.value)}
+                  defaultValue= {values.unit ? values.unit : null }
+                  displayEmpty
+                  renderValue={value => value ? <MenuItem dense className={classes.denseItem} value={value}>{`${value.name}`}</MenuItem> : ''}
+                  inputProps={{
+                    id: 'mix-prop',
+
+                  }}
+                >
+                  {units.map(unit => <MenuItem dense value={unit}>{unit.name}</MenuItem>)}
+                </Field>
+                {errors["unit"] && touched["unit"] ? (
+                  <div><Typography color='error' variant='caption'>{errors["unit"]}</Typography></div>
+                ) : null}
+
+              </FormControl>
+          </Grid>
+        </Grid>
+  )
+
+  return (
+      <CreateForm apiId='materials' label='material'
+      FormFields={FormFields} openModal={openModal} closeModal={closeModal} setData={setData}
+      schema={{name, unit: Yup.mixed().required('Unidad es requerido')}}/>
+  )
+}
 
 export {CementForm, SandForm, GravelForm, IronForm, TieWireForm, BlockForm, CoverPreMixForm, PaintForm,
-        ElectromallaForm}
+        ElectromallaForm, MaterialForm}
