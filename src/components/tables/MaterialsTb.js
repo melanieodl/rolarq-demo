@@ -329,10 +329,6 @@ export default function MaterialsTb(props) {
         isEditable: rowData => !rowData.restricted, // only name(a) rows would be editable
         isDeletable: rowData => !rowData.restricted, // only name(b) rows would be deletable,
 
-        onRowAdd: (newData) =>
-          new Promise((resolve) => {
-            handleRowAdd(newData, resolve)
-          }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve) => {
             handleRowUpdate(newData, oldData, resolve)
@@ -429,6 +425,13 @@ export default function MaterialsTb(props) {
          isFreeAction: true,
          // iconProps: {style: {padding: 0}},
        },
+       {
+         icon: () => <Fab  color="secondary" size="medium"><Add/> </Fab>,
+         tooltip: 'Nuevo Material',
+         isFreeAction: true,
+         onClick: () => setOpenCreate(true)
+         // iconProps: {style: {padding: 0}},
+       }
 
 
 
