@@ -160,7 +160,6 @@ export default function EditableTb(props) {
       data={data}
       isLoading={isLoading}
       editable={{
-        isEditable: rowData => !rowData.restricted, // only name(a) rows would be editable
         isDeletable: rowData => !rowData.restricted, // only name(b) rows would be deletable,
 
         onRowAdd: (newData) =>
