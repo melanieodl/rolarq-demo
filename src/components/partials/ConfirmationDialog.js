@@ -2,8 +2,8 @@ import React, {Fragment} from 'react'
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import {Dialog, DialogTitle, DialogContent, DialogActions, Button, List} from '@material-ui/core';
-
+import {Dialog,  DialogContent, DialogActions, Button, List} from '@material-ui/core';
+import DialogTitle from './DialogTitle'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,9 +15,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline',
   },
 }));
-
-
-
 
 export default function ConfirmationDialog({open, data, showTitle, showRow, onClose, onConfirm, ...other}){
   const classes = useStyles();
@@ -39,7 +36,7 @@ export default function ConfirmationDialog({open, data, showTitle, showRow, onCl
         open={open}
         {...other}
       >
-        <DialogTitle id="confirmation-dialog-title">{showTitle(data)}</DialogTitle>
+        <DialogTitle onClose={onClose} id="confirmation-dialog-title">{showTitle(data)}</DialogTitle>
         <DialogContent dividers>
           <List>
           {data.map((row, idx) => showRow(row, idx))}

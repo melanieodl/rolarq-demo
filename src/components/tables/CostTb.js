@@ -6,11 +6,12 @@ import DetailTb from './DetailsTb'
 import HeaderTb from './HeaderTb';
 
 import {FormControl, Select, MenuItem, TextField, ListItemIcon, Divider, CircularProgress,
-        Button, Grid} from '@material-ui/core'
+        Button, Grid, IconButton} from '@material-ui/core'
 import {Table, TableBody, TableRow, TableCell} from '@material-ui/core';
-
+import InfoTooltip from '../partials/InfoTooltip'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 
+import InfoIcon from '@material-ui/icons/InfoOutlined';
 import MaterialIcon from '@material-ui/icons/LocalMallRounded'
 import ManoObraIcon from '@material-ui/icons/PanToolRounded'
 import IndirectIcon from '@material-ui/icons/AllOutRounded'
@@ -49,7 +50,7 @@ const CostTb = (props) => {
    if (!loading) {
      return undefined;
    }
-   api.get('materials/prices')
+   api.get('materials')
    .then(response => {
      setOptions(response.data)
    })
@@ -57,16 +58,6 @@ const CostTb = (props) => {
 
    })
  }, [])
-
-
- const getPrices = materialId => {
-
-   api.get(`/materials/${materialId}/prices`)
-   .then(res => {
-     return(res.data)
-   })
-   .catch(err => {return([])})
- }
 
 const refreshRow = () => {
   api.get(`budgets/${props.rowData.budget.id}/rows/${props.rowData.id}`)
@@ -97,6 +88,12 @@ const refreshRow = () => {
 
   const columnsMaterials =    [
      { title: 'Id', field: 'id', hidden: true},
+     { width: '1%',  align: 'left', sorting: false, render: (rowData) =>  typeof rowData != 'undefined' && rowData.type && rowData.type.id != 1 &&
+              <InfoTooltip title={rowData.type.name} placement="bottom">
+                <IconButton  size='small' aria-label="upload picture" component="span">
+                  <InfoIcon />
+                </IconButton>
+              </InfoTooltip>},
      { title: "Material", width: '35%',
       field: "material", render: rowData => rowData ? rowData.name : '',
       validate: rowData => ( typeof rowData.name != 'undefined'?
@@ -170,7 +167,7 @@ const refreshRow = () => {
         />
       )},
      { title: 'Cantidad', field: 'amount', type: 'numeric',
-     render: rowData => rowData.amount * (rowData.wastePct/100+1), width: '15%', align: 'right',
+     render: rowData => (rowData.amount * (rowData.wastePct/100+1)).toFixed(2), width: '15%', align: 'right',
      validate: rowData => ( typeof rowData.amount != 'undefined'?
                                 rowData.amount.length <= 0 ?
                                     { isValid: false, helperText: 'Cantidad es requerido' } : true
@@ -260,7 +257,7 @@ const refreshRow = () => {
                                    rowData.amount.length <= 0 ?
                                        { isValid: false, helperText: 'Cantidad es requerido' } : true
                                    : false),
-        render: rowData => rowData.amount, width: '15%', align: 'right'},
+        render: rowData => (rowData.amount).toFixed(2), width: '15%', align: 'right'},
       { title: 'Unidad', field: 'unit.id', lookup: props.units,
         validate: rowData => ( typeof rowData.unit != 'undefined'),
         width: '15%', align: 'right'},
@@ -283,7 +280,7 @@ const refreshRow = () => {
                                     rowData.name.trim() === '' ?
                                         { isValid: false, helperText: 'Nombre es requerido' } : true
                                     : false)},
-       { title: 'Cantidad', field: 'amount', type: 'numeric', render: rowData => rowData.amount, width: '15%', align: 'right',
+       { title: 'Cantidad', field: 'amount', type: 'numeric', render: rowData => rowData.amount.toFixed(2), width: '15%', align: 'right',
          validate: rowData => ( typeof rowData.amount != 'undefined'?
                                     rowData.amount.length <= 0 ?
                                         { isValid: false, helperText: 'Cantidad es requerido' } : true

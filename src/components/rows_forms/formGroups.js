@@ -133,23 +133,19 @@ import {name, amount, length, width, height, area,
         const areaVolGroup = [
             {name, height, area},
             ({values, setFieldValue, errors, touched}) => (
-              <Fragment>
-                <Grid container spacing={3}>
+              <Grid container spacing={3}>
                   <Grid item xs={12}>
                       <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
                   </Grid>
-                </Grid>
-                <Grid container spacing={3}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                       <SquareMeterField name="area" label="Area" value={values.area} setFieldValue={setFieldValue}
                         errors={errors} touched={touched}/>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                       <LinearMeterField name="height" label="Espesor" value={values.height} setFieldValue={setFieldValue}
                        errors={errors} touched={touched}/>
                   </Grid>
-                </Grid>
-              </Fragment>
+              </Grid>
             )
         ]
 
@@ -163,34 +159,30 @@ import {name, amount, length, width, height, area,
               separacion,
               longHook},
             ({values, setFieldValue,  errors, touched}) => (
-             <Fragment>
-             <Grid container spacing={3}>
+            <Grid container spacing={3}>
                <Grid item xs={12}>
                   <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                </Grid>
-             </Grid>
-             <VolumeFields heightLabel="Peralte"/>
-             <Grid container spacing={3}>
-               <Grid item xs={6}>
+               <Grid item xs={12}>
+                  <VolumeFields heightLabel="Peralte"/>
+               </Grid>
+               <Grid item xs={12} sm={6}>
                  <LinearMeterField name="recubrimiento" label="Recubrimiento" value={values.recubrimiento}
                  setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                </Grid>
-               <Grid item xs={6}>
+               <Grid item xs={12} sm={6}>
                  <QuantityField name="cantLongsElems" label="Cantidad elementos longitudinales"
                  value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                </Grid>
-             </Grid>
-             <Grid container spacing={3}>
-               <Grid item xs={6}>
+               <Grid item xs={12} sm={6}>
                  <LinearMeterField name="separacion" label="Separacion Estribos"
                  value={values.separacion} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                </Grid>
-               <Grid item xs={6}>
+               <Grid item xs={12} sm={6}>
                  <LinearMeterField name="longHook" label="Largo Gancho"
                    value={values.longHook} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                </Grid>
              </Grid>
-             </Fragment>
            )
         ]
 
@@ -206,44 +198,39 @@ import {name, amount, length, width, height, area,
               longHook,
               longPata},
             ({values, setFieldValue, errors, touched}) => (
-               <Fragment>
                <Grid container spacing={3}>
-                 <Grid item xs={8}>
+                 <Grid item xs={12} sm={8}>
                     <NameField value={values.name} setFieldValue={setFieldValue}
                     errors={errors} touched={touched}/>
                  </Grid>
-                 <Grid item xs={4}>
+                 <Grid item xs={12} sm={4}>
                     <QuantityField name="amount" label="Cantidad" value={values.amount}
                     setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-               </Grid>
-               <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
-               <Grid container spacing={3}>
-                 <Grid item xs={4}>
+                 <Grid item xs={12}>
+                    <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
+                 </Grid>
+                 <Grid item xs={12} sm={12} md={4}>
                    <QuantityField name="cantLongsElems" label="Cantidad elementos longitudinales"
                    value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-                 <Grid item xs={4}>
+                 <Grid item xs={12} sm={6} md={4}>
                    <LinearMeterField name="longPata" label="Largo Patas"
                    value={values.longPata} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-                 <Grid item xs={4}>
+                 <Grid item xs={12} sm={6} md={4}>
                    <LinearMeterField name="longHook" label="Largo Gancho"
                      value={values.longHook} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-
-               </Grid>
-               <Grid container spacing={3}>
-                 <Grid item xs={6}>
+                 <Grid item xs={12} sm={6}>
                    <LinearMeterField name="separacion" label="Separacion Estribos"
                    value={values.separacion} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-                 <Grid item xs={6}>
+                 <Grid item xs={12} sm={6}>
                    <LinearMeterField name="recubrimiento" label="Recubrimiento" value={values.recubrimiento}
                    setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
                </Grid>
-               </Fragment>
              )
         ]
 
@@ -257,35 +244,30 @@ import {name, amount, length, width, height, area,
               cantLongsElems,
               cantTransElems},
             ({values, setFieldValue, errors, touched}) => (
-            <Fragment>
-
             <Grid container spacing={3}>
-              <Grid item xs={8}>
+              <Grid item xs={12} sm={8}>
                  <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} sm={4}>
                  <QuantityField name="amount" label="Cantidad" value={values.amount} setFieldValue={setFieldValue}
                  errors={errors} touched={touched}/>
               </Grid>
-            </Grid>
-
-            <VolumeFields errors={errors} touched={touched} heightLabel='Peralte'/>
-
-            <Grid container spacing={3}>
-              <Grid item xs={4}>
+              <Grid item xs={12}>
+                <VolumeFields errors={errors} touched={touched} heightLabel='Peralte'/>
+              </Grid>
+              <Grid item xs={12} sm={4}>
                 <LinearMeterField name="recubrimiento" label="Recubrimiento" value={values.recubrimiento} setFieldValue={setFieldValue}
                 errors={errors} touched={touched}/>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} sm={4}>
                 <QuantityField name="cantLongsElems" label="Cantidad elementos longitudinales"
                 value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} sm={4}>
                 <QuantityField name="cantTransElems" label="Cantidad elementos transversales"
                 value={values.cantTransElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
               </Grid>
             </Grid>
-            </Fragment>
           )
         ]
 
@@ -296,35 +278,27 @@ import {name, amount, length, width, height, area,
               separacion,
               propTension,},
             ({values, setFieldValue, errors, touched}) => (
-                 <Fragment>
-                 <Grid container spacing={3}>
-                   <Grid item xs={12}>
-                      <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                   </Grid>
+              <Grid container spacing={3}>
+                 <Grid item xs={12}>
+                    <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-
-                 <Grid container spacing={3}>
-                   <Grid item xs={6}>
-                     <SquareMeterField name="area" label="Area" value={values.area} setFieldValue={setFieldValue}
-                     errors={errors} touched={touched}/>
-                   </Grid>
-                   <Grid item xs={6}>
-                     <LinearMeterField name="height" label="Peralte"
-                     value={values.height} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                   </Grid>
+                 <Grid item xs={12} sm={6}>
+                   <SquareMeterField name="area" label="Area" value={values.area} setFieldValue={setFieldValue}
+                   errors={errors} touched={touched}/>
                  </Grid>
-
-                 <Grid container spacing={3}>
-                   <Grid item xs={6}>
-                     <LinearMeterField name="separacion" label="Separacion" value={values.separacion} setFieldValue={setFieldValue}
-                     errors={errors} touched={touched}/>
-                   </Grid>
-                   <Grid item xs={6}>
-                     <PercentageField name="propTension" label="Longitud extra en Tensión"
-                     value={values.propTension} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                   </Grid>
+                 <Grid item xs={12} sm={6}>
+                   <LinearMeterField name="height" label="Peralte"
+                   value={values.height} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-                 </Fragment>
+                 <Grid item xs={12} sm={6}>
+                   <LinearMeterField name="separacion" label="Separacion" value={values.separacion} setFieldValue={setFieldValue}
+                   errors={errors} touched={touched}/>
+                 </Grid>
+                 <Grid item xs={12} sm={6}>
+                   <PercentageField name="propTension" label="Longitud extra en Tensión"
+                   value={values.propTension} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 </Grid>
+               </Grid>
                )
         ]
 
@@ -334,28 +308,23 @@ import {name, amount, length, width, height, area,
               height,
               separacion},
             ({values, setFieldValue, errors, touched}) => (
-                <Fragment>
-                <Grid container spacing={3}>
+              <Grid container spacing={3}>
                   <Grid item xs={12}>
                      <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                   </Grid>
-                </Grid>
-
-                <Grid container spacing={3}>
-                  <Grid item xs={4}>
+                  <Grid item xs={12} sm={4}>
                     <SquareMeterField name="area" label="Area" value={values.area}
                     setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={12} sm={4}>
                     <LinearMeterField name="height" label="Peralte"
                     value={values.height} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={12} sm={4}>
                     <LinearMeterField name="separacion" label="Separacion" value={values.separacion}
                     setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                   </Grid>
-                </Grid>
-                </Fragment>
+              </Grid>
               )
         ]
 
@@ -368,24 +337,22 @@ import {name, amount, length, width, height, area,
               blockWastePct
             },
             ({values, setFieldValue, errors, touched}) => (
-               <Fragment>
-                 <Grid container spacing={3}>
-                   <Grid item xs={12}>
-                     <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                   </Grid>
+              <Grid container spacing={3}>
+                 <Grid item xs={12}>
+                   <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-                 <Grid container spacing={3}>
-                   <Grid item xs={6}>
-                     <SquareMeterField name="area" label="Area" value={values.area}
-                      setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                   </Grid>
-                   <Grid item xs={6}>
-                     <LinearMeterField name="junta" label="Junta" value={values.junta}
-                       setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                   </Grid>
+                 <Grid item xs={12} sm={6}>
+                   <SquareMeterField name="area" label="Area" value={values.area}
+                    setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-                 <BlockCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-               </Fragment>
+                 <Grid item xs={12} sm={6}>
+                   <LinearMeterField name="junta" label="Junta" value={values.junta}
+                     setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 </Grid>
+                 <Grid item xs={12}>
+                   <BlockCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 </Grid>
+             </Grid>
              )
         ]
 
@@ -405,54 +372,48 @@ import {name, amount, length, width, height, area,
               longPata
             },
             ({values, setFieldValue, errors, touched}) => (
-                <Fragment>
-                <Grid container spacing={3}>
-                  <Grid item xs={8}>
-                     <NameField value={values.name} setFieldValue={setFieldValue}
-                     errors={errors} touched={touched}/>
-                  </Grid>
-                  <Grid item xs={4}>
-                     <QuantityField name="amount" label="Cantidad" value={values.amount}
-                     setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-                  </Grid>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={8}>
+                   <NameField value={values.name} setFieldValue={setFieldValue}
+                   errors={errors} touched={touched}/>
                 </Grid>
+                <Grid item xs={12} sm={4}>
+                   <QuantityField name="amount" label="Cantidad" value={values.amount}
+                   setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                </Grid>
+                <Grid item xs={12}>
                 <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
-                <Grid container spacing={3}>
-                 <Grid item xs={6}>
+                </Grid>
+                 <Grid item xs={12} sm={6}>
                    <QuantityField name="cantLongsElems" label="Cantidad Elementos Esquinas"
                    value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-                 <Grid item xs={6}>
+                 <Grid item xs={12} sm={6}>
                    <QuantityField name="cantLongsAuxElems" label="Cantidad Elementos Auxiliares"
                    value={values.cantLongsAuxElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                  </Grid>
-                </Grid>
-                <Grid container spacing={3}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <LinearMeterField name="longPata" label="Largo Patas"
                     value={values.longPata} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <LinearMeterField name="longHook" label="Largo Gancho"
                       value={values.longHook} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                   </Grid>
-                </Grid>
-                <Grid container spacing={3}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <LinearMeterField name="separacion" label="Separacion Estribos"
                     value={values.separacion} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12} sm={6}>
                     <LinearMeterField name="recubrimiento" label="Recubrimiento" value={values.recubrimiento}
                     setFieldValue={setFieldValue} errors={errors} touched={touched}/>
                   </Grid>
-                </Grid>
                 <Grid container spacing={3}>
-                  <Grid item xs={3}>
+                  <Grid item xs={12} md={3}>
                     <BooleanField name="estribosDouble" label="Estribos dobles"/>
                   </Grid>
                 </Grid>
-                </Fragment>
+              </Grid>
               )
         ]
 

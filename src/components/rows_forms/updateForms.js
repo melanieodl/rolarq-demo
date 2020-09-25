@@ -7,9 +7,11 @@ import { Autocomplete } from "@material-ui/lab";
 import { Formik, Form, Field } from "formik";
 import * as Yup from 'yup';
 
-import {Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText,
+import {Dialog, DialogActions, DialogContent, DialogContentText,
         Button, LinearProgress,Typography,  MenuItem, InputLabel, FormControl,
         InputAdornment} from '@material-ui/core'
+import DialogTitle from '../partials/DialogTitle'
+
 import {Stepper, Step, StepLabel, StepContent} from '@material-ui/core';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 
@@ -86,12 +88,13 @@ const UpdateForm = ({apiId, budgetId,
   return (
 
     <Dialog maxWidth={maxWidth || 'md'} fullWidth open={open} onClose={() => closeModal} aria-labelledby="form-dialog-title">
-    <DialogContent>
+      <DialogTitle onClose={closeModal}>
         <Stepper alternativeLabel>
             <Step key={`${title}`}>
               <StepLabel StepIconComponent={TitleIcon}> {`Actualizar especificaciones de ${title}`}</StepLabel>
             </Step>
         </Stepper>
+        </DialogTitle>
         <Formik
 
           enableReinitialize
@@ -104,11 +107,14 @@ const UpdateForm = ({apiId, budgetId,
         >
           {({ submitForm, isSubmitting, setFieldValue, values, errors, touched }) => (
             <Form autoComplete="off">
+              <DialogContent dividers>
+
 
                 <form.inner values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
 
               {isSubmitting && <LinearProgress />}
               <br />
+              </DialogContent>
               <DialogActions>
 
                   <Button
@@ -140,7 +146,6 @@ const UpdateForm = ({apiId, budgetId,
             </Form>
           )}
         </Formik>
-        </DialogContent>
 
         </Dialog>
 
@@ -364,17 +369,15 @@ const ColumnaEspecialForm = ({open, closeModal, rowData}) => {
   const Form = ({values, setFieldValue, errors, touched}) => {
     return (
       <Grid container alignItems="center">
-        <Grid item xs={3}>
+        <Grid constainer spacing={3} xs={12} sm={3}>
            <HelpImg image={columnImg}/>
         </Grid>
-        <Grid item xs={9}>
+        <Grid container spacing={3} xs={12} sm={9}>
           <ColumnaEspecialSpecsForm values={values} setFieldValue={setFieldValue}
             errors={errors} touched={touched}/>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={12}>
                 <ConcretoProp errors={errors} touched={touched} value={columna.mixProp}/>
             </Grid>
-          </Grid>
         </Grid>
       </Grid>
     )

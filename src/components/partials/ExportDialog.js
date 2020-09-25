@@ -2,11 +2,12 @@ import React, {useState, useEffect, Fragment} from 'react'
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import {Dialog, DialogTitle, DialogContent, DialogActions, Grid, Button,
+import {Dialog, DialogContent, DialogActions, Grid, Button,
         LinearProgress, CircularProgress, InputAdornment} from '@material-ui/core';
 import {SaveAlt} from '@material-ui/icons'
 import { Formik, Form, Field } from 'formik';
 import {NameField} from '../inputFields'
+import DialogTitle from './DialogTitle'
 
 import * as Yup from 'yup';
 import moment from 'moment'
@@ -59,7 +60,7 @@ export default function ExportDialog({open, onClose, onConfirm, data, showTitle,
         open={open}
         {...other}
       >
-        <DialogTitle id="confirmation-dialog-title">{showTitle()}</DialogTitle>
+        <DialogTitle onClose={onClose} id="confirmation-dialog-title">{showTitle()}</DialogTitle>
             <Formik
             enableReinitialize // missing piece!!
 

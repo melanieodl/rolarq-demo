@@ -2,11 +2,11 @@ import React, {useState, useEffect, Fragment} from "react"
 import api from '../api'
 import { withStyles } from '@material-ui/core/styles'
 import {Container, Box, Badge, IconButton, Tooltip, TextField} from '@material-ui/core'
-import Table from '../components/tables/EditableTb'
+import Table from '../components/tables/BudgetsTb'
 import MailIcon from '@material-ui/icons/Mail'
 import BudgetsIcon from '@material-ui/icons/AccountBalanceWalletRounded'
-import DescriptionIcon from '@material-ui/icons/Description'
-
+// import DescriptionIcon from '@material-ui/icons/Description'
+import DescriptionIcon from '@material-ui/icons/OpenInBrowserSharp';
 
 import BudgetDetails from './BudgetDetails'
 
@@ -70,8 +70,8 @@ const Budgets = props => {
        currencySetting:{ locale: 'es-GT', currencyCode:'gtq', minimumFractionDigits:2, maximumFractionDigits:2}},
      { width: '5%', sorting: false,  render: (rowData) =>  typeof rowData != 'undefined' &&
             <Fragment>
-              <Tooltip title="Presupuesto desglosado" placement="bottom">
-                <IconButton onClick={(e) => {handleClickOpen(rowData.id)}} size='small' color="primary" aria-label="upload picture" component="span">
+              <Tooltip title="Abrir presupuesto desglosado" placement="bottom">
+                <IconButton onClick={(e) => {handleClickOpen(rowData.id)}} edge='start' color="primary" aria-label="upload picture" component="span">
                   <DescriptionIcon />
                 </IconButton>
               </Tooltip>

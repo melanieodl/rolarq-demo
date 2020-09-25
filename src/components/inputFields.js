@@ -22,7 +22,7 @@ const NameField = ({name, label, value, setFieldValue, errors, touched, helperTe
         ...fieldProps
       }}
     />
-    {helperText && <FormHelperText id={`${name}-helper-text`}>{helperText}</FormHelperText>}
+    {helperText && <FormHelperText id={`${name || `name`}-helper-text`}>{helperText}</FormHelperText>}
 
     {errors["name"] && touched["name"] ? (
       <div><Typography color='error' variant='caption'>{errors["name"]}</Typography></div>

@@ -9,7 +9,7 @@ import {Paper, Fab} from '@material-ui/core'
 import {Add, ArrowDownward, Check, ChevronLeft, ChevronRight, Clear,
         DeleteOutline, Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt,
         Search, ViewColumn, Refresh} from '@material-ui/icons'
-
+import BudgetCopyIcon from '@material-ui/icons/FileCopyOutlined';
 
 const tableIcons = {
     Add: () => (<Fab color="secondary" size="medium"><Add /> </Fab>),
@@ -55,6 +55,9 @@ export default function EditableTb(props) {
   const [errorMessages, setErrorMessages] = useState([])
   const [refreshFlag, setRefreshFlag] = useState(false)
 
+  //initialFormData
+  const [initialFormData, setInitialFormData] = useState({architect: 'Fernando Roldan'})
+
   useEffect(() => {
 
     props.lookupEffects && props.lookupEffects.forEach(effect => effect())
@@ -91,6 +94,7 @@ export default function EditableTb(props) {
         resolve()
         setErrorMessages([])
         setIsError(false)
+        setInitialFormData({architect: 'Fernando Roldan'})
       })
       .catch(err => {
         setErrorMessages(["Cannot add data. Server error!"])
@@ -203,7 +207,33 @@ export default function EditableTb(props) {
 
 
      }}
+     initialFormData={initialFormData}
+
      actions={[
+         {
+         icon: BudgetCopyIcon,
+         tooltip: 'Duplicar',
+         onClick: (event, rowData) => {
+              setInitialFormData({
+                  ...rowData,
+                  name: '',
+
+                });
+
+            tableRef.current.dataManager.changeRowEditing();
+              tableRef.current.setState({
+                ...tableRef.current.dataManager.getRenderState(),
+                showAddRow: true,
+              });
+
+           //
+           // tableRef.current.dataManager.changeRowEditing(rowData, 'update');
+           // tableRef.current.setState({
+           //   ...tableRef.current.dataManager.getRenderState(),
+           // });
+         },
+         position: 'row'
+       },
        {
          icon: tableIcons.Refresh,
          tooltip: 'Actualizar',

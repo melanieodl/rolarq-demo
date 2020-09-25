@@ -61,12 +61,9 @@ const tableIcons = {
   };
 
 
-const DetailTitle = title => <Typography color='textPrimary' variant='body2'>{title}</Typography>
-
-
-export default function EditableTb(props) {
+export default function EditableTb({prices, setPrices,
+                                    title, label}) {
   const tableRef = createRef()
-  const [data, setData] = useState([])
   const [suppliers, setSuppliers] = useState({})
 
 
@@ -98,99 +95,40 @@ export default function EditableTb(props) {
         setIsError(true)
       })
 
-
-    api.get(props.url)
-    .then(response => {
-      setData(response.data)
-    })
-    .catch(err => {
-      setErrorMessages(['Cannot load user data'])
-      setIsError(true)
-    })
-
   }, [])
 
 
   const handleRowAdd = (newData, resolve) => {
-
-    //validation
-    let errorList = []
-    //if(dato indefinido then errorList.push())
-
-    if(errorList.length < 1){
-      api.post(props.url, newData)
-      // console.log(url + newData)
-      .then(res => {
-        let dataToAdd = [...data]
-        dataToAdd.push(res.data)
-        setData(dataToAdd)
-        resolve()
-        setErrorMessages([])
-        setIsError(false)
-      })
-      .catch(err => {
-        setErrorMessages(["Cannot add data. Server error!"])
-        setIsError(true)
-        resolve()
-      })
-    } else {
-      setErrorMessages(errorList)
-      setIsError(true)
-      resolve()
-    }
-
+    let dataToAdd = [...prices]
+    dataToAdd.push(newData)
+    setPrices(dataToAdd)
+    resolve();
   }
 
   const handleRowUpdate = (newData, oldData, resolve) => {
-    let errorList = []
 
-    if(errorList.length < 1){
-      api.put(`${props.url}/${newData.id}`, newData)
-      .then(res => {
-        const dataUpdate = [...data]
+        const dataToUpdate = [...prices]
         const index = oldData.tableData.id
-        dataUpdate[index] = newData
-        setData([...dataUpdate])
-        resolve()
-        setIsError(false)
-        setErrorMessages([])
-      })
-      .catch(err => {
-        setErrorMessages(["update failed! Server error"])
-        setIsError(true)
-        resolve()
-      })
-    } else {
-      setErrorMessages(errorList)
-      setIsError(true)
-      resolve()
-    }
+        dataToUpdate[index] = newData
+        setPrices([...dataToUpdate])
   }
 
   const handleRowDelete = (oldData, resolve) => {
-    let errorList = []
 
-    api.delete(`${props.url}/${oldData.id}`)
-    .then(res => {
-      const dataDelete = [...data]
+      const dataToDelete = [...prices]
       const index = oldData.tableData.id
-      dataDelete.splice(index, 1)
-      setData([...dataDelete])
+      dataToDelete.splice(index, 1)
+      setPrices([...dataToDelete])
       resolve()
-    })
-    .catch(err => {
-      setErrorMessages(["Delete failed! Server error"])
-      setIsError(true)
-      resolve()
-    })
+
   }
   return (
     <MaterialTable
       tableRef={tableRef}
       icons={tableIcons}
-      title={DetailTitle(props.title)}
+      title={''}
       columns={columns}
-      data={data}
+      data={prices}
       editable={{
         isEditable: rowData => !rowData.restricted, // only name(a) rows would be editable
         isDeletable: rowData => !rowData.restricted, // only name(b) rows would be deletable,
@@ -253,7 +191,10 @@ export default function EditableTb(props) {
         // ),
 
      }}
-     localization={localization(props.label)}
+     localization={{...localization(label),
+                    body: {...localization(label).body,
+                            emptyDataSourceMessage: ''}
+                  }}
     />
 
   );

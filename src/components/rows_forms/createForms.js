@@ -7,9 +7,10 @@ import HelpImg from '../partials/HelpImg'
 import {Stepper, Step, StepLabel, StepContent,
         Grid, TextField, CircularProgress } from '@material-ui/core'
 
-import {Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText,
+import {Dialog, DialogActions, DialogContent, DialogContentText,
         Button, LinearProgress,Typography,  MenuItem, InputLabel, FormControl,
         InputAdornment} from '@material-ui/core'
+import DialogTitle from '../partials/DialogTitle'
 
 import { Autocomplete } from "@material-ui/lab";
 import { Formik, Form, Field } from "formik";
@@ -175,14 +176,15 @@ const CreateForm = ({getSteps, budgetId, apiId,
     return (
 
       <Dialog maxWidth={maxWidth  || 'md'} fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
-      <DialogContent>
-          <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map(({label}) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+          <DialogTitle onClose={closeModal}>
+            <Stepper activeStep={activeStep} alternativeLabel>
+              {steps.map(({label}) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </DialogTitle>
           <Formik
           enableReinitialize // missing piece!!
 
@@ -193,40 +195,42 @@ const CreateForm = ({getSteps, budgetId, apiId,
           >
             {({ submitForm, isSubmitting, setFieldValue, values, errors, touched }) => (
               <Form autoComplete="off">
+              <DialogContent dividers>
 
-              <step.form values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                <step.form values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
 
-                {isSubmitting && <LinearProgress />}
-                <br />
-                <DialogActions>
+                  {isSubmitting && <LinearProgress />}
+                  <br />
+                </DialogContent>
+                  <DialogActions>
 
-                    <Button
-                     color="inherit"
-                     onClick={closeModal}>
-                        Cancelar
-                     </Button>
+                      <Button
+                       color="inherit"
+                       onClick={closeModal}>
+                          Cancelar
+                       </Button>
 
-                     {activeStep > 0 ? (
-                         <Button
-                           disabled={isSubmitting}
-                           variant="outlined"
-                           onClick={handleBack}
-                         >
-                           Atrás
-                         </Button>
-                     ) : null}
+                       {activeStep > 0 ? (
+                           <Button
+                             disabled={isSubmitting}
+                             variant="outlined"
+                             onClick={handleBack}
+                           >
+                             Atrás
+                           </Button>
+                       ) : null}
 
 
 
-                 <Button
-                   startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
-                   disabled={isSubmitting}
-                   variant="contained"
-                   color="primary"
-                   type="submit"
-                 >
-                   {isSubmitting ? 'Enviando' : isLastStep() ? 'Enviar' : 'Siguiente'}
-                 </Button>
+                   <Button
+                     startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
+                     disabled={isSubmitting}
+                     variant="contained"
+                     color="primary"
+                     type="submit"
+                   >
+                     {isSubmitting ? 'Enviando' : isLastStep() ? 'Enviar' : 'Siguiente'}
+                   </Button>
 
 
                 </DialogActions>
@@ -238,7 +242,6 @@ const CreateForm = ({getSteps, budgetId, apiId,
               </Form>
             )}
           </Formik>
-          </DialogContent>
 
           </Dialog>
     );
@@ -311,10 +314,10 @@ const ColumnaForm = ({budgetId, openModal, closeModal, setData}) => {
       schema: transQuantitySchema,
       form: ({values, setFieldValue, errors, touched}) => (
         <Grid container alignItems="center">
-          <Grid item xs={3}>
+          <Grid item xs={12} xs={3}>
              <HelpImg image={columnImg}/>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} xs={9}>
           <TransQuantityForm values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
           </Grid>
         </Grid>
@@ -555,57 +558,56 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
 
   const SpecsForm = ({values, setFieldValue, errors, touched}) => (
     <Grid container alignItems="center">
-      <Grid item xs={3}>
-         <HelpImg image={columnImg}/>
-      </Grid>
-      <Grid item xs={9}>
-           <Grid container spacing={3}>
-             <Grid item xs={8}>
+        <Grid container xs={12} sm={3}>
+           <HelpImg image={columnImg}/>
+        </Grid>
+        <Grid container spacing={3} xs={12} sm={9}>
+             <Grid item xs={12} sm={8}>
                 <NameField value={values.name} setFieldValue={setFieldValue}
                 errors={errors} touched={touched}/>
              </Grid>
-             <Grid item xs={4}>
+             <Grid item xs={12} sm={4}>
                 <QuantityField name="amount" label="Cantidad" value={values.amount}
                 setFieldValue={setFieldValue} errors={errors} touched={touched}/>
              </Grid>
-           </Grid>
-           <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
-           <Grid container spacing={3}>
-            <Grid item xs={6}>
+             <Grid item xs={12}>
+                <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
+             </Grid>
+            <Grid item xs={12} sm={6}>
               <QuantityField name="cantLongsElems" label="Cantidad Elementos Esquinas"
               value={values.cantLongsElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <QuantityField name="cantLongsAuxElems" label="Cantidad Elementos Auxiliares"
               value={values.cantLongsAuxElems} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
             </Grid>
-           </Grid>
-           <Grid container spacing={3}>
-             <Grid item xs={6}>
+             <Grid item xs={12} sm={6}>
                <LinearMeterField name="longPata" label="Largo Patas"
                value={values.longPata} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
              </Grid>
-             <Grid item xs={6}>
+             <Grid item xs={12} sm={6}>
                <LinearMeterField name="longHook" label="Largo Gancho"
                  value={values.longHook} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
              </Grid>
-           </Grid>
-           <Grid container spacing={3}>
-             <Grid item xs={6}>
+             <Grid item xs={12} sm={6}>
                <LinearMeterField name="separacion" label="Separacion Estribos"
                value={values.separacion} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
              </Grid>
-             <Grid item xs={6}>
+             <Grid item xs={12} sm={6}>
                <LinearMeterField name="recubrimiento" label="Recubrimiento" value={values.recubrimiento}
                setFieldValue={setFieldValue} errors={errors} touched={touched}/>
              </Grid>
-           </Grid>
-           <Grid container direction="row-reverse" justify="flex-start" spacing={3}>
-             <Grid item alignItems="flex-end" className={classes.soloInput} xs={3}>
-               <BooleanField name="estribosDouble" label="Estribos dobles" />
+             <Grid xs={12}
+                container
+                direction="row-reverse"
+                justify="flex-start"
+                alignItems="center"
+              >
+               <Grid item alignItems="flex-end" className={classes.soloInput} xs={6} sm={3}>
+                 <BooleanField name="estribosDouble" label="Estribos dobles" />
+               </Grid>
              </Grid>
-           </Grid>
-        </Grid>
+          </Grid>
         </Grid>
    )
 
@@ -652,26 +654,26 @@ const PinturaForm =({budgetId, openModal, closeModal, setData}) => {
                 ceilPaint, ceilPaintPrice, ceilPaintWastePct,
               },
       form: ({values, setFieldValue, errors, touched}) => (
-         <Fragment>
-           <Grid container spacing={4}>
+        <Grid container spacing={3}>
              <Grid item xs={12}>
                 <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
              </Grid>
-           </Grid>
-           <Grid container spacing={4}>
-             <Grid item xs={6}>
+             <Grid item xs={12} sm={6}>
                <SquareMeterField name="wallArea" label="Area de Pared" value={values.wallArea} helperText='Area de paredes interiores/exteriores'
                setFieldValue={setFieldValue} errors={errors} touched={touched}/>
              </Grid>
-             <Grid item xs={6}>
+             <Grid item xs={12} sm={6}>
                <SquareMeterField name="ceilArea" label="Area de Cielo" value={values.ceilArea} helperText='Area de superficies de cielo (Opcional)'
                setFieldValue={setFieldValue} errors={errors} touched={touched}/>
              </Grid>
-           </Grid>
-           <WallPaintCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
-           <CeilPaintCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             <Grid item xs={12}>
+                <WallPaintCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+             <Grid item xs={12}>
+                <CeilPaintCost values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
 
-         </Fragment>)},
+         </Grid>)},
   ])
 
   const initialValues = {name: 'PINTURA INTERIOR/EXTERIOR', wallArea: '', ceilArea: ''}

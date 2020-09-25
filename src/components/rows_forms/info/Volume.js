@@ -9,7 +9,7 @@ export default function VolumeFields(props){
 
   return(
     <Grid container spacing={3}>
-      <Grid item xs={4}>
+      <Grid item xs={12} sm={4}>
         <Field
         component={TextField}
          name="length"
@@ -25,7 +25,7 @@ export default function VolumeFields(props){
        />
 
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12} sm={4}>
         <Field
         component={TextField}
          name="width"
@@ -40,7 +40,7 @@ export default function VolumeFields(props){
          }}
        />
       </Grid>
-      <Grid item xs={4}>
+      <Grid item xs={12} sm={4}>
         <Field
         component={TextField}
          name="height"
