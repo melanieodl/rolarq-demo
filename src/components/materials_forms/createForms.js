@@ -3,8 +3,10 @@ import api from '../../api'
 import { makeStyles } from '@material-ui/core/styles';
 import blockImg from '../../imgs/block.png';
 import HelpImg from '../partials/HelpImg'
-import {Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText,
+import {Dialog, DialogActions, DialogContent, DialogContentText,
         Button, LinearProgress, Grid, CircularProgress} from '@material-ui/core'
+import DialogTitle from '../partials/DialogTitle'
+
 import {Stepper, Step, StepLabel, InputLabel, Select, MenuItem, Typography,
         FormControl} from '@material-ui/core';
 
@@ -59,12 +61,15 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
 
         return (
           <Dialog maxWidth={maxWidth || 'md'} fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
-          <DialogContent>
+          <DialogTitle onClose={closeModal} id="confirmation-dialog-title">
               <Stepper alternativeLabel>
                   <Step key={`${title}`}>
                     <StepLabel StepIconComponent={TitleIcon}> {`Agregar ${title || `Material`}`}</StepLabel>
                   </Step>
               </Stepper>
+          </DialogTitle>
+          <DialogContent dividers>
+
               <Formik
                initialValues={{...initialValues}}
                validationSchema={

@@ -5,9 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import blockImg from '../../imgs/block.png';
 import HelpImg from '../partials/HelpImg'
 
-import {Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText,
+import {Dialog, DialogActions, DialogContent, DialogContentText,
         Button, LinearProgress, Grid, CircularProgress, InputAdornment, FormHelperText,
         FormControl, Select, MenuItem, InputLabel, Typography} from '@material-ui/core'
+import DialogTitle from '../partials/DialogTitle'
+
 import {Stepper, Step, StepLabel} from '@material-ui/core';
 
 import SaveIcon from '@material-ui/icons/Save';
@@ -67,12 +69,15 @@ const UpdateForm = ({apiId, id, rowData,
 
   return (
     <Dialog maxWidth={maxWidth || 'md'} fullWidth open={open} onClose={() => closeModal} aria-labelledby="form-dialog-title">
-    <DialogContent>
+      <DialogTitle onClose={closeModal}>
         <Stepper alternativeLabel>
             <Step key={`${title}`}>
               <StepLabel StepIconComponent={TitleIcon}> {`Editar ${title || `Material`}`}</StepLabel>
             </Step>
         </Stepper>
+      </DialogTitle>
+    <DialogContent dividers>
+
         <Formik
            enableReinitialize // missing piece!!
            initialValues={{

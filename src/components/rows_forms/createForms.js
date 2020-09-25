@@ -7,9 +7,10 @@ import HelpImg from '../partials/HelpImg'
 import {Stepper, Step, StepLabel, StepContent,
         Grid, TextField, CircularProgress } from '@material-ui/core'
 
-import {Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText,
+import {Dialog, DialogActions, DialogContent, DialogContentText,
         Button, LinearProgress,Typography,  MenuItem, InputLabel, FormControl,
         InputAdornment} from '@material-ui/core'
+import DialogTitle from '../partials/DialogTitle'
 
 import { Autocomplete } from "@material-ui/lab";
 import { Formik, Form, Field } from "formik";
@@ -175,14 +176,15 @@ const CreateForm = ({getSteps, budgetId, apiId,
     return (
 
       <Dialog maxWidth={maxWidth  || 'md'} fullWidth open={openModal} onClose={() => closeModal} aria-labelledby="form-dialog-title">
-      <DialogContent>
-          <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map(({label}) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+          <DialogTitle onClose={closeModal}>
+            <Stepper activeStep={activeStep} alternativeLabel>
+              {steps.map(({label}) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </DialogTitle>
           <Formik
           enableReinitialize // missing piece!!
 
@@ -193,40 +195,42 @@ const CreateForm = ({getSteps, budgetId, apiId,
           >
             {({ submitForm, isSubmitting, setFieldValue, values, errors, touched }) => (
               <Form autoComplete="off">
+              <DialogContent dividers>
 
-              <step.form values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                <step.form values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
 
-                {isSubmitting && <LinearProgress />}
-                <br />
-                <DialogActions>
+                  {isSubmitting && <LinearProgress />}
+                  <br />
+                </DialogContent>
+                  <DialogActions>
 
-                    <Button
-                     color="inherit"
-                     onClick={closeModal}>
-                        Cancelar
-                     </Button>
+                      <Button
+                       color="inherit"
+                       onClick={closeModal}>
+                          Cancelar
+                       </Button>
 
-                     {activeStep > 0 ? (
-                         <Button
-                           disabled={isSubmitting}
-                           variant="outlined"
-                           onClick={handleBack}
-                         >
-                           Atrás
-                         </Button>
-                     ) : null}
+                       {activeStep > 0 ? (
+                           <Button
+                             disabled={isSubmitting}
+                             variant="outlined"
+                             onClick={handleBack}
+                           >
+                             Atrás
+                           </Button>
+                       ) : null}
 
 
 
-                 <Button
-                   startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
-                   disabled={isSubmitting}
-                   variant="contained"
-                   color="primary"
-                   type="submit"
-                 >
-                   {isSubmitting ? 'Enviando' : isLastStep() ? 'Enviar' : 'Siguiente'}
-                 </Button>
+                   <Button
+                     startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
+                     disabled={isSubmitting}
+                     variant="contained"
+                     color="primary"
+                     type="submit"
+                   >
+                     {isSubmitting ? 'Enviando' : isLastStep() ? 'Enviar' : 'Siguiente'}
+                   </Button>
 
 
                 </DialogActions>
@@ -238,7 +242,6 @@ const CreateForm = ({getSteps, budgetId, apiId,
               </Form>
             )}
           </Formik>
-          </DialogContent>
 
           </Dialog>
     );
