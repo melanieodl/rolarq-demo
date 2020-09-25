@@ -66,7 +66,7 @@ const CostGroup = ({url,
           onChange={(e, value) => {
             setFieldValue(materialName, value);
             setFieldValue(priceName, value ? {...value.prices.reduce((defaultPrice, currentPrice) => {
-                                                          return currentPrice;},
+                                                          return currentPrice.price > defaultPrice.price ? currentPrice : defaultPrice;},
                                                          {id: '', material: {}, special: false, price: 0, supplier: {} })}
                                             : null)
             if(!value){
