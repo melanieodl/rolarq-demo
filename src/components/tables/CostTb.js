@@ -6,11 +6,12 @@ import DetailTb from './DetailsTb'
 import HeaderTb from './HeaderTb';
 
 import {FormControl, Select, MenuItem, TextField, ListItemIcon, Divider, CircularProgress,
-        Button, Grid} from '@material-ui/core'
+        Button, Grid, IconButton} from '@material-ui/core'
 import {Table, TableBody, TableRow, TableCell} from '@material-ui/core';
-
+import InfoTooltip from '../partials/InfoTooltip'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 
+import InfoIcon from '@material-ui/icons/InfoOutlined';
 import MaterialIcon from '@material-ui/icons/LocalMallRounded'
 import ManoObraIcon from '@material-ui/icons/PanToolRounded'
 import IndirectIcon from '@material-ui/icons/AllOutRounded'
@@ -87,6 +88,12 @@ const refreshRow = () => {
 
   const columnsMaterials =    [
      { title: 'Id', field: 'id', hidden: true},
+     { width: '1%',  align: 'left', sorting: false, render: (rowData) =>  typeof rowData != 'undefined' && rowData.type && rowData.type.id != 1 &&
+              <InfoTooltip title={rowData.type.name} placement="bottom">
+                <IconButton  size='small' aria-label="upload picture" component="span">
+                  <InfoIcon />
+                </IconButton>
+              </InfoTooltip>},
      { title: "Material", width: '35%',
       field: "material", render: rowData => rowData ? rowData.name : '',
       validate: rowData => ( typeof rowData.name != 'undefined'?
