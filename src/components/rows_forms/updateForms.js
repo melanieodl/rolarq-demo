@@ -369,17 +369,15 @@ const ColumnaEspecialForm = ({open, closeModal, rowData}) => {
   const Form = ({values, setFieldValue, errors, touched}) => {
     return (
       <Grid container alignItems="center">
-        <Grid item xs={3}>
+        <Grid constainer spacing={3} xs={12} sm={3}>
            <HelpImg image={columnImg}/>
         </Grid>
-        <Grid item xs={9}>
+        <Grid container spacing={3} xs={12} sm={9}>
           <ColumnaEspecialSpecsForm values={values} setFieldValue={setFieldValue}
             errors={errors} touched={touched}/>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={12}>
                 <ConcretoProp errors={errors} touched={touched} value={columna.mixProp}/>
             </Grid>
-          </Grid>
         </Grid>
       </Grid>
     )

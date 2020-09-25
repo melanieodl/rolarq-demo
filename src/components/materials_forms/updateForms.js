@@ -91,15 +91,17 @@ const UpdateForm = ({apiId, id, rowData,
          {({ values, setFieldValue, errors, touched, submitForm, isSubmitting }) => (
            <Form>
                  <Grid container spacing={4} alignItems="center">
-                     {image && <Grid item xs={imgSpacing|| 4}>
+                     {image && <Grid item xs={12} sm={imgSpacing|| 4}>
                       <HelpImg image={image}/>
-                     </Grid>}
-                     <Grid item xs={12 - (imgSpacing || 0)}>
+                   </Grid>}
+                   <Grid item xs={12} sm={12 - (imgSpacing || 0)}>
                       <FormMaterial values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                    </Grid>
+                    <Grid item xs={12}>
                       <PricesTb url={`/materials/${id}/prices`} parentId={id}
                       title='Precios' label="precio"
                       />
-                      </Grid>
+                    </Grid>
                   </Grid>
 
 
@@ -158,10 +160,10 @@ const IronForm = ({ open, closeModal, rowData,
   const {id} =  rowData
   const FormFields = ({values, setFieldValue, errors, touched}) => (
     <Grid container spacing={3}>
-          <Grid item xs={8}>
+          <Grid item xs={12} sm={8}>
             <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <Field
               component={TextField}
               name='length'

@@ -169,7 +169,7 @@ export default function EditableTb({prices, setPrices,
          color: grey[800],
          borderTopLeftRadius: 2,
          borderTopRightRadius: 2,
-         borderBottom: `solid 2px #26a69a`,
+         // borderBottom: `solid 2px #26a69a`,
 
        },
        cellStyle: {

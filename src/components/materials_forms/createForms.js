@@ -82,13 +82,15 @@ const CreateForm = ({schema, apiId, title, label, initialValues,
                {({submitForm, isSubmitting, setFieldValue, values, errors, touched }) => (
                  <Form>
                      <Grid container spacing={4} alignItems="center">
-                         {image && <Grid item xs={imgSpacing|| 4}>
+                         {image && <Grid item xs={12} sm={imgSpacing|| 4}>
                           <HelpImg image={image}/>
                          </Grid>}
-                         <Grid item xs={12 - (imgSpacing || 0)}>
+                         <Grid item xs={12} sm={12 - (imgSpacing || 0)}>
                          {FormFields && <FormFields values={values} setFieldValue={setFieldValue}
                                  errors={errors} touched={touched} />}
-                         <AddPricesTb title='Precios' label="precio" prices={prices} setPrices={setPrices}/>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <AddPricesTb title='Precios' label="precio" prices={prices} setPrices={setPrices}/>
                           </Grid>
 
                       </Grid>

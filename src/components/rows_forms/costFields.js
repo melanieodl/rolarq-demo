@@ -55,7 +55,7 @@ const CostGroup = ({url,
 
     <Grid container spacing={3}>
 
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} sm={12} md={6}>
         <Autocomplete
           id={`material${materialLabel}`}
           name={materialName}
@@ -90,7 +90,7 @@ const CostGroup = ({url,
           <div><Typography color='error' variant='caption'>{errors[materialName]}</Typography></div>
         ) : null}
       </Grid>
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} sm={6} md={3}>
         <FormControl className={classes.formControl}>
           <InputLabel id={`${priceName}-label`}>{priceLabel}</InputLabel>
           <Select
@@ -122,7 +122,7 @@ const CostGroup = ({url,
         </FormControl>
       </Grid>
 
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} sm={6} md={3}>
           <Field
           component={TextField}
            name={pctName}
