@@ -11,10 +11,12 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    zIndex: 100
+    // zIndex: 100
   },
   paper: {
-    marginRight: theme.spacing(2),
+    // marginRight: theme.spacing(2),
+    zIndex: 2000
+
   },
   item: {
     '&:hover':{
@@ -98,13 +100,13 @@ export default function MenuListComposition(props) {
         >
               <Icon />
         </Fab>
-        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+        <Popper className={classes.paper} open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
               style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
             >
-              <Paper elevation={10}>
+              <Paper elevation={24}>
                 <ClickAwayListener onClickAway={handleCloseMenu}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     {props.actions.map(item => (<MenuItem key={item.name} onClick={(e) => {handleOpenModal(e, item.form)}}>{item.name}</MenuItem>)
