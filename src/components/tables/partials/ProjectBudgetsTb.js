@@ -9,7 +9,8 @@ import grey from '@material-ui/core/colors/grey';
 
 
 import {Button, Typography, IconButton, Tooltip} from '@material-ui/core'
-import DescriptionIcon from '@material-ui/icons/Description'
+import DescriptionIcon from '@material-ui/icons/OpenInBrowserSharp';
+import BudgetCopyIcon from '@material-ui/icons/FileCopyOutlined';
 
 
 import BudgetDetails from '../../../pages/BudgetDetails'
@@ -75,6 +76,8 @@ export default function EditableTb(props) {
   const [open, setOpen] = useState(false);
   const [idBudget, setIdBudget] = useState(null);
 
+  //initialFormData
+  const [initialFormData, setInitialFormData] = useState({architect: 'Fernando Roldan'})
 
     const handleClickOpen = (id) => {
       setIdBudget(id)
@@ -102,7 +105,7 @@ export default function EditableTb(props) {
       { title: 'Arquitecto', field: 'architect', initialEditValue: 'Fernando Roldan'},
 
       { title: 'Fecha de creación', field: 'createdAt', type: 'date', editable: 'never', dateSetting: {locale: 'en-GB' }},
-      { title: 'Costo Total', field: 'totalCost', type: 'currency', editable: 'never',
+      { title: 'Costo Total', field: 'totalCosts', type: 'currency', editable: 'never',
         currencySetting:{ locale: 'es-GT', currencyCode:'gtq', minimumFractionDigits:2, maximumFractionDigits:2}},
       { width: '5%', sorting: false,  render: (rowData) =>  typeof rowData != 'undefined' &&
                <Fragment>
@@ -146,6 +149,8 @@ export default function EditableTb(props) {
         resolve()
         setErrorMessages([])
         setIsError(false)
+        setInitialFormData({architect: 'Fernando Roldan'})
+
       })
       .catch(err => {
         setErrorMessages(["Cannot add data. Server error!"])
@@ -212,6 +217,8 @@ export default function EditableTb(props) {
       title={DetailTitle(props.title)}
       columns={columns}
       data={data}
+      initialFormData={initialFormData}
+
       editable={{
         isEditable: rowData => !rowData.restricted, // only name(a) rows would be editable
         isDeletable: rowData => !rowData.restricted, // only name(b) rows would be deletable,
@@ -255,6 +262,33 @@ export default function EditableTb(props) {
 
      }}
 
+
+          actions={[
+              {
+              icon: BudgetCopyIcon,
+              tooltip: 'Duplicar',
+              onClick: (event, rowData) => {
+                   setInitialFormData({
+                       ...rowData,
+                       name: '',
+
+                     });
+
+                 tableRef.current.dataManager.changeRowEditing();
+                   tableRef.current.setState({
+                     ...tableRef.current.dataManager.getRenderState(),
+                     showAddRow: true,
+                   });
+
+                //
+                // tableRef.current.dataManager.changeRowEditing(rowData, 'update');
+                // tableRef.current.setState({
+                //   ...tableRef.current.dataManager.getRenderState(),
+                // });
+              },
+              position: 'row'
+            },
+          ]}
      components={{
         Container: props => (
           <div {...props}>{props.children}</div>
