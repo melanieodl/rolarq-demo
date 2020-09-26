@@ -1,10 +1,11 @@
 import React, {useState, useEffect, createRef, useRef, useCallback, useMemo, Fragment} from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import api from '../api'
+import isotipo from '../imgs/isotipo.png'
 
 import {Button, Dialog, ListItemText, ListItem, List, Divider, AppBar, Toolbar,
         IconButton, Typography, Slide, Grid, Paper, TextField, Container,
-        FormControl, Select, MenuItem, Box} from '@material-ui/core'
+        FormControl, Select, MenuItem, Box, Avatar} from '@material-ui/core'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 import InfoTooltip from '../components/partials/InfoTooltip'
@@ -41,7 +42,12 @@ const useStyles = makeStyles((theme) => ({
 
   totalTitle: {
     borderBottom: 'solid 2px #4a9b9f'
-  }
+  },
+  logo: {
+   width: theme.spacing(8),
+   height: theme.spacing(8),
+   marginRight: theme.spacing(2),
+ },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -189,6 +195,7 @@ export default function FullScreenDialog(props) {
 
         <AppBar position='fixed'>
           <Toolbar >
+            <Avatar alt="Rolarq logo" src={isotipo} className={classes.logo} variant='square' />
 
             <Typography variant="h6" className={classes.title}>
               { `Presupuesto  ${budget.name}:     ${budget.project.name}`}

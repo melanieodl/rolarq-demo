@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import clsx from 'clsx';
-import img from '../imgs/logo.jpeg'
+import isotipo from '../imgs/isotipo.png'
+import logotipo from '../imgs/logotipo.png'
+
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 
@@ -78,10 +80,15 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   logo: {
-   width: theme.spacing(7),
-   height: theme.spacing(7),
-   marginRight: theme.spacing(4),
+   width: theme.spacing(8),
+   height: theme.spacing(8),
+   marginRight: theme.spacing(2),
  },
+ brand: {
+   maxHeight: theme.spacing(5),
+   width: 'auto',
+   display: 'block',
+ }
 }));
 
 function MiniDrawer() {
@@ -120,10 +127,9 @@ function MiniDrawer() {
           >
             <MenuIcon />
           </IconButton>
-          <Avatar alt="Rolarq logo" src={img} className={classes.logo} variant='square' />
-          <Typography variant="h6" noWrap>
-            Rolarq Presupuestos
-          </Typography>
+          <Avatar alt="Rolarq logo" src={isotipo} className={classes.logo} variant='square' />
+          <img src={logotipo} className={classes.brand}/>
+
         </Toolbar>
       </AppBar>
       <ThemeProvider theme={darkTheme}>
