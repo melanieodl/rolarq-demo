@@ -55,15 +55,6 @@ const Budgets = props => {
                                       { isValid: false, helperText: 'Nombre es requerido' } : true
                                   : false) },
      { title: 'Proyecto', field: 'project.id', lookup: projects, validate: rowData => ( typeof rowData.project != 'undefined')},
-     { title: 'Utilidad', field: 'profitPct', type: 'numeric', render: rowData => `${rowData.profitPct} %`, width: '5%', align: 'right',
-     initialEditValue: 0,
-     validate: rowData => { if(typeof rowData.profitPct != 'undefined'){
-                                return rowData.profitPct < 0 ?
-                                     { isValid: false, helperText: 'Deber ser positivo' } : true}
-
-                                return true},
-      editComponent: props => <TextField defaultValue={0} type="number" inputProps={{min: 0,  fontSize: 10}}
-      value={props.value} onChange={e => props.onChange(e.target.value)}/>},
      { title: 'Arquitecto', field: 'architect', initialEditValue: 'Fernando Roldan'},
      { title: 'Fecha de creación', field: 'createdAt', type: 'date', editable: 'never', dateSetting: {locale: 'en-GB'} },
      { title: 'Costo Total', field: 'totalCosts', type: 'currency', editable: 'never',
