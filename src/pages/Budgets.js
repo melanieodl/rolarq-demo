@@ -70,7 +70,7 @@ const Budgets = props => {
        currencySetting:{ locale: 'es-GT', currencyCode:'gtq', minimumFractionDigits:2, maximumFractionDigits:2}},
      { width: '5%', sorting: false,  render: (rowData) =>  typeof rowData != 'undefined' &&
             <Fragment>
-              <Tooltip title="Abrir presupuesto desglosado" placement="bottom">
+              <Tooltip title="Abrir Presupuesto" placement="bottom">
                 <IconButton onClick={(e) => {handleClickOpen(rowData.id)}} edge='start' color="primary" aria-label="upload picture" component="span">
                   <DescriptionIcon />
                 </IconButton>

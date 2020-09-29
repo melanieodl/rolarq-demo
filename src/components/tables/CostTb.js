@@ -247,7 +247,7 @@ const refreshRow = () => {
 
    const columnsCosts =    [
       { title: 'Id', field: 'id', hidden: true},
-      { title: 'Relativo', field: 'relative', type: 'boolean', width:'5%' },
+      { title: 'Relativo', field: 'relative', type: 'boolean', width:'5%', initialEditValue: true },
       { title: 'Mano de Obra', field: 'name', width: '40%',
         validate: rowData => ( typeof rowData.name != 'undefined'?
                                    rowData.name.trim() === '' ?

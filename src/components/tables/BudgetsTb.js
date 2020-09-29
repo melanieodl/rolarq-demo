@@ -216,7 +216,7 @@ export default function EditableTb(props) {
          onClick: (event, rowData) => {
               setInitialFormData({
                   ...rowData,
-                  name: '',
+                  name: `${rowData.name} copia`,
 
                 });
 
