@@ -1,4 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react";
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+
 import ReactDOM from "react-dom";
 import columnImg from '../../imgs/columna.png';
 import HelpImg from '../partials/HelpImg'
@@ -12,7 +14,7 @@ import {Dialog, DialogActions, DialogContent, DialogContentText,
         InputAdornment} from '@material-ui/core'
 import DialogTitle from '../partials/DialogTitle'
 
-import {Stepper, Step, StepLabel, StepContent} from '@material-ui/core';
+import {Stepper, Step, StepLabel, StepContent, Select} from '@material-ui/core';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 
 import {NameField, LinearMeterField, QuantityField,
@@ -21,7 +23,7 @@ import {NameField, LinearMeterField, QuantityField,
 
 import {ConcretoProp, MorteroProp} from './propFields'
 
-import {name, area, junta, wallArea, ceilArea} from '../schemas'
+import {name, area, junta, wallArea, ceilArea, unitAmount, unit, profitPct} from '../schemas'
 
 import {concretoGroup, morteroGroup, frameIronGroup, frameBiIronGroup,
         areaVolGroup, transMeterGroup, transQuantityGroup, columnaEspecialGroup,
@@ -45,13 +47,14 @@ const TitleIcon = () => <DonutLargeIcon fontSize='large' color='primary' />
 
 
 const UpdateForm = ({apiId, budgetId,
-                     form, title, formData,
+                     FormRow, title, formData,
                      validationSchema, open, closeModal,
                      maxWidth}) => {
 
   const url= `budgets/${budgetId}/${apiId}`
 
   const [serverState, setServerState] = useState();
+  console.log('form dAta', formData);
 
   // const refreshRow = () => {
   //   api.get(`${props.rowUrl}`)
@@ -108,9 +111,9 @@ const UpdateForm = ({apiId, budgetId,
           {({ submitForm, isSubmitting, setFieldValue, values, errors, touched }) => (
             <Form autoComplete="off">
               <DialogContent dividers>
+                {console.log('values', values)}
 
-
-                <form.inner values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                <FormRow values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
 
               {isSubmitting && <LinearProgress />}
               <br />
@@ -179,7 +182,7 @@ const ZapataForm = ({open, closeModal, rowData}) => {
 
   return(
     <UpdateForm apiId={apiId} title="Zapata"
-      form={{inner: Form}} formData={zapata} validationSchema={zapataSchema}
+      FormRow={Form} formData={zapata} validationSchema={zapataSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
@@ -211,7 +214,7 @@ const LosaPlanaForm = ({open, closeModal, rowData}) => {
 
   return(
     <UpdateForm apiId={apiId} title="Zapata"
-      form={{inner: Form}} formData={losa} validationSchema={losaPlanaSchema}
+      FormRow={Form} formData={losa} validationSchema={losaPlanaSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
@@ -243,7 +246,7 @@ const LosaInclinadaForm = ({open, closeModal, rowData}) => {
 
   return(
     <UpdateForm apiId={apiId} title="Zapata"
-      form={{inner: Form}} formData={losa} validationSchema={losaInclinadaSchema}
+      FormRow={Form} formData={losa} validationSchema={losaInclinadaSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
@@ -275,7 +278,7 @@ const CimientoCorridoForm = ({open, closeModal, rowData}) => {
 
   return(
     <UpdateForm apiId={apiId} title="Cimiento Corrido"
-      form={{inner: Form}} formData={cimiento} validationSchema={transMeterSchema}
+      FormRow={Form} formData={cimiento} validationSchema={transMeterSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
@@ -307,7 +310,7 @@ const SoleraForm = ({open, closeModal, rowData}) => {
 
   return(
     <UpdateForm apiId={apiId} title="Solera"
-      form={{inner: Form}} formData={solera} validationSchema={transMeterSchema}
+      FormRow={Form} formData={solera} validationSchema={transMeterSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
@@ -348,7 +351,7 @@ const ColumnaForm = ({open, closeModal, rowData}) => {
   }
   return(
     <UpdateForm apiId="columnas" title="Columna"
-      form={{inner: Form}} formData={columna} validationSchema={transQuantitySchema}
+      FormRow={Form} formData={columna} validationSchema={transQuantitySchema}
       budgetId={budgetId} open={open} closeModal={closeModal} maxWidth='lg'/>
   )
 }
@@ -384,7 +387,7 @@ const ColumnaEspecialForm = ({open, closeModal, rowData}) => {
   }
   return(
     <UpdateForm apiId={apiId} title="Columna Especial"
-      form={{inner: Form}} formData={columna} validationSchema={columnaEspecialSchema}
+      FormRow={Form} formData={columna} validationSchema={columnaEspecialSchema}
       budgetId={budgetId} open={open} closeModal={closeModal} maxWidth='lg'/>
   )
 }
@@ -430,7 +433,7 @@ const MuroForm = ({open, closeModal, rowData}) => {
   }
   return(
     <UpdateForm apiId={apiId} title="Muro"
-      form={{inner: Form}} formData={muro} validationSchema={formSchema}
+      FormRow={Form} formData={muro} validationSchema={formSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
@@ -463,7 +466,7 @@ const MezclonMorteroForm = ({open, closeModal, rowData}) => {
   }
   return(
     <UpdateForm apiId={apiId} title="Mezclón de Mortero"
-      form={{inner: Form}} formData={mezclon} validationSchema={areaVolSchema}
+      FormRow={Form} formData={mezclon} validationSchema={areaVolSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
@@ -496,7 +499,7 @@ const MezclonConcretoForm = ({open, closeModal, rowData}) => {
   }
   return(
     <UpdateForm apiId={apiId} title="Mezclón de Concreto"
-      form={{inner: Form}} formData={mezclon} validationSchema={areaVolSchema}
+      FormRow={Form} formData={mezclon} validationSchema={areaVolSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
@@ -529,7 +532,7 @@ const MezclonExtForm = ({open, closeModal, rowData}) => {
   }
   return(
     <UpdateForm apiId={apiId} title="Concreteado de Garage y Banquetas"
-      form={{inner: Form}} formData={mezclon} validationSchema={areaVolSchema}
+      FormRow={Form} formData={mezclon} validationSchema={areaVolSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
@@ -562,7 +565,7 @@ const RepelloForm = ({open, closeModal, rowData}) => {
   }
   return(
     <UpdateForm apiId={apiId} title="Repello y Cernido"
-      form={{inner: Form}} formData={repello} validationSchema={areaVolSchema}
+      FormRow={Form} formData={repello} validationSchema={areaVolSchema}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
@@ -601,12 +604,96 @@ const PinturaForm = ({open, closeModal, rowData}) => {
 
   return(
     <UpdateForm apiId={apiId} title="Pintura Interior/Exterior"
-      form={{inner: Form}} formData={pintura}
+      FormRow={Form} formData={pintura}
       validationSchema={{ name, wallArea, ceilArea}}
       budgetId={budgetId} open={open} closeModal={closeModal}/>
   )
 }
 
+
+const RowForm = ({open, closeModal, rowData}) => {
+  const [renglon, setRenglon] = useState({})
+  const apiId = 'rows'
+  const {budget} = rowData
+  const {id: budgetId} = budget
+  const {id: rowId} = rowData
+  useEffect(() => {
+    api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
+    .then(res => {setRenglon(res.data)
+
+      console.log(renglon);
+    })
+    .catch(err => console.log(err))
+  }, [open])
+
+
+  const Form = ({values, setFieldValue, errors, touched}) => {
+    const [units, setUnits] = useState([])
+    useEffect(() => {
+      api.get('units')
+      .then(response => {
+        setUnits(response.data)
+      })
+      .catch(err => {
+      })
+    }, [])
+
+    const useStyles = makeStyles({
+        denseItem:{
+        paddingTop: 0,
+        paddingBottom: 0,
+      },
+    });
+
+    const classes = useStyles()
+    return(
+    <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+             <QuantityField name="unitAmount" label="Cantidad" value={values.unitAmount}
+             setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+          </Grid>
+          <Grid item xs={12} sm={5}>
+              <FormControl>
+              <InputLabel htmlFor="unit">{`Unidad de Medida`}</InputLabel>
+              <Field
+                component={Select}
+                disabled={units.length === 0}
+                name='unit'
+                onChange = {(evt, child) => setFieldValue('unit', evt.target.value)}
+                defaultValue= {renglon.unit || null }
+                displayEmpty
+                renderValue={value => value ? <MenuItem dense className={classes.denseItem} value={value}>{`${value.name}`}</MenuItem> : ''}
+                inputProps={{
+                  id: 'mix-prop',
+
+                }}
+              >
+                {units.map(unit => <MenuItem dense value={unit}>{unit.name}</MenuItem>)}
+              </Field>
+              {errors["unit"] && touched["unit"] ? (
+                <div><Typography color='error' variant='caption'>{errors["unit"]}</Typography></div>
+              ) : null}
+
+              </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
+             setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+          </Grid>
+        </Grid>
+  )}
+
+
+  return(
+    <UpdateForm apiId={apiId} title="Editar Renglón"
+      FormRow={Form} formData={renglon}
+      validationSchema={{ name, unitAmount, unit, profitPct}}
+      budgetId={budgetId} open={open} closeModal={closeModal}/>
+  )
+}
 export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,
         SoleraForm, ColumnaForm, ColumnaEspecialForm, MuroForm, MezclonMorteroForm,
-        MezclonConcretoForm, RepelloForm, PinturaForm, MezclonExtForm}
+        MezclonConcretoForm, RepelloForm, PinturaForm, MezclonExtForm, RowForm}

@@ -23,6 +23,7 @@ import {NameField, LinearMeterField, QuantityField,
         VolumeFields} from '../inputFields'
 
 import {name, amount, length, width, height,
+        unitAmount, unit, profitPct,
         wallArea, ceilArea,
         cantLongsElems, cantLongsAuxElems,
         recubrimiento, separacion,
@@ -682,8 +683,88 @@ const PinturaForm =({budgetId, openModal, closeModal, setData}) => {
     budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>)
 }
 
+
+const RowForm = ({budgetId, openModal, closeModal, setData}) => {
+
+
+
+
+  const FormFields = ({values, setFieldValue, errors, touched, url}) => {
+
+    const [units, setUnits] = useState([])
+    useEffect(() => {
+      api.get('units')
+      .then(response => {
+        setUnits(response.data)
+      })
+      .catch(err => {
+      })
+    }, [])
+    const useStyles = makeStyles({
+        denseItem:{
+        paddingTop: 0,
+        paddingBottom: 0,
+      },
+    });
+
+    const classes = useStyles()
+    return(
+    <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+             <QuantityField name="unitAmount" label="Cantidad" value={values.unitAmount}
+             setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+          </Grid>
+          <Grid item xs={12} sm={5}>
+              <FormControl>
+                <InputLabel htmlFor="unit">{`Unidad de Medida`}</InputLabel>
+                <Field
+                  component={Select}
+                  disabled={units.length === 0}
+                  name='unit'
+                  onChange = {(evt, child) => setFieldValue('unit', evt.target.value)}
+                  defaultValue= {values.unit ? values.unit : null }
+                  displayEmpty
+                  renderValue={value => value ? <MenuItem dense className={classes.denseItem} value={value}>{`${value.name}`}</MenuItem> : ''}
+                  inputProps={{
+                    id: 'mix-prop',
+
+                  }}
+                >
+                  {units.map(unit => <MenuItem dense value={unit}>{unit.name}</MenuItem>)}
+                </Field>
+                {errors["unit"] && touched["unit"] ? (
+                  <div><Typography color='error' variant='caption'>{errors["unit"]}</Typography></div>
+                ) : null}
+
+              </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
+             setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+          </Grid>
+        </Grid>
+  )}
+
+  const getSteps = () => [
+    {
+      label: 'Crear Renglon',
+      schema: {name, unitAmount, unit, profitPct},
+      form: FormFields
+    }
+  ]
+
+  return (
+        <CreateForm getSteps={getSteps} initialValues={{name: '', unit: '', unitAmount: '', profitPct: ''}} apiId='rows'
+        budgetId={budgetId} openModal={openModal} closeModal={closeModal} setData={setData}/>
+  )
+}
+
 export {SoleraForm, CimientoForm, ColumnaForm, ColumnaEspecialForm, ZapataForm,
         LosaPlanaForm, LosaInclinadaForm,
         RepelloCernidoForm, MuroForm,
         MezclonConcretoForm, MezclonMorteroForm, MezclonExtForm,
-        PinturaForm}
+        PinturaForm,
+        RowForm}

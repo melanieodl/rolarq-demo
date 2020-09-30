@@ -23,7 +23,10 @@ const boolFalse = Yup.boolean().default(false)
 
 const schemas = {
         name: strReq,
+        profitPct: pct,
         amount: quantityReq,
+        unitAmount: mixedReq,
+        unit: mixedReq,
         length: positiveReq,
         width: positiveReq,
         height: positiveReq,
@@ -85,7 +88,10 @@ const schemas = {
         electromallaWastePct: pct}
 
 export const {name,
+              profitPct,
               amount,
+              unitAmount,
+              unit,
               length,
               width,
               height,

@@ -156,6 +156,8 @@ export default function FullScreenDialog(props) {
             )
           }
       },
+    { title: 'Utilidad', field:'profitPct', type: 'numeric', width: '1%', align:'right',
+      render:(rowData) => typeof rowData != 'undefined' && rowData.profitPct > 0 && `${rowData.profitPct} %`},
      { title: 'Precio Unitario', field: 'unitCost', type: 'currency', editable: 'never', width: '15%', align: 'right',
 
        currencySetting:{ locale: 'es-GT', currencyCode:'gtq', minimumFractionDigits:2, maximumFractionDigits:2}},

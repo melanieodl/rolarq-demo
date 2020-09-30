@@ -49,15 +49,15 @@ const Budgets = props => {
   }
   const columns =    [
      { title: 'Id', field: 'id', hidden: true,  },
-     { title: 'Nombre', field: 'name',
+     { width:'25%',title: 'Nombre', field: 'name',
        validate: rowData => ( typeof rowData.name != 'undefined'?
                                   rowData.name.trim() === '' ?
                                       { isValid: false, helperText: 'Nombre es requerido' } : true
                                   : false) },
-     { title: 'Proyecto', field: 'project.id', lookup: projects, validate: rowData => ( typeof rowData.project != 'undefined')},
-     { title: 'Arquitecto', field: 'architect', initialEditValue: 'Fernando Roldan'},
-     { title: 'Fecha de creación', field: 'createdAt', type: 'date', editable: 'never', dateSetting: {locale: 'en-GB'} },
-     { title: 'Costo Total', field: 'totalCosts', type: 'currency', editable: 'never',
+     { width:'25%', title: 'Proyecto', field: 'project.id', lookup: projects, validate: rowData => ( typeof rowData.project != 'undefined')},
+     { width:'20%', title: 'Arquitecto', field: 'architect', initialEditValue: 'Fernando Roldan'},
+     { width:'10%', title: 'Fecha de creación', field: 'createdAt', type: 'date', editable: 'never', dateSetting: {locale: 'en-GB'} },
+     { width:'15%', title: 'Costo Total', field: 'totalCosts', type: 'currency', editable: 'never',
        currencySetting:{ locale: 'es-GT', currencyCode:'gtq', minimumFractionDigits:2, maximumFractionDigits:2}},
      { width: '5%', sorting: false,  render: (rowData) =>  typeof rowData != 'undefined' &&
             <Fragment>

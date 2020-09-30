@@ -25,7 +25,8 @@ import {SoleraForm, ZapataForm, ColumnaForm, ColumnaEspecialForm,
         CimientoForm, LosaPlanaForm, LosaInclinadaForm,
         RepelloCernidoForm, MuroForm,
         MezclonConcretoForm, MezclonMorteroForm, MezclonExtForm,
-        PinturaForm} from '../rows_forms/createForms'
+        PinturaForm,
+        RowForm} from '../rows_forms/createForms'
 
 import {toCurrency} from '../../functions'
 
@@ -158,6 +159,9 @@ export default function EditableTb(props) {
     setOpen(false);
    };
 
+
+   // Crear renglon simple
+   const [openCreate, setOpenCreate] = useState(false)
 
 
   //error handling
@@ -338,11 +342,6 @@ export default function EditableTb(props) {
         isEditHidden: rowData => true,
         isEditable: rowData => !rowData.restricted, // only name(a) rows would be editable
         isDeletable: rowData => !rowData.restricted, // only name(b) rows would be deletable,
-
-        onRowAdd: (newData) =>
-          new Promise((resolve) => {
-            handleRowAdd(newData, resolve)
-          }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve) => {
             handleRowUpdate(newData, oldData, resolve)
@@ -422,10 +421,13 @@ export default function EditableTb(props) {
             if(rowData.type){
               handleOpenModal(updateForms[rowData.type.id], rowData)
             } else {
-                tableRef.current.dataManager.changeRowEditing(rowData, 'update');
-                tableRef.current.setState({
-                  ...tableRef.current.dataManager.getRenderState(),
-                });
+                // tableRef.current.dataManager.changeRowEditing(rowData, 'update');
+                // tableRef.current.setState({
+                //   ...tableRef.current.dataManager.getRenderState(),
+                // });
+
+                  handleOpenModal(updateForms[0], rowData)
+              
             }
 
           },
@@ -460,6 +462,14 @@ export default function EditableTb(props) {
          isFreeAction: true,
          // iconProps: {style: {padding: 0}},
        },
+
+       {
+         icon: () => <Fab  color="secondary" size="medium"><Add/> </Fab>,
+         tooltip: 'Nuevo renglón',
+         isFreeAction: true,
+         onClick: () => setOpenCreate(true)
+         // iconProps: {style: {padding: 0}},
+       }
      ]}
      components={{
        Toolbar: props => (
@@ -508,6 +518,7 @@ export default function EditableTb(props) {
         <updateDialog.active closeModal={handleCloseModal} open={open}
         rowData={updateDialog.data} rowsData={props.data} setRowsData={props.setData}
         />
+        <RowForm closeModal={() => setOpenCreate(false)} openModal={openCreate} setData={props.setData} budgetId={props.budgetId}/>
 
     </Fragment>
   );
