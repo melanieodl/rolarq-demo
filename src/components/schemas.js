@@ -17,7 +17,7 @@ const mixedReq = Yup.mixed()
                  .required('Requerido')
 
 const pct = Yup.number()
-                 .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100')
+                 .min(0, 'Debe ser un numero entre 0 - 100').max(100, 'Debe ser un numero entre 0 - 100').nullable()
 
 const boolFalse = Yup.boolean().default(false)
 
