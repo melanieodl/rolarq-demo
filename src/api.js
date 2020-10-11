@@ -2,5 +2,8 @@ import axios from 'axios'
 
 
 export default axios.create({
-    baseURL: `http://localhost:8080/api/`
+    baseURL: `/api/`,
+    proxy: {
+      host: "http://localhost:8080"
+    }
   })
