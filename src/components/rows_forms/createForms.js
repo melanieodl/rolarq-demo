@@ -551,7 +551,7 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
   const classes = useStyles();
 
   const specsSchema = {
-    name, amount, length, width, height,
+    name, profitPct, amount, length, width, height,
     estribosDouble, recubrimiento, cantLongsElems, cantLongsAuxElems,
     separacion, longHook, longPata
   }
@@ -567,9 +567,13 @@ const ColumnaEspecialForm = ({budgetId, openModal, closeModal, setData}) => {
                 <NameField value={values.name} setFieldValue={setFieldValue}
                 errors={errors} touched={touched}/>
              </Grid>
-             <Grid item xs={12} sm={4}>
+             <Grid item xs={12} sm={2}>
                 <QuantityField name="amount" label="Cantidad" value={values.amount}
                 setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+             <Grid item xs={12} sm={2}>
+               <PercentageField name="profitPct" label="Pct. Utilidad" value={values.profitPct}
+                setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
              </Grid>
              <Grid item xs={12}>
                 <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
@@ -650,14 +654,18 @@ const PinturaForm =({budgetId, openModal, closeModal, setData}) => {
 
   const getSteps = () => ([
     { label:'Pintura Exterior y Exterior',
-      schema: { name, wallArea, ceilArea,
+      schema: { name, profitPct, wallArea, ceilArea,
                 wallPaint, wallPaintPrice, wallPaintWastePct,
                 ceilPaint, ceilPaintPrice, ceilPaintWastePct,
               },
       form: ({values, setFieldValue, errors, touched}) => (
         <Grid container spacing={3}>
-             <Grid item xs={12}>
+             <Grid item xs={12} sm={9}>
                 <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+             <Grid item xs={12} sm={3}>
+               <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
+                setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
              </Grid>
              <Grid item xs={12} sm={6}>
                <SquareMeterField name="wallArea" label="Area de Pared" value={values.wallArea} helperText='Area de paredes interiores/exteriores'
@@ -685,9 +693,6 @@ const PinturaForm =({budgetId, openModal, closeModal, setData}) => {
 
 
 const RowForm = ({budgetId, openModal, closeModal, setData}) => {
-
-
-
 
   const FormFields = ({values, setFieldValue, errors, touched, url}) => {
 
@@ -743,7 +748,7 @@ const RowForm = ({budgetId, openModal, closeModal, setData}) => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
-             setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
           </Grid>
         </Grid>
   )}

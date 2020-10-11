@@ -46,30 +46,16 @@ const [columnaEspecialSchema, ColumnaEspecialSpecsForm] = columnaEspecialGroup
 const TitleIcon = () => <DonutLargeIcon fontSize='large' color='primary' />
 
 
-const UpdateForm = ({apiId, budgetId,
+const UpdateForm = React.memo(({apiId, budgetId,
                      FormRow, title, formData,
                      validationSchema, open, closeModal,
+                     rowData,  refreshRow,
                      maxWidth}) => {
 
   const url= `budgets/${budgetId}/${apiId}`
 
   const [serverState, setServerState] = useState();
-  console.log('form dAta', formData);
 
-  // const refreshRow = () => {
-  //   api.get(`${props.rowUrl}`)
-  //   .then(res => {
-  //     const dataUpdate = [...props.rowsData]
-  //     const index = props.rowData.tableData.id
-  //     const updatedRow = {...res.data, tableData: props.rowData.tableData}
-  //     dataUpdate[index] = updatedRow
-  //     props.setRowsData([...dataUpdate])
-  //
-  //   })
-  //   .catch(err => console.log(err))
-  //
-  //
-  // }
 
   const handleServerResponse = (ok, msg) => {
     setServerState({ok, msg});
@@ -78,6 +64,7 @@ const UpdateForm = ({apiId, budgetId,
         api.put(`${url}/${formData.id}`, {...values})
           .then(response => {
             setSubmitting(false);
+            refreshRow(`${url}/${formData.id}`, rowData);
             handleServerResponse(true, "");
             closeModal()
           })
@@ -111,7 +98,6 @@ const UpdateForm = ({apiId, budgetId,
           {({ submitForm, isSubmitting, setFieldValue, values, errors, touched }) => (
             <Form autoComplete="off">
               <DialogContent dividers>
-                {console.log('values', values)}
 
                 <FormRow values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
 
@@ -153,9 +139,9 @@ const UpdateForm = ({apiId, budgetId,
         </Dialog>
 
   );
-}
+})
 
-const ZapataForm = ({open, closeModal, rowData}) => {
+const ZapataForm = ({open, closeModal, rowData, refreshRow}) => {
   const [zapata, setZapata] = useState({})
   const apiId = 'zapatas'
   const {budget} = rowData
@@ -164,7 +150,7 @@ const ZapataForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setZapata(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
   const Form = ({values, setFieldValue, errors, touched}) => (
@@ -183,11 +169,12 @@ const ZapataForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Zapata"
       FormRow={Form} formData={zapata} validationSchema={zapataSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const LosaPlanaForm = ({open, closeModal, rowData}) => {
+const LosaPlanaForm = ({open, closeModal, rowData, refreshRow}) => {
   const [losa, setLosa] = useState({})
   const apiId = 'losasplanas'
   const {budget} = rowData
@@ -196,7 +183,7 @@ const LosaPlanaForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setLosa(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
   const Form = ({values, setFieldValue, errors, touched}) => (
@@ -215,11 +202,12 @@ const LosaPlanaForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Zapata"
       FormRow={Form} formData={losa} validationSchema={losaPlanaSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const LosaInclinadaForm = ({open, closeModal, rowData}) => {
+const LosaInclinadaForm = ({open, closeModal, rowData, refreshRow}) => {
   const [losa, setLosa] = useState({})
   const apiId = 'losas'
   const {budget} = rowData
@@ -228,7 +216,7 @@ const LosaInclinadaForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setLosa(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
   const Form = ({values, setFieldValue, errors, touched}) => (
@@ -247,11 +235,12 @@ const LosaInclinadaForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Zapata"
       FormRow={Form} formData={losa} validationSchema={losaInclinadaSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const CimientoCorridoForm = ({open, closeModal, rowData}) => {
+const CimientoCorridoForm = ({open, closeModal, rowData, refreshRow}) => {
   const [cimiento, setCimiento] = useState({})
   const apiId = 'cimcorridos'
   const {budget} = rowData
@@ -260,7 +249,7 @@ const CimientoCorridoForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setCimiento(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
   const Form = ({values, setFieldValue, errors, touched}) => (
@@ -279,11 +268,12 @@ const CimientoCorridoForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Cimiento Corrido"
       FormRow={Form} formData={cimiento} validationSchema={transMeterSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const SoleraForm = ({open, closeModal, rowData}) => {
+const SoleraForm = ({open, closeModal, rowData, refreshRow}) => {
   const [solera, setSolera] = useState({})
   const apiId = 'soleras'
   const {budget} = rowData
@@ -292,7 +282,7 @@ const SoleraForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setSolera(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
   const Form = ({values, setFieldValue, errors, touched}) => (
@@ -311,11 +301,12 @@ const SoleraForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Solera"
       FormRow={Form} formData={solera} validationSchema={transMeterSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const ColumnaForm = ({open, closeModal, rowData}) => {
+const ColumnaForm = ({open, closeModal, rowData, refreshRow}) => {
   const [columna, setColumna] = useState({})
   const {budget} = rowData
   const {id: budgetId} = budget
@@ -323,7 +314,7 @@ const ColumnaForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/columnas/${rowId}`)
     .then(res => setColumna(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
 
@@ -352,11 +343,12 @@ const ColumnaForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId="columnas" title="Columna"
       FormRow={Form} formData={columna} validationSchema={transQuantitySchema}
-      budgetId={budgetId} open={open} closeModal={closeModal} maxWidth='lg'/>
+      budgetId={budgetId} open={open} closeModal={closeModal} maxWidth='lg'
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const ColumnaEspecialForm = ({open, closeModal, rowData}) => {
+const ColumnaEspecialForm = ({open, closeModal, rowData, refreshRow}) => {
 
   const [columna, setColumna] = useState({})
   const apiId = 'columnasespeciales'
@@ -366,7 +358,7 @@ const ColumnaEspecialForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setColumna(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
   const Form = ({values, setFieldValue, errors, touched}) => {
@@ -375,6 +367,7 @@ const ColumnaEspecialForm = ({open, closeModal, rowData}) => {
         <Grid constainer spacing={3} xs={12} sm={3}>
            <HelpImg image={columnImg}/>
         </Grid>
+
         <Grid container spacing={3} xs={12} sm={9}>
           <ColumnaEspecialSpecsForm values={values} setFieldValue={setFieldValue}
             errors={errors} touched={touched}/>
@@ -388,11 +381,12 @@ const ColumnaEspecialForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Columna Especial"
       FormRow={Form} formData={columna} validationSchema={columnaEspecialSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal} maxWidth='lg'/>
+      budgetId={budgetId} open={open} closeModal={closeModal} maxWidth='lg'
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const MuroForm = ({open, closeModal, rowData}) => {
+const MuroForm = ({open, closeModal, rowData, refreshRow}) => {
   const [muro, setMuro] = useState({})
   const apiId = 'muros'
   const {budget} = rowData
@@ -401,16 +395,20 @@ const MuroForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setMuro(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
-  const formSchema = {name, area, junta}
+  const formSchema = {name, profitPct, area, junta}
   const Form = ({values, setFieldValue, errors, touched}) => {
     return (
          <Fragment>
            <Grid container spacing={3}>
-             <Grid item xs={12}>
+             <Grid item xs={12} sm={9}>
                <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             </Grid>
+             <Grid item xs={12} sm={3}>
+               <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
+                setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
              </Grid>
            </Grid>
            <Grid container spacing={3}>
@@ -434,11 +432,12 @@ const MuroForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Muro"
       FormRow={Form} formData={muro} validationSchema={formSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const MezclonMorteroForm = ({open, closeModal, rowData}) => {
+const MezclonMorteroForm = ({open, closeModal, rowData, refreshRow}) => {
   const [mezclon, setMezclon] = useState({})
   const apiId = 'mezclones'
   const {budget} = rowData
@@ -447,7 +446,7 @@ const MezclonMorteroForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setMezclon(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
 
@@ -467,11 +466,12 @@ const MezclonMorteroForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Mezclón de Mortero"
       FormRow={Form} formData={mezclon} validationSchema={areaVolSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const MezclonConcretoForm = ({open, closeModal, rowData}) => {
+const MezclonConcretoForm = ({open, closeModal, rowData, refreshRow}) => {
   const [mezclon, setMezclon] = useState({})
   const apiId = 'concmezclones'
   const {budget} = rowData
@@ -480,7 +480,7 @@ const MezclonConcretoForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setMezclon(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
 
@@ -500,11 +500,12 @@ const MezclonConcretoForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Mezclón de Concreto"
       FormRow={Form} formData={mezclon} validationSchema={areaVolSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const MezclonExtForm = ({open, closeModal, rowData}) => {
+const MezclonExtForm = ({open, closeModal, rowData, refreshRow}) => {
   const [mezclon, setMezclon] = useState({})
   const apiId = 'extmezclones'
   const {budget} = rowData
@@ -513,7 +514,7 @@ const MezclonExtForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setMezclon(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
 
@@ -533,11 +534,12 @@ const MezclonExtForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Concreteado de Garage y Banquetas"
       FormRow={Form} formData={mezclon} validationSchema={areaVolSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const RepelloForm = ({open, closeModal, rowData}) => {
+const RepelloForm = ({open, closeModal, rowData, refreshRow}) => {
   const [repello, setRepello] = useState({})
   const apiId = 'repellos'
   const {budget} = rowData
@@ -546,7 +548,7 @@ const RepelloForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setRepello(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
 
@@ -566,11 +568,12 @@ const RepelloForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Repello y Cernido"
       FormRow={Form} formData={repello} validationSchema={areaVolSchema}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
-const PinturaForm = ({open, closeModal, rowData}) => {
+const PinturaForm = ({open, closeModal, rowData, refreshRow}) => {
   const [pintura, setPintura] = useState({})
   const apiId = 'pinturas'
   const {budget} = rowData
@@ -579,15 +582,19 @@ const PinturaForm = ({open, closeModal, rowData}) => {
   useEffect(() => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => setPintura(res.data))
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
 
   const Form = ({values, setFieldValue, errors, touched}) => (
      <Fragment>
        <Grid container spacing={4}>
-         <Grid item xs={12}>
+         <Grid item xs={12} sm={9}>
             <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+         </Grid>
+         <Grid item xs={12} sm={3}>
+           <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
+            setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
          </Grid>
        </Grid>
        <Grid container spacing={4}>
@@ -605,13 +612,14 @@ const PinturaForm = ({open, closeModal, rowData}) => {
   return(
     <UpdateForm apiId={apiId} title="Pintura Interior/Exterior"
       FormRow={Form} formData={pintura}
-      validationSchema={{ name, wallArea, ceilArea}}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      validationSchema={{ name, profitPct, wallArea, ceilArea}}
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 
 
-const RowForm = ({open, closeModal, rowData}) => {
+const RowForm = ({open, closeModal, rowData, refreshRow}) => {
   const [renglon, setRenglon] = useState({})
   const apiId = 'rows'
   const {budget} = rowData
@@ -621,9 +629,8 @@ const RowForm = ({open, closeModal, rowData}) => {
     api.get(`budgets/${budgetId}/${apiId}/${rowId}`)
     .then(res => {setRenglon(res.data)
 
-      console.log(renglon);
     })
-    .catch(err => console.log(err))
+    .catch(err => {})
   }, [open])
 
 
@@ -681,7 +688,7 @@ const RowForm = ({open, closeModal, rowData}) => {
           </Grid>
           <Grid item xs={12} sm={3}>
             <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
-             setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+             setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
           </Grid>
         </Grid>
   )}
@@ -691,7 +698,8 @@ const RowForm = ({open, closeModal, rowData}) => {
     <UpdateForm apiId={apiId} title="Editar Renglón"
       FormRow={Form} formData={renglon}
       validationSchema={{ name, unitAmount, unit, profitPct}}
-      budgetId={budgetId} open={open} closeModal={closeModal}/>
+      budgetId={budgetId} open={open} closeModal={closeModal}
+      rowData={rowData} refreshRow={refreshRow}/>
   )
 }
 export {ZapataForm, LosaPlanaForm, LosaInclinadaForm, CimientoCorridoForm,

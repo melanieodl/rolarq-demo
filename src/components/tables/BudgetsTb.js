@@ -44,10 +44,12 @@ const tableIcons = {
     },
   }));
 
-export default function EditableTb(props) {
+export default function EditableTb({data, setData, url,
+                                    title, columns,
+                                    lookupEffects,
+                                    panels, label}) {
   const classes = useStyles()
   const tableRef = createRef()
-  const [data, setData] = useState([])
   const [isLoading, setLoading] = useState(true)
 
   //error handling
@@ -60,9 +62,9 @@ export default function EditableTb(props) {
 
   useEffect(() => {
 
-    props.lookupEffects && props.lookupEffects.forEach(effect => effect())
+    lookupEffects && lookupEffects.forEach(effect => effect())
     setLoading(true)
-    api.get(props.url)
+    api.get(url)
     .then(response => {
       console.log('consola aqui' + response.data)
       setData(response.data)
@@ -83,7 +85,7 @@ export default function EditableTb(props) {
     //if(dato indefinido then errorList.push())
 
     if(errorList.length < 1){
-      api.post(props.url, newData)
+      api.post(url, newData)
       // console.log(url + newData)
       .then(res => {
         console.log('respuesta al guardar', res.data);
@@ -94,7 +96,7 @@ export default function EditableTb(props) {
         resolve()
         setErrorMessages([])
         setIsError(false)
-        setInitialFormData({architect: 'Fernando Roldan'})
+        setInitialFormData({name: '', architect: 'Fernando Roldan'})
       })
       .catch(err => {
         setErrorMessages(["Cannot add data. Server error!"])
@@ -116,7 +118,7 @@ export default function EditableTb(props) {
     let errorList = []
 
     if(errorList.length < 1){
-      api.put(`${props.url}/${newData.id}`, newData)
+      api.put(`${url}/${newData.id}`, newData)
       .then(res => {
         const dataUpdate = [...data]
         const index = oldData.tableData.id
@@ -141,7 +143,7 @@ export default function EditableTb(props) {
   const handleRowDelete = (oldData, resolve) => {
     let errorList = []
 
-    api.delete(`${props.url}/${oldData.id}`)
+    api.delete(`${url}/${oldData.id}`)
     .then(res => {
       const dataDelete = [...data]
       const index = oldData.tableData.id
@@ -159,8 +161,8 @@ export default function EditableTb(props) {
     <MaterialTable
       tableRef={tableRef}
       icons={tableIcons}
-      title={props.title}
-      columns={props.columns}
+      title={title}
+      columns={columns}
       data={data}
       isLoading={isLoading}
       editable={{
@@ -179,7 +181,7 @@ export default function EditableTb(props) {
             handleRowDelete(oldData, resolve)
           }),
       }}
-      detailPanel={props.panels}
+      detailPanel={panels}
       options={{
        actionsColumnIndex: -1,
        addRowPosition: 'first',
@@ -259,7 +261,7 @@ export default function EditableTb(props) {
         // ),
 
      }}
-     localization={localization(props.label)}
+     localization={localization(label)}
     />
   );
 }

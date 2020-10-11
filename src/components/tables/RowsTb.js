@@ -1,4 +1,4 @@
-import React, {forwardRef, createRef, useState, useEffect, useMemo, Fragment} from 'react';
+import React, {forwardRef, createRef, useState, useEffect, useMemo, useCallback, useRef, Fragment} from 'react';
 import api from '../../api'
 import XLSX from 'sheetjs-style'
 import {summaryWS, materialsWS, budgetWS} from '../../report'
@@ -8,12 +8,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 import updateForms from '../rows_forms/info/forms_map'
 
+import DetailTb from './DetailsTb'
+
 import {Paper, Fab, List, ListItem, ListItemText, Typography, Divider, Grid,
-        Avatar, ListItemAvatar} from '@material-ui/core';
+        Avatar, ListItemAvatar, IconButton, FormControl, Select, MenuItem, Button} from '@material-ui/core';
+
 import {Add, ArrowDownward, Check, ChevronLeft, ChevronRight, Clear,
         DeleteOutline, Edit, FilterList, FirstPage, LastPage, Remove, SaveAlt,
         Search, ViewColumn, Refresh} from '@material-ui/icons'
+import InfoIcon from '@material-ui/icons/InfoOutlined';
+
 import CostTb from './CostTb'
+// import MaterialsCostTb from './costs/MaterialsCostTb'
+import InfoTooltip from '../../components/partials/InfoTooltip'
 
 
 import MenuDial from './partials/MenuDial'
@@ -29,7 +36,10 @@ import {SoleraForm, ZapataForm, ColumnaForm, ColumnaEspecialForm,
         RowForm} from '../rows_forms/createForms'
 
 import {toCurrency} from '../../functions'
-
+const Calculate = () => {
+  const renderCount = useRef(1)
+  return <div>{renderCount.current++}</div>
+}
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <Fab color="secondary" size="medium"><Add {...props} ref={ref} /> </Fab>),
@@ -88,8 +98,18 @@ const tableIcons = {
       marginTop: theme.spacing(0),
       marginBottom: theme.spacing(2)
     },
+    tableTotal: {
+      maxWidth: 600,
+      marginLeft: 'auto',
+      // float: 'right',
+    },
+    denseItem:{
+      paddingTop: 0,
+      paddingBottom: 0,
+    },
 
   }));
+
 
 const rowForDelete = (row, idx) => {
   const DetailTypo = ({showMsg}) => {
@@ -141,28 +161,96 @@ const rowForDelete = (row, idx) => {
 )
 }
 
-export default function EditableTb(props) {
+
+const EditableTb = ({refreshTotal, budgetId}) => {
   const classes = useStyles()
   const tableRef = createRef()
   const [isLoading, setLoading] = useState(true)
+  const [units, setUnits] =  useState({});
 
-  //edit handling for special rowS
-  const [open, setOpen] = useState(false);
-  const [updateDialog, setUpdateDialog] = React.useState({active: Fragment})
 
-  const handleOpenModal = (form, rowData) => {
-    setUpdateDialog({active: form, data: rowData})
-    setOpen(true)
-  }
+  const renderCount = useRef(1)
 
-   const handleCloseModal = () => {
-    setOpen(false);
-   };
+  const url =`budgets/${budgetId}/rows`
+  const title='Renglones'
+  const label='renglon'
+  // units={units} columns={columns}
 
+  const columns =    [
+     { title: 'Id', field: 'id', hidden: true },
+     { width: '1%',  align: 'left', sorting: false, render: (rowData) =>  typeof rowData != 'undefined' && rowData.type &&
+              <InfoTooltip title={rowData.type.name} placement="bottom">
+                <IconButton  size='small' aria-label="upload picture" component="span">
+                  <InfoIcon />
+                </IconButton>
+              </InfoTooltip>},
+     { title: 'Nombre', field: 'name', width: '40%', render: rowData => rowData.fullName},
+     { title: 'Cantidad', field: 'unitAmount', type: 'numeric', width: '15%', align: 'right'},
+     { title: 'Unidad', field: 'unit.id', lookup: units, width: '15%', align: 'right',
+       validate: rowData => ( typeof rowData.unit != 'undefined'),
+       editComponent: props => {
+            return (
+              <FormControl>
+              <Select
+                 value={props.value}
+                 displayEmpty
+                 disabled = {props.rowData.type != null}
+                 onChange={e => props.onChange(e.target.value)}
+               >
+                 {Object.entries(units).map(([key, value]) => (
+                   <MenuItem value={key}>
+                     {value}
+                   </MenuItem>
+                 ))}
+               </Select>
+              </FormControl>
+            )
+          }
+      },
+    { title: 'Utilidad', field:'profitPct', type: 'numeric', width: '1%', align:'right',
+      render:(rowData) => typeof rowData != 'undefined' && rowData.profitPct > 0 && `${rowData.profitPct} %`},
+     { title: 'Precio Unitario', field: 'unitCost', type: 'currency', editable: 'never', width: '15%', align: 'right',
+
+       currencySetting:{ locale: 'es-GT', currencyCode:'gtq', minimumFractionDigits:2, maximumFractionDigits:2}},
+     { title: 'Precio Total', field: 'totalCost', type: 'currency', editable: 'never', width: '15%', align: 'right',
+       currencySetting:{ locale: 'es-GT', currencyCode:'gtq', minimumFractionDigits:2, maximumFractionDigits:2}}
+
+   ]
+  const [data, setData] = useState([])
+
+  //update row when changes inside of it
+  const refreshRow = useCallback((url, rowData) => {
+    api.get(url).then(
+      (res) => {
+        const dataUpdate = [...data]
+        const index =rowData.tableData.id
+        const updatedRow = {...res.data, tableData: rowData.tableData}
+        dataUpdate[index] = updatedRow
+
+        setData([...dataUpdate])
+        refreshTotal()
+        // setReload((prev) => !prev)
+      }).catch((err) => {})
+
+
+  }, [data])
 
    // Crear renglon simple
    const [openCreate, setOpenCreate] = useState(false)
 
+   // rows editing
+   //edit handling for special rowS
+   const [openEdit, setOpenEdit] = useState(false);
+   const [updateDialog, setUpdateDialog] = React.useState({active: Fragment})
+
+   const handleOpenModal = useCallback((form, rowData) => {
+     setUpdateDialog({active: form, data: rowData})
+     setOpenEdit(true)
+   }, [])
+
+    const handleCloseModal = useCallback(() => {
+     setOpenEdit(false)
+   }, [])
 
   //error handling
   const [isError, setIsError] = useState(false)
@@ -176,20 +264,18 @@ export default function EditableTb(props) {
     await Promise.all(
       data.map( async row => {
             try {
-                console.log('borrada' , row.id);
-                return await api.delete(`${props.url}/${row.id}`)
+                return await api.delete(`${url}/${row.id}`)
 
             } catch (err) {
-              console.log(err);
             }
       })
     )
 
-      let _data = [...props.data];
+      let _data = [...data];
       data.forEach(rd => {
         _data = _data.filter(t => t.tableData.id !== rd.tableData.id);
       });
-      props.setData(_data);
+      setData(_data);
 
       }
   const handleClose = () => {
@@ -214,13 +300,21 @@ export default function EditableTb(props) {
   const handleReportCancel = () => setExportOpen(false)
 
   useEffect(() => {
-
-    props.lookupEffects && props.lookupEffects.forEach(effect => effect())
-    setLoading(true)
-    api.get(props.url)
+    api.get('units/catal')
     .then(response => {
-      console.log('consola aqui' + response.data)
-      props.setData(response.data)
+      setUnits(response.data)
+    })
+    .catch(err => {
+    })
+  }, [refreshFlag])
+
+  useEffect(() => {
+
+    // lookupEffects && lookupEffects.forEach(effect => effect())
+    setLoading(true)
+    api.get(url)
+    .then(response => {
+      setData(response.data)
       setLoading(false)
     })
     .catch(err => {
@@ -238,12 +332,11 @@ export default function EditableTb(props) {
     //if(dato indefinido then errorList.push())
 
     if(errorList.length < 1){
-      api.post(props.url, newData)
-      // console.log(url + newData)
+      api.post(url, newData)
       .then(res => {
-        let dataToAdd = [...props.data]
+        let dataToAdd = [...data]
         dataToAdd.unshift(res.data)
-        props.setData(dataToAdd)
+        setData(dataToAdd)
         resolve()
         setErrorMessages([])
         setIsError(false)
@@ -263,15 +356,13 @@ export default function EditableTb(props) {
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     let errorList = []
-    console.log('newData', oldData);
-
     if(errorList.length < 1){
-      api.put(`${props.url}/${newData.id}`, newData)
+      api.put(`${url}/${newData.id}`, newData)
       .then(res => {
-        const dataUpdate = [...props.data]
+        const dataUpdate = [...data]
         const index = oldData.tableData.id
         dataUpdate[index] = {...res.data, tableData: oldData.tableData}
-        props.setData([...dataUpdate])
+        setData([...dataUpdate])
         resolve()
         setIsError(false)
         setErrorMessages([])
@@ -290,16 +381,15 @@ export default function EditableTb(props) {
 
   const handleRowDelete = (oldData, resolve) => {
     let errorList = []
-    api.delete(`${props.url}/${oldData.id}`)
+    api.delete(`${url}/${oldData.id}`)
     .then(res => {
-      const dataDelete = [...props.data]
+      const dataDelete = [...data]
       const index = oldData.tableData.id
-      console.log('tableData.id', index);
 
       dataDelete.splice(index, 1)
-      console.log('data', dataDelete);
 
-      props.setData([...dataDelete])
+      setData([...dataDelete])
+      refreshTotal()
 
       resolve('terminado')
     })
@@ -317,11 +407,11 @@ export default function EditableTb(props) {
       handleRowDelete(oldData, resolve)
     })
     // try {
-    //     const dataDelete = [...props.data]
+    //     const dataDelete = [...data]
     //     const index = oldData.tableData.id
     //     dataDelete.splice(index, 1)
-    //     const res = await api.delete(`${props.url}/${oldData.id}`)
-    //     await props.setData([...dataDelete])
+    //     const res = await api.delete(`${url}/${oldData.id}`)
+    //     await setData([...dataDelete])
     //   return await res.data
     // } catch (err) {
     //   console.log(err);
@@ -334,9 +424,9 @@ export default function EditableTb(props) {
     <MaterialTable
       tableRef={tableRef}
       icons={tableIcons}
-      title={props.title}
-      columns={props.columns}
-      data={props.data}
+      title={title}
+      columns={columns}
+      data={data}
       isLoading={isLoading}
       editable={{
         isEditHidden: rowData => true,
@@ -351,32 +441,21 @@ export default function EditableTb(props) {
             handleRowDelete(oldData, resolve)
           }),
       }}
-      detailPanel={rowData => {
-        var idRow = rowData.id
-        // const refreshRow = () => {
-        //   api.get(`budgets/${props.rowData.budget.id}/rows/${props.rowData.id}`)
-        //   .then(res => {
-        //     const dataUpdate = [...props.rowsData]
-        //     const index = props.rowData.tableData.id
-        //     const updatedRow = {...res.data, tableData: props.rowData.tableData}
-        //     dataUpdate[index] = updatedRow
-        //     props.setRowsData([...dataUpdate])
-        //     console.log('ACTUALIZA ROW AQUI');
-        //
-        //     props.setReload(prev => !prev)
-        //   })
-        //   .catch(err => console.log(err))
-        //
-        //
-        // }
+      detailPanel={[
+        props => ({
+          render: (rowData) => {
 
-        return (
-          <div className={classes.panel}>
-          <CostTb setReload={props.setReload} rowsData={props.data} setRowsData={props.setData} url={`rows/${idRow}`}
-                                idRow={idRow} rowData={rowData} units={props.units} options={props.options} />
-          </div>
-        )
-      }}
+
+            return(
+              <div className={classes.panel}>
+                <CostTb rowData={rowData} refreshRow={refreshRow}/>
+              </div>
+            )
+          },
+
+        }),
+
+      ]}
       options={{
        actionsColumnIndex: -1,
        addRowPosition: 'first',
@@ -420,6 +499,9 @@ export default function EditableTb(props) {
           onClick: (event, rowData) => {
             if(rowData.type){
               handleOpenModal(updateForms[rowData.type.id], rowData)
+
+
+              // handleOpenModal()
             } else {
                 // tableRef.current.dataManager.changeRowEditing(rowData, 'update');
                 // tableRef.current.setState({
@@ -427,7 +509,9 @@ export default function EditableTb(props) {
                 // });
 
                   handleOpenModal(updateForms[0], rowData)
-              
+
+                  // handleOpenModal()
+
             }
 
           },
@@ -458,7 +542,7 @@ export default function EditableTb(props) {
             },
        },
        {
-         icon: () => <tableIcons.AddLibrary setData={props.setData} actions={actions} budgetId={props.budgetId}/>,
+         icon: () => <tableIcons.AddLibrary setData={setData} actions={actions} budgetId={budgetId}/>,
          isFreeAction: true,
          // iconProps: {style: {padding: 0}},
        },
@@ -487,7 +571,7 @@ export default function EditableTb(props) {
         // ),
 
      }}
-     localization={localization(props.label)}
+     localization={localization(label)}
     />
     <ConfirmationDialog
           classes={{
@@ -515,11 +599,22 @@ export default function EditableTb(props) {
             onConfirm={onExport}
         />
 
-        <updateDialog.active closeModal={handleCloseModal} open={open}
-        rowData={updateDialog.data} rowsData={props.data} setRowsData={props.setData}
-        />
-        <RowForm closeModal={() => setOpenCreate(false)} openModal={openCreate} setData={props.setData} budgetId={props.budgetId}/>
+
+        <RowForm closeModal={() => setOpenCreate(false)} openModal={openCreate} setData={setData} budgetId={budgetId}/>
+        <updateDialog.active open={openEdit} closeModal={handleCloseModal} rowData={updateDialog.data} refreshRow={refreshRow}/>
 
     </Fragment>
   );
 }
+
+const ChangeOpen = React.memo(({rowData}) => {
+    const count = useRef(1)
+
+      return(
+      <Fragment>
+        {`Prueba ${count.current++}`}
+          <Button>{rowData.totalCost}</Button>
+      </Fragment>)}, (prev, next) => prev.rowData.totalCost == next.rowData.totalCost)
+
+
+export default React.memo(EditableTb)

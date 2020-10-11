@@ -18,7 +18,7 @@ const map = {
     8: MezclonConcretoForm,
     9: MezclonMorteroForm,
     10: RepelloForm,
-    11: RepelloForm,//Mezclon con concreto con electromaya
+    11: MezclonExtForm,//Mezclon con concreto con electromaya
     12: ColumnaEspecialForm,
     13: PinturaForm,
     14: MezclonExtForm

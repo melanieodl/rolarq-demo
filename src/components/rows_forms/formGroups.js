@@ -15,7 +15,7 @@ import {NameField, LinearMeterField, QuantityField,
         SquareMeterField, PercentageField, BooleanField,
         VolumeFields} from '../inputFields'
 
-import {name, amount, length, width, height, area,
+import {name, amount, length, width, height, area, profitPct,
         cantLongsElems, cantLongsAuxElems, cantTransElems,
         recubrimiento, separacion, junta,
         longHook, longPata,
@@ -131,11 +131,15 @@ import {name, amount, length, width, height, area,
         ]
 
         const areaVolGroup = [
-            {name, height, area},
+            {name, profitPct, height, area},
             ({values, setFieldValue, errors, touched}) => (
               <Grid container spacing={3}>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={9}>
                       <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched} />
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
+                     setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <SquareMeterField name="area" label="Area" value={values.area} setFieldValue={setFieldValue}
@@ -151,6 +155,7 @@ import {name, amount, length, width, height, area,
 
         const transMeterGroup = [
             { name,
+              profitPct,
               length,
               width,
               height,
@@ -160,8 +165,12 @@ import {name, amount, length, width, height, area,
               longHook},
             ({values, setFieldValue,  errors, touched}) => (
             <Grid container spacing={3}>
-               <Grid item xs={12}>
+               <Grid item xs={12} sm={8}>
                   <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+               </Grid>
+               <Grid item xs={12} sm={4}>
+                 <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
+                  setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
                </Grid>
                <Grid item xs={12}>
                   <VolumeFields heightLabel="Peralte"/>
@@ -188,6 +197,7 @@ import {name, amount, length, width, height, area,
 
         const transQuantityGroup = [
             { name,
+              profitPct,
               amount,
               length,
               width,
@@ -203,9 +213,13 @@ import {name, amount, length, width, height, area,
                     <NameField value={values.name} setFieldValue={setFieldValue}
                     errors={errors} touched={touched}/>
                  </Grid>
-                 <Grid item xs={12} sm={4}>
+                 <Grid item xs={12} sm={2}>
                     <QuantityField name="amount" label="Cantidad" value={values.amount}
                     setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 </Grid>
+                 <Grid item xs={12} sm={2}>
+                   <PercentageField name="profitPct" label="Pct. Utilidad" value={values.profitPct}
+                    setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
                  </Grid>
                  <Grid item xs={12}>
                     <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>
@@ -236,6 +250,7 @@ import {name, amount, length, width, height, area,
 
         const zapataGroup = [
             { name,
+              profitPct,
               amount,
               length,
               width,
@@ -248,9 +263,13 @@ import {name, amount, length, width, height, area,
               <Grid item xs={12} sm={8}>
                  <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={2}>
                  <QuantityField name="amount" label="Cantidad" value={values.amount} setFieldValue={setFieldValue}
                  errors={errors} touched={touched}/>
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <PercentageField name="profitPct" label="Pct. Utilidad" value={values.profitPct}
+                 setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
               </Grid>
               <Grid item xs={12}>
                 <VolumeFields errors={errors} touched={touched} heightLabel='Peralte'/>
@@ -273,14 +292,19 @@ import {name, amount, length, width, height, area,
 
         const losaPlanaGroup = [
             { name,
+              profitPct,
               area,
               height,
               separacion,
               propTension,},
             ({values, setFieldValue, errors, touched}) => (
               <Grid container spacing={3}>
-                 <Grid item xs={12}>
+                 <Grid item xs={12} sm={9}>
                     <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 </Grid>
+                 <Grid item xs={12} sm={3}>
+                   <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
+                    setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
                  </Grid>
                  <Grid item xs={12} sm={6}>
                    <SquareMeterField name="area" label="Area" value={values.area} setFieldValue={setFieldValue}
@@ -304,13 +328,18 @@ import {name, amount, length, width, height, area,
 
         const losaInclinadaGroup = [
             { name,
+              profitPct,
               area,
               height,
               separacion},
             ({values, setFieldValue, errors, touched}) => (
               <Grid container spacing={3}>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={8}>
                      <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
+                     setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <SquareMeterField name="area" label="Area" value={values.area}
@@ -330,6 +359,7 @@ import {name, amount, length, width, height, area,
 
         const muroGroup = [
             { name,
+              profitPct,
               area,
               junta,
               block,
@@ -338,8 +368,12 @@ import {name, amount, length, width, height, area,
             },
             ({values, setFieldValue, errors, touched}) => (
               <Grid container spacing={3}>
-                 <Grid item xs={12}>
+                 <Grid item xs={12} sm={9}>
                    <NameField value={values.name} setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                 </Grid>
+                 <Grid item xs={12} sm={3}>
+                   <PercentageField name="profitPct" label="Pct. de Utilidad" value={values.profitPct}
+                    setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
                  </Grid>
                  <Grid item xs={12} sm={6}>
                    <SquareMeterField name="area" label="Area" value={values.area}
@@ -359,6 +393,7 @@ import {name, amount, length, width, height, area,
         const columnaEspecialGroup = [
             {
               name,
+              profitPct,
               amount,
               length,
               width,
@@ -377,9 +412,13 @@ import {name, amount, length, width, height, area,
                    <NameField value={values.name} setFieldValue={setFieldValue}
                    errors={errors} touched={touched}/>
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={2}>
                    <QuantityField name="amount" label="Cantidad" value={values.amount}
                    setFieldValue={setFieldValue} errors={errors} touched={touched}/>
+                </Grid>
+                <Grid item xs={12} sm={2}>
+                  <PercentageField name="profitPct" label="Pct. Utilidad" value={values.profitPct}
+                   setFieldValue={setFieldValue} errors={errors} touched={touched} optional={true}/>
                 </Grid>
                 <Grid item xs={12}>
                 <VolumeFields lengthLabel='Altura' heightLabel='Largo'/>

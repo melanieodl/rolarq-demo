@@ -115,7 +115,7 @@ const SquareMeterField = ({name, label, value, setFieldValue, errors, touched, h
   )
 }
 
-const PercentageField = ({name, label, value, setFieldValue, errors, touched, helperText}) => {
+const PercentageField = ({name, label, value, setFieldValue, errors, touched, helperText, optional}) => {
   return(
     <Fragment>
         <Field
@@ -138,7 +138,7 @@ const PercentageField = ({name, label, value, setFieldValue, errors, touched, he
             ),
          }}
       />
-      {helperText && <FormHelperText id={`${name}-helper-text`}>{helperText}</FormHelperText>}
+      {<FormHelperText id={`${name}-helper-text`}>{`${helperText || ``} ${optional ? `Opcional` : ``}`}</FormHelperText>}
       {errors[name] && touched[name] ? (
         <div><Typography color='error' variant='caption'>{errors[name]}</Typography></div>
       ) : null}

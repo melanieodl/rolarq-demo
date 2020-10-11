@@ -13,6 +13,10 @@ const quantityReq = Yup.number()
                    .integer('Deber ser un número entero ')
                    .required('Requerido')
 
+const floatQuantityReq = Yup.number()
+                        .positive('Debe ser positivo')
+                        .required('Requerido')
+
 const mixedReq = Yup.mixed()
                  .required('Requerido')
 
@@ -25,7 +29,7 @@ const schemas = {
         name: strReq,
         profitPct: pct,
         amount: quantityReq,
-        unitAmount: mixedReq,
+        unitAmount: floatQuantityReq,
         unit: mixedReq,
         length: positiveReq,
         width: positiveReq,

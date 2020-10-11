@@ -8,7 +8,6 @@ import {Button, Dialog, ListItemText, ListItem, List, Divider, AppBar, Toolbar,
         FormControl, Select, MenuItem, Box, Avatar} from '@material-ui/core'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
-import InfoTooltip from '../components/partials/InfoTooltip'
 import CloseIcon from '@material-ui/icons/Close';
 import ExpandLess from '@material-ui/icons/ExpandLessRounded';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
@@ -76,34 +75,19 @@ function HideOnScroll(props) {
 export default function FullScreenDialog(props) {
 
   const classes = useStyles();
-  const [data, setData] = useState([])
   const [total, setTotal] = useState()
   const [reload, setReload] = useState(false)
 
   const [budget, setBudget] = useState({project: {client: {}}});
-  const [units, setUnits] =  useState({});
   const [materials, setMaterials] = useState({})
+  const renderCount = useRef(1)
 
 
-  const options = [{"id":97,"name":"Arena","unit":{"id":4,"name":"Metros cúbicos","symbol":"m3","restricted":true},"prices":[]},{"id":123,"name":"Cemento ","unit":{"id":5,"name":"Saco","symbol":"SACO","restricted":true},"prices":[]},{"id":142,"name":"Hierro ","unit":{"id":8,"name":"Varilla","symbol":"VARILLA","restricted":true},"prices":[]},{"id":99,"name":"Piedrin","unit":{"id":4,"name":"Metros cúbicos","symbol":"m3","restricted":true},"prices":[]},{"id":106,"name":"TieWire","unit":{"id":7,"name":"Libra","symbol":"Lb","restricted":true},"prices":[{"id":3,"special":true,"price":40.0,"supplier":{"id":1,"name":"Ferreteria ","nit":56362636,"address":"Barrio tal ","phoneNumber":"33234234"}},{"id":5,"special":true,"price":345.9349,"supplier":null}]},{"id":146,"name":"Block","unit":{"id":1,"name":"Unidad","symbol":"UNIDAD","restricted":true},"prices":[]},{"id":147,"name":"crestuco","unit":{"id":6,"name":"Bolsa","symbol":"BOLSA","restricted":true},"prices":[]}]
-
-
-  const unitsEffect = () => {
-    api.get('units/catal')
-    .then(response => {
-      setUnits(response.data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
-
-
+  const refreshTotal = useCallback(() => setReload(prev => !prev), [])
 
   useEffect(() => {
     api.get(`budgets/${props.id}`)
     .then(response => {
-      console.log(response.data)
       setBudget(response.data)
       setTotal(response.data.totalCosts)
     })
@@ -125,72 +109,12 @@ export default function FullScreenDialog(props) {
 
   }, [reload])
 
-  const columns =    [
-     { title: 'Id', field: 'id', hidden: true },
-     { width: '1%',  align: 'left', sorting: false, render: (rowData) =>  typeof rowData != 'undefined' && rowData.type &&
-              <InfoTooltip title={rowData.type.name} placement="bottom">
-                <IconButton  size='small' aria-label="upload picture" component="span">
-                  <InfoIcon />
-                </IconButton>
-              </InfoTooltip>},
-     { title: 'Nombre', field: 'name', width: '40%', render: rowData => rowData.fullName},
-     { title: 'Cantidad', field: 'unitAmount', type: 'numeric', width: '15%', align: 'right'},
-     { title: 'Unidad', field: 'unit.id', lookup: units, width: '15%', align: 'right',
-       validate: rowData => ( typeof rowData.unit != 'undefined'),
-       editComponent: props => {
-            return (
-              <FormControl>
-              <Select
-                 value={props.value}
-                 displayEmpty
-                 disabled = {props.rowData.type != null}
-                 onChange={e => props.onChange(e.target.value)}
-               >
-                 {Object.entries(units).map(([key, value]) => (
-                   <MenuItem value={key}>
-                     {value}
-                   </MenuItem>
-                 ))}
-               </Select>
-              </FormControl>
-            )
-          }
-      },
-    { title: 'Utilidad', field:'profitPct', type: 'numeric', width: '1%', align:'right',
-      render:(rowData) => typeof rowData != 'undefined' && rowData.profitPct > 0 && `${rowData.profitPct} %`},
-     { title: 'Precio Unitario', field: 'unitCost', type: 'currency', editable: 'never', width: '15%', align: 'right',
 
-       currencySetting:{ locale: 'es-GT', currencyCode:'gtq', minimumFractionDigits:2, maximumFractionDigits:2}},
-     { title: 'Precio Total', field: 'totalCost', type: 'currency', editable: 'never', width: '15%', align: 'right',
-       currencySetting:{ locale: 'es-GT', currencyCode:'gtq', minimumFractionDigits:2, maximumFractionDigits:2}}
-
-   ]
-
-
-
-
-
-   const panels = [
-       rowData =>({
-         openIcon: ExpandLess,
-         tooltip: 'Presupuestos',
-        render: rowData => {
-            var row = rowData
-            return (
-              <div className={classes.panel}>
-                {/* enviar los componentes desde aqui con sus refs*/}
-                <CostTb setReload={setReload} rowsData={data} setRowsData={setData} url={`rows/${rowData.id}`} rowData={rowData} units= {units} options={options} />
-              </div>
-            )
-          },
-       }),
-    ]
 
   const checkPrimaryData = data => typeof data == undefined || data == null ? '               ' : data
 
   return (
     <div className={classes.backTb}>
-
       <Dialog fullScreen open={props.open} onClose={props.handleClose} TransitionComponent={Transition} className={classes.backTb}
       PaperProps={{classes: {root: classes.backTb}}}>
       <HideOnScroll {...props}>
@@ -238,9 +162,10 @@ export default function FullScreenDialog(props) {
         </Grid>
         <br/>
         <Container maxWidth='xl' className={classes.backTb}>
-          <EditTable setReload={setReload} units={units} options={options} data={data} setData={setData} columns={columns} url={`budgets/${props.id}/rows`} title='Renglones' label='renglon' budgetId={props.id}
-          lookupEffects={[unitsEffect]} panels={panels}/>
+
+          <EditTable refreshTotal={refreshTotal}  budgetId={props.id}/>
         </Container>
+
 
       </Dialog>
     </div>

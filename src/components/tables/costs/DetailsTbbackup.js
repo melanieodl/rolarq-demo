@@ -1,9 +1,8 @@
-
 import React, {forwardRef, createRef, useState, useEffect, Fragment} from 'react';
 import MaterialTable, {MTableHeader} from 'material-table';
 
-import api from '../../api'
-import localization from './localization'
+import api from '../../../api'
+import localization from '../localization'
 import { makeStyles } from '@material-ui/core/styles';
 import {Table, TableBody, TableRow, TableCell} from '@material-ui/core';
 
@@ -40,13 +39,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
-
 const DetailTitle = title => <Typography variant='subtitle1'>{title}</Typography>
 
-export default function EditableTb(props) {
-
-  const AddPrice = (propiedades, ref) => {
+const DetailsTb = ({title, label, color, total, rowUrl, url}) => {
+// refreshRow, rowData, tableRef, columns,
+  const AddPrice = (ref, props) => {
     return(
     <Button
        variant="contained"
@@ -54,7 +51,7 @@ export default function EditableTb(props) {
        size="small"
        startIcon={<AddBox {...props} ref={ref}/>}
      >
-       {props.title}
+       {title}
      </Button>
    )
   }
@@ -79,12 +76,10 @@ export default function EditableTb(props) {
       ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
     };
 
-
   const [isLoading, setLoading] = useState(false)
 
   const classes = useStyles()
   const [data, setData] = useState([])
-
 
   //error handling
   const [isError, setIsError] = useState(false)
@@ -94,7 +89,7 @@ export default function EditableTb(props) {
   useEffect(() => {
     setLoading(true)
 
-    api.get(props.url)
+    api.get(url)
     .then(response => {
       setData(response.data)
       setLoading(false)
@@ -106,7 +101,7 @@ export default function EditableTb(props) {
 
     })
 
-  }, [props.total])
+  }, [total])
 
 
   const handleRowAdd = (newData, resolve) => {
@@ -114,13 +109,13 @@ export default function EditableTb(props) {
     let errorList = []
     //if(dato indefinido then errorList.push())
     if(errorList.length < 1){
-      api.post(props.url, newData)
+      api.post(url, newData)
       .then(res => {
         let dataToAdd = [...data]
         dataToAdd.push(res.data)
 
         setData(dataToAdd)
-        props.refreshRow(props.rowUrl, props.rowData)
+        // refreshRow(rowUrl, rowData)
 
         setErrorMessages([])
         setIsError(false)
@@ -146,29 +141,9 @@ export default function EditableTb(props) {
 
     let errorList = []
     if(errorList.length < 1){
-    //   if(newData.generated){
-    //     let type = newData.material ? newData.material.type.id : 0
-    //     switch (type) {
-    //       case 4:
-    //         let varilla = {...newData}
-    //         let {length} = oldData.material
-    //         varilla.amount = length * oldData.mount / varilla.material.length
-    //         newData = {...varilla}
-    //         break;
-    //       case 5:
-    //         let wire = {...newData}
-    //         let {knotsPerPound} = oldData.material
-    //         wire.amount = knotsPerPound * oldData.amount / wire.material.knotsPerPound
-    //         newData = {...wire}
-    //         break;
-    //       default:
-    //
-    //     }
-    //   }
-
       console.log(newData);
 
-      api.put(`${props.url}/${newData.id}`, newData)
+      api.put(`${url}/${newData.id}`, newData)
       .then(res => {
 
         const dataUpdate = [...data]
@@ -176,7 +151,7 @@ export default function EditableTb(props) {
 
         dataUpdate[index] = {...res.data, tableData: {...oldData.tableData}}
         setData([...dataUpdate])
-        props.refreshRow(props.rowUrl, props.rowData)
+        // refreshRow(rowUrl, rowData)
 
         resolve()
         setIsError(false)
@@ -197,14 +172,14 @@ export default function EditableTb(props) {
   const handleRowDelete = (oldData, resolve) => {
     let errorList = []
 
-    api.delete(`${props.url}/${oldData.id}`)
+    api.delete(`${url}/${oldData.id}`)
     .then(res => {
 
       const dataDelete = [...data]
       const index = oldData.tableData.id
       dataDelete.splice(index, 1)
       setData([...dataDelete])
-      props.refreshRow(props.rowUrl, props.rowData)
+      // refreshRow(rowUrl, rowData)
 
       resolve()
     })
@@ -217,10 +192,9 @@ export default function EditableTb(props) {
   return (
     <Fragment>
     <MaterialTable
-      tableRef={props.tableRef}
       icons={tableIcons}
-      title={DetailTitle(props.title)}
-      columns={props.columns}
+      title={DetailTitle(title)}
+      columns={columns}
       data={data}
       isLoading={isLoading}
       editable={{
@@ -259,7 +233,7 @@ export default function EditableTb(props) {
          color: grey[800],
          borderTopLeftRadius: 2,
          borderTopRightRadius: 2,
-         borderBottom: `solid 2px ${props.color}`,
+         borderBottom: `solid 2px ${color}`,
 
        },
        cellStyle: {
@@ -267,26 +241,22 @@ export default function EditableTb(props) {
          paddingBottom: 8,
        },
        // tableLayout: 'fixed',
-
-
-
      }}
 
      components={{
         Container: props => (
           <div {...props}>{props.children}</div>
         ),
-
-
      }}
-     localization={localization(props.label)}
+     localization={localization(label)}
     />
+
     <Table  aria-label="spanning table" className={classes.tableTotal}>
         <TableBody>
             <TableRow>
                <TableCell rowSpan={1} />
                <TableCell colSpan={2}>SubTotal</TableCell>
-               <TableCell className={classes.totalCell} align="right">{ new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'gtq' }).format(props.total || 0)}</TableCell>
+               <TableCell className={classes.totalCell} align="right">{ new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'gtq' }).format(total || 0)}</TableCell>
             </TableRow>
         </TableBody>
     </Table>
@@ -294,3 +264,5 @@ export default function EditableTb(props) {
 
   );
 }
+
+export default React.memo(DetailsTb)

@@ -25,15 +25,31 @@ const Budgets = props => {
   const [projects, setProjects] =  useState({});
   const [open, setOpen] = useState(false);
   const [idBudget, setIdBudget] = useState(null);
+  const [budgetData, setBudgetData] = useState({})
 
+  const [data, setData] = useState([])
 
-    const handleClickOpen = (id) => {
-      setIdBudget(id)
+  const updateBudget = ()=>{
+      api.get(`budgets/${idBudget}`).then(
+      (res) => {
+        const dataUpdate = [...data]
+        const index =budgetData.tableData.id
+        const updatedRow = {...res.data, tableData: budgetData.tableData}
+        dataUpdate[index] = updatedRow
+        setData([...dataUpdate])
+      }).catch((err) => console.log(err))
+
+  }
+
+    const handleClickOpen = (rowData) => {
+      setIdBudget(rowData.id)
+      setBudgetData(rowData);
       setOpen(true);
     };
 
   const handleClose = () => {
     setOpen(false);
+    updateBudget();
   };
 
 
@@ -62,7 +78,7 @@ const Budgets = props => {
      { width: '5%', sorting: false,  render: (rowData) =>  typeof rowData != 'undefined' &&
             <Fragment>
               <Tooltip title="Abrir Presupuesto" placement="bottom">
-                <IconButton onClick={(e) => {handleClickOpen(rowData.id)}} edge='start' color="primary" aria-label="upload picture" component="span">
+                <IconButton onClick={(e) => {handleClickOpen(rowData)}} edge='start' color="primary" aria-label="upload picture" component="span">
                   <DescriptionIcon />
                 </IconButton>
               </Tooltip>
@@ -75,7 +91,8 @@ const Budgets = props => {
     <Box m={5} />
     <BudgetDetails open={open} handleClose={handleClose} id={idBudget}/>
     <Container fixed maxWidth="lg">
-    <Table columns={columns} url='budgets' title='Presupuestos' label='presupuesto' lookupEffects={[projectsEffect]} />
+    <Table data={data} setData={setData}
+      columns={columns} url='budgets' title='Presupuestos' label='presupuesto' lookupEffects={[projectsEffect]} />
     </Container>
     </Fragment>
   )
