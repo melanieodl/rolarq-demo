@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/react-demo/static/css/main.5ecd60fb.chunk.css",
+    "main.js": "/react-demo/static/js/main.f7291787.chunk.js",
+    "main.js.map": "/react-demo/static/js/main.f7291787.chunk.js.map",
+    "runtime-main.js": "/react-demo/static/js/runtime-main.a950e22d.js",
+    "runtime-main.js.map": "/react-demo/static/js/runtime-main.a950e22d.js.map",
+    "static/js/2.165c4514.chunk.js": "/react-demo/static/js/2.165c4514.chunk.js",
+    "static/js/2.165c4514.chunk.js.map": "/react-demo/static/js/2.165c4514.chunk.js.map",
+    "index.html": "/react-demo/index.html",
+    "precache-manifest.0ce914f96e4580729ca5f5235979b571.js": "/react-demo/precache-manifest.0ce914f96e4580729ca5f5235979b571.js",
+    "service-worker.js": "/react-demo/service-worker.js",
+    "static/css/main.5ecd60fb.chunk.css.map": "/react-demo/static/css/main.5ecd60fb.chunk.css.map",
+    "static/js/2.165c4514.chunk.js.LICENSE.txt": "/react-demo/static/js/2.165c4514.chunk.js.LICENSE.txt",
+    "static/media/block.png": "/react-demo/static/media/block.61a8622e.png",
+    "static/media/columna.png": "/react-demo/static/media/columna.35aa61aa.png",
+    "static/media/isotipo.png": "/react-demo/static/media/isotipo.666d2fbb.png",
+    "static/media/logotipo.png": "/react-demo/static/media/logotipo.66a4fa25.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a950e22d.js",
+    "static/js/2.165c4514.chunk.js",
+    "static/css/main.5ecd60fb.chunk.css",
+    "static/js/main.f7291787.chunk.js"
+  ]
+}
