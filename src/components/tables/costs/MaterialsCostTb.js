@@ -203,7 +203,7 @@ const MaterialCostTb = ({total, refreshRow, url}) => {
        render: rowData => typeof rowData != 'undefined' && new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'gtq' }).format(rowData.amount * (rowData.wastePct/100+1) * rowData.price),
        currencySetting:{ locale: 'es-GT', currencyCode:'gtq', minimumFractionDigits:2, maximumFractionDigits:2}}
 
-   ]), [units])
+   ]), [units, options])
 
   return(
     <Fragment>
