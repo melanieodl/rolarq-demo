@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "aebf93feb7e5f0f7adc16061ac2869f7",
+    "revision": "5fed90245087fe8aed2a87f1a4f7801b",
     "url": "/rolarq-demo/index.html"
   },
   {
-    "revision": "59ccb82efcf9591f2b54",
+    "revision": "d93b4f984ca158fb1ef9",
     "url": "/rolarq-demo/static/css/main.5ecd60fb.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/rolarq-demo/static/js/2.165c4514.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "59ccb82efcf9591f2b54",
-    "url": "/rolarq-demo/static/js/main.48f6b9b5.chunk.js"
+    "revision": "d93b4f984ca158fb1ef9",
+    "url": "/rolarq-demo/static/js/main.981ce787.chunk.js"
   },
   {
     "revision": "0b8da9601db99a74a52b",
