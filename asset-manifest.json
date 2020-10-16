@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/rolarq-demo/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/rolarq-demo/static/js/main.981ce787.chunk.js",
-    "main.js.map": "/rolarq-demo/static/js/main.981ce787.chunk.js.map",
+    "main.js": "/rolarq-demo/static/js/main.e8d1a9aa.chunk.js",
+    "main.js.map": "/rolarq-demo/static/js/main.e8d1a9aa.chunk.js.map",
     "runtime-main.js": "/rolarq-demo/static/js/runtime-main.535ebcc2.js",
     "runtime-main.js.map": "/rolarq-demo/static/js/runtime-main.535ebcc2.js.map",
     "static/js/2.165c4514.chunk.js": "/rolarq-demo/static/js/2.165c4514.chunk.js",
     "static/js/2.165c4514.chunk.js.map": "/rolarq-demo/static/js/2.165c4514.chunk.js.map",
     "index.html": "/rolarq-demo/index.html",
-    "precache-manifest.99a7065d6cf3436c6a84da61c6b8fb76.js": "/rolarq-demo/precache-manifest.99a7065d6cf3436c6a84da61c6b8fb76.js",
+    "precache-manifest.f2d1b677587805bfe33ed4b138c5ce9d.js": "/rolarq-demo/precache-manifest.f2d1b677587805bfe33ed4b138c5ce9d.js",
     "service-worker.js": "/rolarq-demo/service-worker.js",
     "static/css/main.5ecd60fb.chunk.css.map": "/rolarq-demo/static/css/main.5ecd60fb.chunk.css.map",
     "static/js/2.165c4514.chunk.js.LICENSE.txt": "/rolarq-demo/static/js/2.165c4514.chunk.js.LICENSE.txt",
@@ -21,6 +21,6 @@
     "static/js/runtime-main.535ebcc2.js",
     "static/js/2.165c4514.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.981ce787.chunk.js"
+    "static/js/main.e8d1a9aa.chunk.js"
   ]
 }
